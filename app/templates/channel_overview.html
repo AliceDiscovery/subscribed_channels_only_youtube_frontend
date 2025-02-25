@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>yt - channel</title>
+{% endblock %}
+
+{% block content %}
+    {% for video in videos %}
+        <a href="?">
+            <div class="video-container">
+                <img src="{{ video.thumbnail }}" loading="lazy">
+                <p>duration: {{ video.duration }}</p>
+                <p>views: {{ video.views }}</p>
+                <h2>{{ video.title }}</h2>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}
