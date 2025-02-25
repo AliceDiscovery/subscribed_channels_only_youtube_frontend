@@ -1,11 +1,13 @@
-from .video_base_class import VideoType
+""" defines a dataclass that store information about a YouTube video """
+from .youtube_id_base_class import YoutubeIdType
 
 
-class VideoInfoType(VideoType):
+class VideoType(YoutubeIdType):
+    """ a dataclass that store information about a YouTube video """
     def __init__(self,
                  video_id: str,
                  title: str,
-                 description: str|None,
+                 description: str,
                  views: str,
                  duration: str,
                  thumbnail_url: str):
@@ -17,11 +19,15 @@ class VideoInfoType(VideoType):
         self._thumbnail_url = thumbnail_url
 
     @property
+    def video_id(self):
+        return self.youtube_id
+
+    @property
     def title(self) -> str:
         return self._title
 
     @property
-    def description(self) -> str|None:
+    def description(self) -> str:
         return self._description
 
     @property
