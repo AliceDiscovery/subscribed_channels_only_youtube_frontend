@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+}
+
+.root-container {
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: black;
+}
+
+h1 {
+    color: green;
+}
