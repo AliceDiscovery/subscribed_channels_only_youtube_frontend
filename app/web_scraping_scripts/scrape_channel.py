@@ -27,19 +27,24 @@ def scrape_channel_data(channel_id: str) -> [[VideoType], [ShortType], ChannelTy
             if 'entries' in entry:  # if channel has both a videos tab and a shorts tab
                 process_entries(entry['entries'])
             else:
+                # sometimes the view count value is None
+                view_count = ''
+                if entry['view_count'] is not None:
+                    view_count = human_readable_large_numbers(entry['view_count'])
+
                 if '/shorts/' in entry['url']:
                     shorts.append(ShortType(
                         video_id=entry['id'],
                         title=entry['title'],
                         thumbnail=entry['thumbnails'][-1]['url'],
-                        views=human_readable_large_numbers(entry['view_count'])
+                        views=view_count
                     ))
                 else:
                     videos.append(VideoType(
                         video_id=entry['id'],
                         title=entry['title'],
                         thumbnail=entry['thumbnails'][-1]['url'],
-                        views=human_readable_large_numbers(entry['view_count']),
+                        views=view_count,
                         description=entry['description'],
                         duration=human_readable_times(entry['duration'])
                     ))
