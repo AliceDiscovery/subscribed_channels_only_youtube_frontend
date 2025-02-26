@@ -28,7 +28,7 @@
     flex-wrap: wrap;
     align-content: start;
     width: calc(100% - 1rem);
-    height: 10rem;
+    height: 12rem;
     column-gap: 0.5rem;
     row-gap: 0.5rem;
     padding: 0.5rem;
@@ -41,6 +41,7 @@
     background-color: #000;
     border-radius: 100%;
     margin-right: 1rem;
+    margin-bottom: 2rem;
 }
 
 .channel-banner hgroup * {
@@ -70,6 +71,28 @@
 
 .channel-banner .channel-description {
     max-width: 35%;
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.channel-banner .channel-description * {
+    display: inline;
+}
+
+.channel-banner .channel-description button {
+    font-weight: bolder;
+    /* Reset styling */
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+
+.channel-banner .channel-description button:hover {
+    text-decoration: underline 1px;
 }
 
 /* Videos */
