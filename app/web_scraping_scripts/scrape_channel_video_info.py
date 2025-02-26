@@ -31,5 +31,5 @@ def scrape_channel_videos(channel_id: str) -> Generator[VideoType, None, None]:
                     description=video['description'],
                     views=human_readable_large_numbers(video['view_count']),
                     duration=human_readable_times(video['duration']),
-                    thumbnail_url=video['thumbnails'][-1]['url']
+                    thumbnail=video['thumbnails'][-1]['url']
                 )
