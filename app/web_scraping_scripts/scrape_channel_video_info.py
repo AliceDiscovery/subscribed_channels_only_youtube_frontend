@@ -3,7 +3,7 @@ from typing import Generator
 import yt_dlp
 from app.datatypes import VideoType
 from app.validators import validate_channel_id, ValidationError
-from app.web_scraping_scripts.data_conversion import human_readable_views, human_readable_duration
+from app.web_scraping_scripts.data_conversion import human_readable_large_numbers, human_readable_times
 
 
 def scrape_channel_videos(channel_id: str) -> Generator[VideoType, None, None]:
@@ -29,7 +29,7 @@ def scrape_channel_videos(channel_id: str) -> Generator[VideoType, None, None]:
                     video_id=video['id'],
                     title=video['title'],
                     description=video['description'],
-                    views=human_readable_views(video['view_count']),
-                    duration=human_readable_duration(video['duration']),
+                    views=human_readable_large_numbers(video['view_count']),
+                    duration=human_readable_times(video['duration']),
                     thumbnail_url=video['thumbnails'][-1]['url']
                 )

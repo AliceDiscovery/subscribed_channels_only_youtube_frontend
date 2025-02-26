@@ -1,7 +1,7 @@
 """ Converts a number of seconds into a humanreadable format """
 
 
-def human_readable_duration(seconds: int):
+def human_readable_times(seconds: int):
     """ Converts a number of seconds into a humanreadable format """
     seconds = int(seconds)  # convert possible float to int
 
