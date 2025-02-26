@@ -1,2 +1,1 @@
-from .scrape_channel_video_info import scrape_channel_videos
-from .scrape_profile_info import scrape_profile_info
+from .scrape_channel import scrape_channel_data
