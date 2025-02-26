@@ -1,5 +1,6 @@
 :root {
     font-size: 16px;
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -8,15 +9,8 @@ body {
 
 .root-container {
     margin: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    width: 100vw;
     height: 100vh;
-    font-family: Arial, sans-serif;
     background-color: '#AFAFAF';
-}
-
-h1 {
-    color: green;
 }
