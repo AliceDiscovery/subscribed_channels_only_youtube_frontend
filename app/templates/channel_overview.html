@@ -7,18 +7,16 @@
 
 {% block content %}
     <div class="channel-banner">
-        <img src="">
+        <img src="{{ channel_info.banner }}">
         <hgroup>
-            <img src="">
-            <h1>Channel Name</h1>
+            <img src="{{ channel_info.profile_pic }}">
+            <h1>{{ channel_info.title }}</h1>
             <p class="channel-info">
-                <span>@channel_handle</span>
-                <span>42k subscribers</span>
-                <span>314 videos</span>
+                <span>{{ channel_info.handle }}</span>
+                <span>{{ channel_info.subscribers }} subscribers</span>
+                <span>{{ channel_info.num_videos }} videos</span>
             </p>
-            <p class="channel-description">
-                Lorem ipsum odor amet, consectetuer adipiscing elit. Lacus netus efficitur integer dapibus sit metus fermentum curabitur. Faucibus finibus mus pulvinar aptent ante nisl.
-            </p>
+            <p class="channel-description">{{ channel_info.description }}</p>
         </hgroup>
     </div>
     <div class="video-feed">

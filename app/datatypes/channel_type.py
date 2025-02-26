@@ -6,10 +6,10 @@ from dataclasses import dataclass
 class ChannelType:
     """ a dataclass that stores a channel's info """
     channel_id: str
+    banner: str
+    profile_pic: str
     title: str
     handle: str
-    subscriber_count: str
-    number_of_videos: str
+    subscribers: str
+    num_videos: str
     description: str
-    banner_url: str
-    profile_pic_url: str
