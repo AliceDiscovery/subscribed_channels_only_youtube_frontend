@@ -22,7 +22,7 @@ while (description.length && description[0].length + charCount <= characterMax) 
 }
 visibleText = visibleText.trimEnd();
 
-let invisibleText = '';
+let invisibleText = ' ';
 for (word of description) {
     invisibleText += word + ' ';
 }
