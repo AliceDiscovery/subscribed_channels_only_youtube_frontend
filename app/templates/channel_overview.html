@@ -13,14 +13,16 @@
         <img src="{{ channel_info.banner }}">
         <div id="profile-info">
             <img src="{{ channel_info.profile_pic }}">
-            <h1>{{ channel_info.title }}</h1>
-            <p class="channel-info">
-                <span>{{ channel_info.handle }}</span>
-                <span>{{ channel_info.subscribers }} subscribers</span>
-                <span>{{ channel_info.num_videos }} videos</span>
-            </p>
-            <div class="channel-description-container">
-                <p class="channel-description">{{ channel_info.description }}</p>
+            <div>
+                <h1>{{ channel_info.title }}</h1>
+                <p class="channel-info">
+                    <span>{{ channel_info.handle }}</span>
+                    <span>{{ channel_info.subscribers }} subscribers</span>
+                    <span>{{ channel_info.num_videos }} videos</span>
+                </p>
+                <div class="channel-description-container">
+                    <p class="channel-description">{{ channel_info.description }}</p>
+                </div>
             </div>
             {% if channel_info.is_subscribed %}
                 <button id="subscribe-button" class="subscribed">Subscribed</button>
