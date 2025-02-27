@@ -42,7 +42,6 @@
     background-color: #000;
     border-radius: 100%;
     margin-right: 1rem;
-    margin-bottom: 2rem;
 }
 
 .channel-banner #profile-info * {
@@ -76,7 +75,7 @@
 }
 
 .channel-banner .channel-description-container {
-    max-width: 35%;
+    max-width: 80%;
     height: fit-content;
     z-index: 5;
 }
