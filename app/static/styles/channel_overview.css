@@ -22,7 +22,7 @@
     border-radius: 25px;
 }
 
-.channel-banner hgroup {
+.channel-banner #profile-info {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -35,7 +35,7 @@
     position: relative;
 }
 
-.channel-banner hgroup > img {
+.channel-banner #profile-info > img {
     display: block;
     width: 10rem;
     height: 10rem;
@@ -45,11 +45,11 @@
     margin-bottom: 2rem;
 }
 
-.channel-banner hgroup * {
+.channel-banner #profile-info * {
     margin: 0;
 }
 
-.channel-banner hgroup h1 {
+.channel-banner #profile-info h1 {
     font-size: 2.5rem;
 }
 

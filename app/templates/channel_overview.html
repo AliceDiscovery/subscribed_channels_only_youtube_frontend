@@ -9,7 +9,7 @@
 {% block content %}
     <div class="channel-banner">
         <img src="{{ channel_info.banner }}">
-        <hgroup>
+        <div id="profile-info">
             <img src="{{ channel_info.profile_pic }}">
             <h1>{{ channel_info.title }}</h1>
             <p class="channel-info">
@@ -20,7 +20,7 @@
             <div class="channel-description-container">
                 <p class="channel-description">{{ channel_info.description }}</p>
             </div>
-        </hgroup>
+        </div>
     </div>
     <div class="video-feed">
     {% for video in videos %}
