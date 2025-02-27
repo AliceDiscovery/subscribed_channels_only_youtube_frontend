@@ -21,7 +21,7 @@ function handleReadMore() {
 function truncateText(description) {
     let charCount = 0;
     let visibleText = '';
-    let invisibleText = '';
+    let invisibleText = ' ';
 
     while (description.length && description[0].length + charCount <= characterMax) {
         charCount += description[0].length;
