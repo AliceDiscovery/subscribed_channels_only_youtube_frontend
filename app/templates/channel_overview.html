@@ -4,6 +4,7 @@
 <title>yt - channel</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/channel_overview.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -11,17 +12,20 @@
         <img src="{{ channel_info.banner }}">
         <div id="profile-info">
             <img src="{{ channel_info.profile_pic }}">
-            <div>
-                <h1>{{ channel_info.title }}</h1>
-                <p class="channel-info">
-                    <span>{{ channel_info.handle }}</span>
-                    <span>{{ channel_info.subscribers }} subscribers</span>
-                    <span>{{ channel_info.num_videos }} videos</span>
-                </p>
-                <div class="channel-description-container">
-                    <p class="channel-description">{{ channel_info.description }}</p>
-                </div>
+            <h1>{{ channel_info.title }}</h1>
+            <p class="channel-info">
+                <span>{{ channel_info.handle }}</span>
+                <span>{{ channel_info.subscribers }} subscribers</span>
+                <span>{{ channel_info.num_videos }} videos</span>
+            </p>
+            <div class="channel-description-container">
+                <p class="channel-description">{{ channel_info.description }}</p>
             </div>
+            {% if channel_info.is_subscribed %}
+                <button id="subscribe-button" class="subscribed">Subscribed</button>
+            {% else %}
+                <button id="subscribe-button" class="subscribe">Subscribe</button>
+            {% endif %}
         </div>
     </div>
     <div class="video-feed">
