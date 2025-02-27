@@ -32,6 +32,7 @@
     column-gap: 0.5rem;
     row-gap: 0.5rem;
     padding: 0.5rem;
+    position: relative;
 }
 
 .channel-banner hgroup > img {
@@ -69,14 +70,24 @@
     display: none;
 }
 
-.channel-banner .channel-description {
+.channel-banner .channel-description-container {
     max-width: 35%;
     height: 50%;
-    overflow-y: scroll;
+    z-index: 5;
+}
+
+.channel-banner .channel-description {
+    max-width: 100%;
+    height: fit-content;
+    background-color: #fff;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    z-index: inherit;
 }
 
 .channel-banner .channel-description * {
     display: inline;
+    z-index: inherit;
 }
 
 .channel-banner .channel-description button {
