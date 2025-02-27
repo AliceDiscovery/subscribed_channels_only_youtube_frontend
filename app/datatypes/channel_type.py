@@ -13,3 +13,4 @@ class ChannelType:
     subscribers: str
     num_videos: str
     description: str
+    is_subscribed: bool = False
