@@ -17,5 +17,6 @@ def channel_overview(channel_id):
     return render_template(
         'channel_overview.html',
         channel_info=channel_info,
-        videos=videos
+        videos=videos,
+        shorts=shorts
     )
