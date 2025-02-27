@@ -1,71 +1,78 @@
-// Constants
-characterMax = 200;
-ellipsisString = '... ';
-showMore = 'Show more';
-showLess = 'Show less';
+const characterMax = 200;
 
-const root = document.getElementsByClassName('channel-description')[0];
+const ellipsisString = '... ';
+const showMore = 'Show more';
+const showLess = 'Show less';
 
 
+function handleReadMore() {
+    const root = document.getElementsByClassName('channel-description')[0];
+    const description = root.innerHTML.trim().split(' ');
+    root.innerHTML = '';
 
-// Extract and split description content
-
-const description = root.innerHTML.trim().split(' ');
-root.innerHTML = null;
-
-let charCount = 0;
-let visibleText = '';
-while (description.length && description[0].length + charCount <= characterMax) {
-    console.log(description[0])
-    charCount += description[0].length;
-    visibleText += description.shift() + ' ';
-}
-visibleText = visibleText.trimEnd();
-
-let invisibleText = ' ';
-for (word of description) {
-    invisibleText += word + ' ';
+    const { visibleText, invisibleText } = truncateText(description);
+    if (invisibleText.trim() === '') {
+        root.innerHTML = visibleText;
+    } else {
+        createDescriptionElements(root, visibleText, invisibleText);
+    }
 }
 
-if (invisibleText === '') {
-    root.innerHTML = visibleText;
-    throw new Error('Not an error; the description is just short enough to fit without hiding part of it.')
-};
+function truncateText(description) {
+    let charCount = 0;
+    let visibleText = '';
+    let invisibleText = '';
 
+    while (description.length && description[0].length + charCount <= characterMax) {
+        charCount += description[0].length;
+        visibleText += description.shift() + ' ';
+    }
+    visibleText = visibleText.trimEnd();
 
-// Create new elements and add content
+    for (let word of description) {
+        invisibleText += word + ' ';
+    }
 
-const visible = document.createElement('div');
-visible.innerHTML = visibleText;
-root.appendChild(visible);
+    return { visibleText, invisibleText };
+}
 
-const invisible = document.createElement('div');
-invisible.innerHTML = invisibleText;
-invisible.className = 'hidden';
-root.appendChild(invisible);
+function createDescriptionElements(root, visibleText, invisibleText) {
+    const visible = createElement('div', visibleText);
+    const invisible = createElement('div', invisibleText, 'hidden');
+    const ellipsis = createElement('div', ellipsisString);
+    const button = createElement('button', showMore);
 
-const ellipsis = document.createElement('div');
-ellipsis.innerHTML = ellipsisString;
-root.appendChild(ellipsis);
+    let hidden = true;
+    button.onclick = e => {
+        e.preventDefault();
+        hidden = toggleVisibility(hidden, invisible, ellipsis, button);
+    };
 
-const button = document.createElement('button');
-button.innerHTML = showMore;
+    root.appendChild(visible);
+    root.appendChild(invisible);
+    root.appendChild(ellipsis);
+    root.appendChild(button);
+}
 
-let hidden = true;
-button.onclick = e => {
-    e.preventDefault();
+function createElement(tag, content, className = '') {
+    const element = document.createElement(tag);
+    element.innerHTML = content;
+    if (className) element.className = className;
+    return element;
+}
+
+function toggleVisibility(hidden, invisible, ellipsis, button) {
     if (!hidden) {
         invisible.className = 'hidden';
         ellipsis.className = '';
         button.innerHTML = showMore;
-        hidden = true;
-    }
-    else {
+    } else {
         invisible.className = '';
         ellipsis.className = 'hidden';
         button.innerHTML = showLess;
-        hidden = false;
     }
-};
+    return !hidden;
+}
 
-root.appendChild(button);
+
+handleReadMore();
