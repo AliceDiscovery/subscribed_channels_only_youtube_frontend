@@ -29,7 +29,7 @@ def scrape_channel_data(channel_id: str) -> [[VideoType], [ShortType], ChannelTy
             else:
                 # sometimes the view count value is None
                 view_count = ''
-                if entry['view_count'] is not None:
+                if 'view_count' in entry:
                     view_count = human_readable_large_numbers(entry['view_count'])
 
                 if '/shorts/' in entry['url']:
