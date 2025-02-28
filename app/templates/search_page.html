@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>yt - search</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/search_page.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1>Videos:</h1>
+    {% for video in videos %}
+        <h2>{{ video.title }}</h2>
+    {% endfor %}
+
+    <hr />
+
+    <h1>Shorts:</h1>
+    {% for short in shorts %}
+        <h2>{{ short.title }}</h2>
+    {% endfor %}
+{% endblock %}
