@@ -1,0 +1,87 @@
+/* Videos */
+
+.videos {
+    display: flex;
+    flex-direction: column;
+}
+
+.video-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 11.75rem;
+    width: calc(100% - 2rem);
+    align-content: flex-start;
+    column-gap: 1rem;
+    margin: 0 0 1rem 1rem;
+    box-shadow: 0.5rem 0.5rem 0.25rem #0007, inset 0 0 0.25rem 0.125rem #0003;
+}
+
+/* Shorts */
+
+.shorts {
+    display: flex;
+    flex-direction: row;
+}
+
+.short-container {
+    position: relative;
+    height: 404px;
+    width: 225px;
+    margin: 0 0 1rem 1rem;
+    box-shadow: 0.5rem 0.5rem 0.25rem #0007, inset 0 0 0.25rem 0.125rem #0003;
+}
+
+.short-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    z-index: 5;
+    width: calc(100% - 0.5rem*2 - 0.25rem*2);
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #000b;
+}
+
+.short-info * {
+    color: #ffffff;
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: bolder;
+}
+
+.short-info h2 {
+    font-size: 1rem;
+}
+
+.short-container > img {
+    object-fit: none;
+    object-position: center;
+    height: 404px;
+    width: 225px;
+}
+
+.thumbnail-container {
+    max-width: 21rem;
+    max-height: 11.75rem;
+    position: relative;
+}
+
+.thumbnail-container img {
+    max-width: 100%;
+    width: auto;
+}
+
+.thumbnail-container span {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #0007;
+    color: #fff;
+    font-weight: bolder;
+}
