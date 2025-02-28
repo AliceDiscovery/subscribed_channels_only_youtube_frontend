@@ -6,6 +6,8 @@ from dataclasses import dataclass
 class VideoBaseType:
     """ a base dataclass that store metadata about a YouTube video """
     video_id: str
+    channel_id: str
+    channel_name: str
     title: str
     thumbnail: str
     views: str
