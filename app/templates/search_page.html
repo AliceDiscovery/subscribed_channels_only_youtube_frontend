@@ -8,13 +8,29 @@
 {% block content %}
     <h1>Videos:</h1>
     {% for video in videos %}
+    <div class="video-container">
+        <div class="thumbnail-container">
+            <img src="{{ video.thumbnail }}"/>
+            {% if video.duration %}
+                <span>{{ video.duration }}</span>
+            {% endif %}
+        </div>
         <h2>{{ video.title }}</h2>
+        <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a>
+        <p>{{ video.views }} views</p>
+        <p>{{ video.description }}</p>
+    </div>
     {% endfor %}
 
     <hr />
 
     <h1>Shorts:</h1>
     {% for short in shorts %}
+    <div class="short-container">
+        <img src="{{ short.thumbnail }}"/>
         <h2>{{ short.title }}</h2>
+        <a href="{{ url_for('main.channel_overview', channel_id=short.channel_id) }}">{{ short.channel_name }}</a>
+        <p>{{ short.views }} views</p>
+    </div>
     {% endfor %}
 {% endblock %}
