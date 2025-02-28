@@ -35,6 +35,8 @@ def scrape_channel_data(channel_id: str) -> [[VideoType], [ShortType], ChannelTy
                 if '/shorts/' in entry['url']:
                     shorts.append(ShortType(
                         video_id=entry['id'],
+                        channel_id=channel_id,
+                        channel_name=result['channel'],
                         title=entry['title'],
                         thumbnail=entry['thumbnails'][-1]['url'],
                         views=view_count
@@ -42,6 +44,8 @@ def scrape_channel_data(channel_id: str) -> [[VideoType], [ShortType], ChannelTy
                 else:
                     videos.append(VideoType(
                         video_id=entry['id'],
+                        channel_id=channel_id,
+                        channel_name=result['channel'],
                         title=entry['title'],
                         thumbnail=entry['thumbnails'][-1]['url'],
                         views=view_count,
