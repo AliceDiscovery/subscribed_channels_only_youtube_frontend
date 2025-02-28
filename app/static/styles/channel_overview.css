@@ -136,6 +136,7 @@
 }
 
 .feed-selector a {
+    cursor: pointer;
     font-size: 1.25rem;
     font-weight: normal;
 }
