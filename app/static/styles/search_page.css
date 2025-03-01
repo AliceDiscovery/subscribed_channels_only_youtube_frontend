@@ -12,7 +12,7 @@
     border-radius: 7px;
     overflow: hidden;
     height: 11.75rem;
-    width: calc(100% - 2rem);
+    width: 90%;
     align-content: flex-start;
     column-gap: 1rem;
     margin: 0 0 1rem 1rem;
