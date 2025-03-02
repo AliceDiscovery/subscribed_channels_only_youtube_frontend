@@ -1,6 +1,7 @@
 """ Implements function that returns YouTube search results """
 from yt_dlp import YoutubeDL
 from app.datatypes import VideoType, ShortType
+from app.web_scraping_scripts import get_profile_icon
 from app.web_scraping_scripts.data_conversion import human_readable_large_numbers, human_readable_times
 
 
@@ -18,17 +19,6 @@ def scrape_search_data(query, max_results=50) -> [[VideoType], [ShortType]]:
     shorts = []
 
     for entry in results['entries']:
-
-        # Account for view_count being None
-        view_count = ''
-        if 'view_count' in entry:
-            view_count = human_readable_large_numbers(entry['view_count'])
-
-        # Account for duration being None
-        duration = None
-        if 'duration' in entry and entry['duration'] != None:
-            duration = human_readable_times(entry['duration'])
-
         if '/shorts/' in entry['url']:
             shorts.append(ShortType(
                 video_id=entry['id'],
@@ -36,7 +26,7 @@ def scrape_search_data(query, max_results=50) -> [[VideoType], [ShortType]]:
                 channel_name=entry['channel'],
                 title=entry['title'],
                 thumbnail=entry['thumbnails'][-1]['url'],
-                views=view_count
+                views=human_readable_large_numbers(entry['view_count'])
             ))
         else:
             videos.append(VideoType(
@@ -45,9 +35,10 @@ def scrape_search_data(query, max_results=50) -> [[VideoType], [ShortType]]:
                 channel_name=entry['channel'],
                 title=entry['title'],
                 thumbnail=entry['thumbnails'][-1]['url'],
-                views=view_count,
+                views=human_readable_large_numbers(entry.get('view_count', None)),
                 description=entry['description'],
-                duration=duration
+                duration=human_readable_times(entry['duration']),
+                channel_pic=get_profile_icon(entry['channel_id'])
             ))
 
     return videos, shorts
