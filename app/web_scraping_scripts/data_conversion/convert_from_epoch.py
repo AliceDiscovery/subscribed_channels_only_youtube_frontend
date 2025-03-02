@@ -2,6 +2,11 @@
 from datetime import datetime
 
 
-def epoch_to_date(epoch: int) -> str:
+def epoch_to_date(epoch: int) -> str | None:
     """ converts an epoch to a humanreadable date """
+
+    # Account for epoch being None
+    if epoch is None:
+        return None
+
     return datetime.fromtimestamp(epoch).strftime('%Y/%m/%d')
