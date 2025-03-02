@@ -31,7 +31,7 @@
     width: 2rem;
     height: 2rem;
     background-color: #000000;
-    object-fit: none;
+    object-fit: cover;
     object-position: center;
 }
 
