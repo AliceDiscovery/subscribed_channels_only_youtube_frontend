@@ -18,7 +18,7 @@
         </div>
         <h2>{{ video.title }}</h2>
         <div class="channel-info">
-            <img src=""/>
+            <img src="{{ video.channel_pic }}"/>
             <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a>
         </div>
         <p>{{ video.views }} views</p>
