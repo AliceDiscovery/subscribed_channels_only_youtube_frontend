@@ -47,7 +47,7 @@
 
 /* Shorts */
 
-.shorts {
+#shorts-carousel {
     display: flex;
     flex-direction: row;
 }
