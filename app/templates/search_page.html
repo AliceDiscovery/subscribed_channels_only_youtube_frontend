@@ -17,10 +17,12 @@
             {% endif %}
         </div>
         <h2>{{ video.title }}</h2>
-        <div class="channel-info">
-            <img src="{{ video.channel_pic }}"/>
-            <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a>
-        </div>
+        <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
+            <div class="channel-info">
+                <img src="{{ video.channel_pic }}"/>
+                <a>{{ video.channel_name }}</a>
+            </div>
+        </a>
         <p>{{ video.views }} views</p>
         {% if video.description %}
             <p>{{ video.description }}</p>
