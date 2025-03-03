@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>{{ video.title }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>{{ video.title }}</h1>
+{% endblock %}
