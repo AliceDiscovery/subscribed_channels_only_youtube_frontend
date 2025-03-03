@@ -1,1 +1,2 @@
 from .scrape_channel import scrape_channel_data
+from .scrape_video_page_data import scrape_video_data
