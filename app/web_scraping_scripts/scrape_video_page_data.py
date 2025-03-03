@@ -16,7 +16,7 @@ def scrape_video_data(video_id: str) -> VideoType:
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(url, download=False)
+        info_dict = ydl.extract_info(video_url, download=False)
 
     return VideoType(
         video_id=video_id,
