@@ -85,32 +85,9 @@
 
 .channel-banner .channel-description {
     max-width: 100%;
-    height: fit-content;
     background-color: #fff;
     padding: 0.5rem;
     border-radius: 1rem;
-    z-index: inherit;
-}
-
-.channel-banner .channel-description * {
-    display: inline;
-    z-index: inherit;
-}
-
-.channel-banner .channel-description button {
-    font-weight: bolder;
-    /* Reset styling */
-    font-size: 1rem;
-    font-family: inherit;
-    background-color: transparent;
-    color: inherit;
-    padding: 0;
-    border: none;
-    margin: 0;
-}
-
-.channel-banner .channel-description button:hover {
-    text-decoration: underline 1px;
 }
 
 /* Feed container */

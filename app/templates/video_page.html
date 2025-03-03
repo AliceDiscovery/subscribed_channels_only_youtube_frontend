@@ -3,8 +3,22 @@
 {% block head %}
 <title>{{ video.title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
+<script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/video_player.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<h1>{{ video.title }}</h1>
+<div class="container">
+    <div class="video-player">
+        <img src="{{ video.thumbnail }}">
+        <button class="play-button"><div/></button>
+        <iframe hidden src="https://www.youtube-nocookie.com/embed/{{ video.video_id }}?si=0WWbkz0vjzds1ffl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <h1>{{ video.title }}</h1>
+    <div class="info">
+        <p>{{ video.duration }}</p>
+        <p>{{ video.views }} views</p>
+    </div>
+    <p class="description read-more">{{ video.description }}</p>
+</div>
 {% endblock %}
