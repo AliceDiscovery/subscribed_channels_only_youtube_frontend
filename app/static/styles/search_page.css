@@ -85,12 +85,30 @@
     font-size: 1rem;
 }
 
+.short-container.hidden {
+    display: none;
+}
+
 .short-container > img {
     object-fit: none;
     object-position: center;
     height: 404px;
     width: 225px;
 }
+
+.arrow {
+    background-color: transparent;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+#left-arrow {
+    left: 0;
+}
+
+#right-arrow {
+    right: 0;
 
 .thumbnail-container {
     max-width: 21rem;
