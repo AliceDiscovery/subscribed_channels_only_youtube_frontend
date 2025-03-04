@@ -20,6 +20,8 @@ def scrape_video_data(video_id: str) -> VideoType:
 
     return VideoType(
         video_id=video_id,
+        channel_name=info_dict.get("channel", ""),
+        channel_id=info_dict.get("channel_id", ""),
         title=info_dict.get("title", ""),
         thumbnail=info_dict.get("thumbnail", ""),
         views=human_readable_large_numbers(info_dict.get("view_count", None)),

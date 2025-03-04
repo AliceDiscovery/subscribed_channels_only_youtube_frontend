@@ -1,6 +1,6 @@
 """ define all url routes """
 from flask import Blueprint, render_template
-from app.web_scraping_scripts import scrape_channel_data, scrape_video_data
+from app.web_scraping_scripts import scrape_channel_data, scrape_search_data, scrape_video_data
 
 
 bp = Blueprint('main', __name__)
@@ -9,6 +9,16 @@ bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
     return render_template('index.html')
+
+
+@bp.route('/search/<search_terms>')
+def search(search_terms):
+    videos, shorts = scrape_search_data(search_terms)
+    return render_template(
+        'search_page.html',
+        videos=videos,
+        shorts=shorts
+    )
 
 
 @bp.route('/channel/<channel_id>')
