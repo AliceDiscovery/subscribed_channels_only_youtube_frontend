@@ -14,9 +14,11 @@
         <button id="left-arrow" class="arrow">&lt;</button>
         {% for short in shorts %}
         <div class="short-container">
-            <img src="{{ short.thumbnail }}"/>
+            <a href="{{ url_for('main.video_page', video_id=short.video_id) }}">
+                <img src="{{ short.thumbnail }}"/>
+            </a>
             <div class="short-info">
-                <h2>{{ short.title }}</h2>
+                <a href="{{ url_for('main.video_page', video_id=short.video_id) }}"><h2>{{ short.title }}</h2></a>
                 <p>
                     <a href="{{ url_for('main.channel_overview', channel_id=short.channel_id) }}">{{ short.channel_name }}</a>
                     <span>{{ short.views }} views</span>
@@ -31,13 +33,13 @@
     <div class="videos">
         {% for video in videos %}
         <div class="video-container">
-            <div class="thumbnail-container">
+            <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
                 <img src="{{ video.thumbnail }}"/>
                 {% if video.duration %}
                     <span>{{ video.duration }}</span>
                 {% endif %}
-            </div>
-            <h2>{{ video.title }}</h2>
+            </a>
+            <a href="{{ url_for('main.video_page', video_id=video.video_id) }}"><h2>{{ video.title }}</h2></a>
             <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
                 <div class="channel-info">
                     <img src="{{ video.channel_pic }}"/>

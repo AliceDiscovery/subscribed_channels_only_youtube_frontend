@@ -39,21 +39,23 @@
     <div class="feed-container">
         <div class="video-feed">
         {% for video in videos %}
-            <a href="?">
+            
                 <div class="video-container">
-                    <div class="thumbnail-container">
+                    <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
                         <img src="{{ video.thumbnail }}" loading="lazy">
                         <span>{{ video.duration }}</span>
-                    </div>
+                    </a>
                     <p>{{ video.views }}</p>
-                    <h2>{{ video.title }}</h2>
+                    <a href="{{ url_for('main.video_page', video_id=video.video_id) }}">
+                        <h2>{{ video.title }}</h2>
+                    </a>
                 </div>
-            </a>
+            
         {% endfor %}
         </div>
         <div class="short-feed">
         {% for short in shorts %}
-            <a href="?">
+            <a href="{{ url_for('main.video_page', video_id=short.video_id) }}">
                 <div class="short-container">
                     <img src="{{ short.thumbnail }}" loading="lazy">
                     <div>
