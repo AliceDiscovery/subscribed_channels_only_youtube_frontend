@@ -25,53 +25,48 @@ def scrape_channel_data(channel_id: str) -> [[VideoType], [ShortType], ChannelTy
     def process_entries(entries):
         for entry in entries:
             if 'entries' in entry:  # if channel has both a videos tab and a shorts tab
-                process_entries(entry['entries'])
+                process_entries(entry.get('entries', ''))
             else:
-                # sometimes the view count value is None
-                view_count = ''
-                if entry['view_count'] is not None:
-                    view_count = human_readable_large_numbers(entry['view_count'])
-
-                if '/shorts/' in entry['url']:
+                if '/shorts/' in entry.get('url', ''):
                     shorts.append(ShortType(
-                        video_id=entry['id'],
+                        video_id=entry.get('id', ''),
                         channel_id=channel_id,
-                        channel_name=result['channel'],
-                        title=entry['title'],
-                        thumbnail=entry['thumbnails'][-1]['url'],
-                        views=view_count
+                        channel_name=result.get('channel', ''),
+                        title=entry.get('title', ''),
+                        thumbnail=entry.get('thumbnails', [{}])[-1].get('url', ''),
+                        views=human_readable_large_numbers(entry.get('view_count', None))
                     ))
                 else:
                     videos.append(VideoType(
-                        video_id=entry['id'],
+                        video_id=entry.get('id', ''),
                         channel_id=channel_id,
-                        channel_name=result['channel'],
-                        title=entry['title'],
-                        thumbnail=entry['thumbnails'][-1]['url'],
-                        views=view_count,
-                        description=entry['description'],
-                        duration=human_readable_times(entry['duration'])
+                        channel_name=result.get('channel', ''),
+                        title=entry.get('title', ''),
+                        thumbnail=entry.get('thumbnails', [{}])[-1].get('url', ''),
+                        views=human_readable_large_numbers(entry.get('view_count', None)),
+                        description=entry.get('description', ''),
+                        duration=human_readable_times(entry.get('duration', None))
                     ))
 
     process_entries(result['entries'])
 
     banner_url = None
     profile_pic = None
-    for image_url in result['thumbnails']:
-        if image_url['id'] == '5':
-            banner_url = image_url['url']
-        elif image_url['id'] == '7':
-            profile_pic = image_url['url']
+    for image_url in result.get('thumbnails', []):
+        if image_url.get('id', '') == '5':
+            banner_url = image_url.get('url', '')
+        elif image_url.get('id', '') == '7':
+            profile_pic = image_url.get('url', '')
 
     channel_info = ChannelType(
         channel_id=channel_id,
         banner=banner_url,
         profile_pic=profile_pic,
-        title=result['channel'],
-        handle=result['uploader_id'],
-        subscribers=human_readable_large_numbers(result['channel_follower_count']),
-        num_videos=str(len(videos)+len(shorts)),
-        description=result['description']
+        title=result.get('channel', ''),
+        handle=result.get('uploader_id', ''),
+        subscribers=human_readable_large_numbers(result.get('channel_follower_count', None)),
+        num_videos=str(len(videos) + len(shorts)),
+        description=result.get('description', '')
     )
 
     return videos, shorts, channel_info
