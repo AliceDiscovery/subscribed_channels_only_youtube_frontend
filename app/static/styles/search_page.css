@@ -55,7 +55,6 @@
 #shorts-carousel {
     display: flex;
     flex-direction: row;
-    margin-top: 2rem;
 }
 
 .short-container {
