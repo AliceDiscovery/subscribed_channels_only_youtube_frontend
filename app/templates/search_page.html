@@ -7,6 +7,8 @@
 {% endblock %}
 
 {% block content %}
+    {% include "top_bar_template.html" %}
+
     <div id="shorts-carousel">
         <button id="left-arrow" class="arrow">&lt;</button>
         {% for short in shorts %}
