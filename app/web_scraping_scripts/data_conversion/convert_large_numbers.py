@@ -1,7 +1,7 @@
 """ Converts large integers into humanreadable strings """
 
 
-def human_readable_large_numbers(num: int) -> str | None:
+def human_readable_large_numbers(num: int | None) -> str | None:
     """ Converts a large integer into a humanreadable string """
 
     # Account for view_count being None

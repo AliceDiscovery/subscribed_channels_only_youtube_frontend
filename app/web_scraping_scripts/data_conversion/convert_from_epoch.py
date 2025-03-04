@@ -2,7 +2,7 @@
 from datetime import datetime
 
 
-def epoch_to_date(epoch: int) -> str | None:
+def epoch_to_date(epoch: int | None) -> str | None:
     """ converts an epoch to a humanreadable date """
 
     # Account for epoch being None
