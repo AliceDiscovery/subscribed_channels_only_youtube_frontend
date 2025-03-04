@@ -1,0 +1,44 @@
+/* styles a floating top bar with a search box */
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    color: #333333;
+    padding: 10px 0 10px 0;
+    box-shadow: 0 2px 4px #00000020;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.top-bar .home-button {
+    text-decoration: none;
+    color: #333;
+    padding-left: 15px;
+}
+
+.top-bar .search-bar {
+    display: flex;
+    align-items: center;
+    padding-right: 25px;
+}
+
+.top-bar .search-bar input {
+    font-size: 16px;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.top-bar .search-bar button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.top-bar-padding {
+    height: 50px;
+}
