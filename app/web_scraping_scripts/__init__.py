@@ -1,2 +1,4 @@
 from .scrape_channel import scrape_channel_data
 from .scrape_video_page_data import scrape_video_data
+from .scrape_channel_icons import get_profile_icon, get_several_profile_icons
+from .scrape_search_results import scrape_search_data
