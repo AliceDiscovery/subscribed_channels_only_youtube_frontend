@@ -9,6 +9,7 @@
 {% block content %}
     {% include "top_bar_template.html" %}
 
+    {% if shorts|length > 0 %}
     <div id="shorts-carousel">
         <button id="left-arrow" class="arrow">&lt;</button>
         {% for short in shorts %}
@@ -25,6 +26,7 @@
         {% endfor %}
         <button id="right-arrow" class="arrow">&gt;</button>
     </div>
+    {% endif %}
 
     <div class="videos">
         {% for video in videos %}
