@@ -7,32 +7,6 @@
 {% endblock %}
 
 {% block content %}
-    <div class="video">
-    {% for video in videos %}
-    <div class="video-container">
-        <div class="thumbnail-container">
-            <img src="{{ video.thumbnail }}"/>
-            {% if video.duration %}
-                <span>{{ video.duration }}</span>
-            {% endif %}
-        </div>
-        <h2>{{ video.title }}</h2>
-        <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
-            <div class="channel-info">
-                <img src="{{ video.channel_pic }}"/>
-                <span>{{ video.channel_name }}</span>
-            </div>
-        </a>
-        <p>{{ video.views }} views</p>
-        {% if video.description %}
-            <p>{{ video.description }}</p>
-        {% endif %}
-    </div>
-    {% endfor %}
-    </div>
-
-    <hr />
-
     <div id="shorts-carousel">
         <button id="left-arrow" class="arrow">&lt;</button>
         {% for short in shorts %}
@@ -48,5 +22,29 @@
         </div>
         {% endfor %}
         <button id="right-arrow" class="arrow">&gt;</button>
+    </div>
+
+    <div class="videos">
+        {% for video in videos %}
+        <div class="video-container">
+            <div class="thumbnail-container">
+                <img src="{{ video.thumbnail }}"/>
+                {% if video.duration %}
+                    <span>{{ video.duration }}</span>
+                {% endif %}
+            </div>
+            <h2>{{ video.title }}</h2>
+            <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
+                <div class="channel-info">
+                    <img src="{{ video.channel_pic }}"/>
+                    <span>{{ video.channel_name }}</span>
+                </div>
+            </a>
+            <p>{{ video.views }} views</p>
+            {% if video.description %}
+                <p>{{ video.description }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
 {% endblock %}

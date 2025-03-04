@@ -3,6 +3,7 @@
 .videos {
     display: flex;
     flex-direction: column;
+    padding-bottom: 15vh;
 }
 
 .video-container {
@@ -54,6 +55,7 @@
 #shorts-carousel {
     display: flex;
     flex-direction: row;
+    margin-top: 2rem;
 }
 
 .short-container {
