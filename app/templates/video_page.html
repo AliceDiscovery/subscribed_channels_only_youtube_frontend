@@ -43,7 +43,7 @@
                         <img src="{{ reply.author_thumbnail_url }}">
                         <span class="comment-author">
                             <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
-                            {{ comment.time_str }}
+                            {{ reply.time_str }}
                         </span>
                         <p>{{ reply.text }}</p>
                         <div class="comment-info">
