@@ -11,8 +11,8 @@ function findRepliesDiv(button) {
 
 function updateButtonText(button) {
     var replyCount = button.getAttribute('data-reply-count');
-    var showText = replyCount == 1 ? `show reply...` : `show ${replyCount} replies...`;
-    var hideText = replyCount == 1 ? `hide reply...` : `hide ${replyCount} replies...`;
+    var showText = replyCount == 1 ? 'Show reply' : `show ${replyCount} replies.`;
+    var hideText = replyCount == 1 ? 'Hide reply' : `hide ${replyCount} replies`;
     button.textContent = findRepliesDiv(button).classList.contains('hidden') ? showText : hideText;
 }
 

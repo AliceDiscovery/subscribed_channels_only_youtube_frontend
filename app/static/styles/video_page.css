@@ -152,6 +152,14 @@ a:hover {
     content: unset;
 }
 
+.comment-info .toggle-replies {
+    background-color: #0002;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .pinned-by-uploader {
     background-color: #0002;
     margin: 0 0 1rem 0;
