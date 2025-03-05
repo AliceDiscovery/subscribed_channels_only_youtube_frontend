@@ -37,7 +37,8 @@ def scrape_video_comments(video_id: str) -> [CommentType]:
             is_favorited=raw_comment.get('is_favorited', False),
             is_pinned=raw_comment.get('is_pinned', False),
             time_str=raw_comment.get('_time_text', ''),
-            replies=[]
+            replies=[],
+            reply_count=0
         )
 
         if raw_comment.get('parent') == 'root':
@@ -45,6 +46,7 @@ def scrape_video_comments(video_id: str) -> [CommentType]:
         else:
             try:
                 comments[raw_comment.get('parent')].replies.append(comment)
+                comments[raw_comment.get('parent')].reply_count += 1
             except KeyError:
                 pass
     return comments.values()

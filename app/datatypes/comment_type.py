@@ -18,3 +18,4 @@ class CommentType:
     is_pinned: bool
     time_str: str
     replies: list
+    reply_count: int
