@@ -19,26 +19,40 @@
     <p class="description read-more">{{ video.description }}</p>
 
     <div class="comments-section">
+        <h2>Comments</h2>
         {% for comment in comments %}
             <div class="comment-box">
                 <div class="comment" id="comment-{{ comment.id }}">
-                    <p>author: {{ comment.author }}</p>
-                    <p>author id: {{ comment.author_id }}</p>
-                    <p>time upload: {{ comment.time_str }}</p>
                     <img src="{{ comment.author_thumbnail_url }}">
-                    <p>content: {{ comment.text }}</p>
-                    <p>likes: {{ comment.like_count }}</p>
+                    <span class="comment-author">
+                        <a href="{{ url_for('main.channel_overview', channel_id=comment.author_id) }}">{{ comment.author }}</a>
+                        {{ comment.time_str }}
+                    </span>
+                    <p>{{ comment.text }}</p>
+                    <div class="comment-info">
+                        {% if comment.like_count|int == 1 %}
+                            <span>{{ comment.like_count|int }} like</span>
+                        {% else %}
+                            <span>{{ comment.like_count|int }} likes</span>
+                        {% endif %}
+                    </div>
                 </div>
 
                 {% for reply in comment.replies %}
                     <div class="reply" id="comment-{{ reply.id }}">
-                        <p>This is a reply to the above comment</p>
-                        <p>author: {{ reply.author }}</p>
-                        <p>author id: {{ reply.author_id }}</p>
-                        <p>time upload: {{ reply.time_str }}</p>
                         <img src="{{ reply.author_thumbnail_url }}">
-                        <p>content: {{ reply.text }}</p>
-                        <p>likes: {{ reply.like_count }}</p>
+                        <span class="comment-author">
+                            <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
+                            {{ comment.time_str }}
+                        </span>
+                        <p>{{ reply.text }}</p>
+                        <div class="comment-info">
+                            {% if reply.like_count|int == 1 %}
+                                <span>{{ reply.like_count|int }} like</span>
+                            {% else %}
+                                <span>{{ reply.like_count|int }} likes</span>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endfor %}
             </div>
