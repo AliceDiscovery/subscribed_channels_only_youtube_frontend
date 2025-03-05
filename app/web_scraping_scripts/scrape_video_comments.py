@@ -28,6 +28,7 @@ def scrape_video_comments(video_id: str) -> [CommentType]:
             comment_id=raw_comment.get('id', ''),
             text=raw_comment.get('text', ''),
             like_count=human_readable_large_numbers(raw_comment.get('like_count')),
+            has_several_likes=bool(raw_comment.get('like_count', 0) > 1),
             author_id=raw_comment.get('author_id', ''),
             author=raw_comment.get('author', ''),
             author_thumbnail_url=raw_comment.get('author_thumbnail', ''),

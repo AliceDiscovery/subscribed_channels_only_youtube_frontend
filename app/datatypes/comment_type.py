@@ -8,6 +8,7 @@ class CommentType:
     comment_id: str
     text: str
     like_count: str
+    has_several_likes: bool
     author_id: str
     author: str
     author_thumbnail_url: str

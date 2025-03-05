@@ -30,10 +30,10 @@
                     </span>
                     <p>{{ comment.text }}</p>
                     <div class="comment-info">
-                        {% if comment.like_count|int == 1 %}
-                            <span>{{ comment.like_count|int }} like</span>
+                        {% if comment.has_several_likes %}
+                            <span>{{ comment.like_count }} likes</span>
                         {% else %}
-                            <span>{{ comment.like_count|int }} likes</span>
+                            <span>{{ comment.like_count }} like</span>
                         {% endif %}
                     </div>
                 </div>
@@ -47,10 +47,10 @@
                         </span>
                         <p>{{ reply.text }}</p>
                         <div class="comment-info">
-                            {% if reply.like_count|int == 1 %}
-                                <span>{{ reply.like_count|int }} like</span>
+                            {% if reply.has_several_likes %}
+                                <span>{{ reply.like_count }} likes</span>
                             {% else %}
-                                <span>{{ reply.like_count|int }} likes</span>
+                                <span>{{ reply.like_count }} like</span>
                             {% endif %}
                         </div>
                     </div>
