@@ -1,5 +1,6 @@
 var toggleButtons = document.querySelectorAll('.toggle-replies');
 
+
 function findRepliesDiv(button) {
   let parent = button;
   while (parent && !parent.querySelector('.replies')) {
@@ -7,7 +8,6 @@ function findRepliesDiv(button) {
   }
   return parent ? parent.querySelector('.replies') : null;
 }
-
 
 function updateButtonText(button) {
     var replyCount = button.getAttribute('data-reply-count');
