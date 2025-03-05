@@ -58,7 +58,7 @@
                                 <span class="pinned-by-uploader">📌 Pinned by creator</span>
                             {% endif %}
                             <img src="{{ reply.author_thumbnail_url }}">
-                            <span class="comment-author {{ 'by-uploader' if comment.author_is_uploader else '' }}">
+                            <span class="comment-author {{ 'by-uploader' if reply.author_is_uploader else '' }}">
                                 {% if reply.author_is_verified %}
                                     <span class="author-verified">✓ Verified</span>
                                 {% endif %}
