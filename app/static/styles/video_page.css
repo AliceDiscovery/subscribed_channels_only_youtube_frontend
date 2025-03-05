@@ -72,6 +72,7 @@ a:hover {
     grid-template-columns: repeat(2, max-content);
     grid-template-rows: repeat(3, max-content);
     grid-template-areas:
+        "pin pin "
         "pfp name" 
         "pfp body" 
         "pfp info";
@@ -110,6 +111,21 @@ a:hover {
     font-weight: bolder;
 }
 
+.comment-box .comment-author.by-uploader a {
+    background-color: #0002;
+    padding: 0.25rem;
+    border-radius: 10px;
+}
+
+.comment-box .comment-author .author-verified {
+    display: inline-block;
+    background-color: #0002;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 2rem;
+    text-align: center;
+}
+
 .comment-box p {
     grid-area: body;
     max-width: 60vw;
@@ -120,6 +136,7 @@ a:hover {
 }
 
 .comment-info > * {
+    display: inline;
     margin: 0;
     font-weight: bolder;
 }
@@ -133,4 +150,21 @@ a:hover {
 .comment-info > :first-child::before {
     display: none;
     content: unset;
+}
+
+.pinned-by-uploader {
+    background-color: #0002;
+    margin: 0 0 1rem 0;
+    padding: 0.25rem;
+    border-radius: 10px;
+    grid-area: pin;
+    width: fit-content;
+}
+
+.liked-by-uploader > span {
+    background-color: #0002;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 10px;
+    font-weight: lighter;
 }
