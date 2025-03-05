@@ -4,6 +4,7 @@
 <title>{{ video.title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/collapse_comment_replies.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/video_player.js') }}"></script>
 {% endblock %}
 
@@ -22,7 +23,7 @@
         <h2>Comments</h2>
         {% for comment in comments %}
             <div class="comment-box">
-                <div class="comment" id="comment-{{ comment.id }}">
+                <div class="comment" id="{{ comment.comment_id }}">
                     <img src="{{ comment.author_thumbnail_url }}">
                     <span class="comment-author">
                         <a href="{{ url_for('main.channel_overview', channel_id=comment.author_id) }}">{{ comment.author }}</a>
@@ -38,23 +39,29 @@
                     </div>
                 </div>
 
-                {% for reply in comment.replies %}
-                    <div class="reply" id="comment-{{ reply.id }}">
-                        <img src="{{ reply.author_thumbnail_url }}">
-                        <span class="comment-author">
-                            <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
-                            {{ reply.time_str }}
-                        </span>
-                        <p>{{ reply.text }}</p>
-                        <div class="comment-info">
-                            {% if reply.has_several_likes %}
-                                <span>{{ reply.like_count }} likes</span>
-                            {% else %}
-                                <span>{{ reply.like_count }} like</span>
-                            {% endif %}
+                {% if comment.reply_count > 0 %}
+                    <a class="toggle-replies" data-reply-count="{{ comment.reply_count }}"></a>
+                {% endif %}
+
+                <div class="replies hidden">
+                    {% for reply in comment.replies %}
+                        <div class="reply" id="{{ reply.comment_id }}">
+                            <img src="{{ reply.author_thumbnail_url }}">
+                            <span class="comment-author">
+                                <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
+                                {{ reply.time_str }}
+                            </span>
+                            <p>{{ reply.text }}</p>
+                            <div class="comment-info">
+                                {% if reply.has_several_likes %}
+                                    <span>{{ reply.like_count }} likes</span>
+                                {% else %}
+                                    <span>{{ reply.like_count }} like</span>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         {% endfor %}
     </div>
