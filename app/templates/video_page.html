@@ -44,12 +44,12 @@
                         {% if comment.is_favorited %}
                             <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
                         {% endif %}
+
+                        {% if comment.reply_count > 0 %}
+                            <a class="toggle-replies" data-reply-count="{{ comment.reply_count }}"></a>
+                        {% endif %}
                     </div>
                 </div>
-
-                {% if comment.reply_count > 0 %}
-                    <a class="toggle-replies" data-reply-count="{{ comment.reply_count }}"></a>
-                {% endif %}
 
                 <div class="replies hidden">
                     {% for reply in comment.replies %}
