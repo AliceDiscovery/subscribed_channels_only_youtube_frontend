@@ -22,9 +22,15 @@
         <h2>Comments</h2>
         {% for comment in comments %}
             <div class="comment-box">
-                <div class="comment" id="{{ comment.comment_id }}">
+                <div class="comment" id="{{ comment.id }}">
+                    {% if comment.is_pinned %}
+                        <span class="pinned-by-uploader">📌 Pinned by creator</span>
+                    {% endif %}
                     <img src="{{ comment.author_thumbnail_url }}">
-                    <span class="comment-author">
+                    <span class="comment-author {{ 'by-uploader' if comment.author_is_uploader else '' }}">
+                        {% if comment.author_is_verified %}
+                            <span class="author-verified">✓</span>
+                        {% endif %}
                         <a href="{{ url_for('main.channel_overview', channel_id=comment.author_id) }}">{{ comment.author }}</a>
                         {{ comment.time_str }}
                     </span>
@@ -34,6 +40,9 @@
                             <span>{{ comment.like_count }} likes</span>
                         {% else %}
                             <span>{{ comment.like_count }} like</span>
+                        {% endif %}
+                        {% if comment.is_favorited %}
+                            <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
                         {% endif %}
                     </div>
                 </div>
@@ -45,8 +54,14 @@
                 <div class="replies hidden">
                     {% for reply in comment.replies %}
                         <div class="reply" id="{{ reply.comment_id }}">
+                            {% if reply.is_pinned %}
+                                <span class="pinned-by-uploader">📌 Pinned by creator</span>
+                            {% endif %}
                             <img src="{{ reply.author_thumbnail_url }}">
-                            <span class="comment-author">
+                            <span class="comment-author {{ 'by-uploader' if comment.author_is_uploader else '' }}">
+                                {% if reply.author_is_verified %}
+                                    <span class="author-verified">✓ Verified</span>
+                                {% endif %}
                                 <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
                                 {{ reply.time_str }}
                             </span>
@@ -56,6 +71,9 @@
                                     <span>{{ reply.like_count }} likes</span>
                                 {% else %}
                                     <span>{{ reply.like_count }} like</span>
+                                {% endif %}
+                                {% if reply.is_favorited %}
+                                    <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
                                 {% endif %}
                             </div>
                         </div>
