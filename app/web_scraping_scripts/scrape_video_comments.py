@@ -5,7 +5,7 @@ from app.web_scraping_scripts.data_conversion import human_readable_large_number
 from app.datatypes import CommentType
 
 
-def scrape_video_comments(video_id: str):
+def scrape_video_comments(video_id: str) -> [CommentType]:
     """ scrapes all the comments of a YouTube video """
     if not validate_video_id(video_id):
         raise ValidationError('invalid channel id')
