@@ -19,6 +19,7 @@ h1 {
     margin-left: 0.5rem;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .info > * {
@@ -35,6 +36,27 @@ h1 {
 .info > :first-child::before {
     display: none;
     content: unset;
+}
+
+.info #subscribe-button {
+    width: 10rem;
+    height: fit-content;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background-color 0.1s;
+}
+
+.info #subscribe-button.subscribe {
+    background-color: #202020;
+    color: white;
+}
+
+.info #subscribe-button.subscribed {
+    background-color: #909090;
+    color: black;
 }
 
 .description {
