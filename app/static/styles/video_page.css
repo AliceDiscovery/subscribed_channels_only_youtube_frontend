@@ -113,7 +113,7 @@ a:hover {
 
 .comment-box .comment-author.by-uploader a {
     background-color: #0002;
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 10px;
 }
 
@@ -155,7 +155,7 @@ a:hover {
 .comment-info .toggle-replies {
     background-color: #0002;
     margin: 0.25rem;
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -163,7 +163,7 @@ a:hover {
 .pinned-by-uploader {
     background-color: #0002;
     margin: 0 0 1rem 0;
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 10px;
     grid-area: pin;
     width: fit-content;
@@ -172,7 +172,7 @@ a:hover {
 .liked-by-uploader > span {
     background-color: #0002;
     margin: 0.25rem;
-    padding: 0.25rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 10px;
     font-weight: lighter;
 }
