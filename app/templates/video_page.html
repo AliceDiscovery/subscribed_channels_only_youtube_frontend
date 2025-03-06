@@ -15,6 +15,14 @@
     <div class="info">
         <p><a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a></p>
         <p>{{ video.views }} views</p>
+        <div>
+            <!-- Back end does not allow access to subscription status -->
+            {% if false %}
+                <button id="subscribe-button" class="subscribed">Subscribed</button>
+            {% else %}
+                <button id="subscribe-button" class="subscribe">Subscribe</button>
+            {% endif %}
+        </div>
     </div>
     <p class="description read-more">{{ video.description }}</p>
 
