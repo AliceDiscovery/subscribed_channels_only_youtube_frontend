@@ -12,17 +12,19 @@
 <div class="container">
     <iframe src="https://www.youtube-nocookie.com/embed/{{ video.video_id }}?si=0WWbkz0vjzds1ffl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <h1>{{ video.title }}</h1>
-    <div class="info">
-        <p><a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a></p>
+    <div class="channel-info">
+        <img class=="channel-pic" src="{{ video.channel_pic }}">
+        <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a>
+        <!-- Back end does not allow access to subscription status -->
+        {% if false %}
+            <button id="subscribe-button" class="subscribed">Subscribed</button>
+        {% else %}
+            <button id="subscribe-button" class="subscribe">Subscribe</button>
+        {% endif %}
+    </div>
+    <div class="video-info">
         <p>{{ video.views }} views</p>
-        <div>
-            <!-- Back end does not allow access to subscription status -->
-            {% if false %}
-                <button id="subscribe-button" class="subscribed">Subscribed</button>
-            {% else %}
-                <button id="subscribe-button" class="subscribe">Subscribe</button>
-            {% endif %}
-        </div>
+        <p>{{ video.date_stamp }}</p>
     </div>
     <p class="description read-more">{{ video.description }}</p>
 
