@@ -18,3 +18,29 @@ body {
 .hidden {
     display: none!important;
 }
+
+.read-more {
+    height: fit-content;
+    z-index: inherit;
+}
+
+.read-more * {
+    display: inline;
+    z-index: inherit;
+}
+
+.read-more button {
+    font-weight: bolder;
+    /* Reset styling */
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+
+.read-more button:hover {
+    text-decoration: underline 1px;
+}

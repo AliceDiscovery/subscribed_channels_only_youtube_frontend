@@ -15,4 +15,6 @@ def human_readable_large_numbers(num: int | None) -> str | None:
         num /= 1000
         i += 1
 
+    if i == 0:
+        return str(int(num))
     return f'{num:.1f}{suffixes[i]}'
