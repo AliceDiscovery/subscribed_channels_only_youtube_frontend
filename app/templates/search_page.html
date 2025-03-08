@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>yt - search</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/search_page.css') }}">
+<script defer src="{{ url_for('static', filename='scripts/shorts_carousel.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    {% include "top_bar_template.html" %}
+
+    {% if shorts|length > 0 %}
+    <div id="shorts-carousel">
+        <button id="left-arrow" class="arrow">&lt;</button>
+        {% for short in shorts %}
+        <div class="short-container">
+            <a href="{{ url_for('main.video_page', video_id=short.video_id) }}">
+                <img src="{{ short.thumbnail }}"/>
+            </a>
+            <div class="short-info">
+                <a href="{{ url_for('main.video_page', video_id=short.video_id) }}"><h2>{{ short.title }}</h2></a>
+                <p>
+                    <a href="{{ url_for('main.channel_overview', channel_id=short.channel_id) }}">{{ short.channel_name }}</a>
+                    <span>{{ short.views }} views</span>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+        <button id="right-arrow" class="arrow">&gt;</button>
+    </div>
+    {% endif %}
+
+    <div class="videos">
+        {% for video in videos %}
+        <div class="video-container">
+            <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
+                <img src="{{ video.thumbnail }}"/>
+                {% if video.duration %}
+                    <span>{{ video.duration }}</span>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('main.video_page', video_id=video.video_id) }}"><h2>{{ video.title }}</h2></a>
+            <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
+                <div class="channel-info">
+                    <img src="{{ video.channel_pic }}"/>
+                    <span>{{ video.channel_name }}</span>
+                </div>
+            </a>
+            <p>{{ video.views }} views</p>
+            {% if video.description %}
+                <p>{{ video.description }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
