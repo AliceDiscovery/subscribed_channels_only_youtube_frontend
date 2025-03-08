@@ -9,3 +9,4 @@ class VideoType(VideoBaseType):
     description: str
     duration: str
     channel_pic: str = None
+    date_stamp: str = None

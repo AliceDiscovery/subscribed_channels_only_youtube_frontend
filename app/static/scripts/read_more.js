@@ -6,7 +6,7 @@ const showLess = 'Show less';
 
 
 function handleReadMore() {
-    const root = document.getElementsByClassName('channel-description')[0];
+    const root = document.getElementsByClassName('read-more')[0];
     const description = root.innerHTML.trim().split(' ');
     root.innerHTML = '';
 

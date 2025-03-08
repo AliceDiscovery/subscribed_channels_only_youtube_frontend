@@ -40,6 +40,14 @@
     text-decoration: none;
 }
 
+.video-container h2 {
+    color: #000;
+}
+
+.video-container h2:hover {
+    text-decoration: underline;
+}
+
 .channel-info span {
     color: #000000;
     font-size: 1.25rem;
@@ -90,11 +98,19 @@
     display: none;
 }
 
-.short-container > img {
+.short-container > a > img {
     object-fit: none;
     object-position: center;
     height: 404px;
     width: 225px;
+}
+
+.short-container a {
+    text-decoration: none;
+}
+
+.short-container a:hover {
+    text-decoration: underline;
 }
 
 .arrow {
