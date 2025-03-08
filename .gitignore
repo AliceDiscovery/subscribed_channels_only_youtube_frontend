@@ -1,0 +1,2 @@
+# prevent the YouTube API key from being uploaded to github
+.env
