@@ -3,8 +3,94 @@
 {% block head %}
 <title>{{ video.title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
+<script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/collapse_comment_replies.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<h1>{{ video.title }}</h1>
+{% include "top_bar_template.html" %}
+<div class="container">
+    <iframe src="https://www.youtube-nocookie.com/embed/{{ video.video_id }}?si=0WWbkz0vjzds1ffl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <h1>{{ video.title }}</h1>
+    <div class="channel-info">
+        <img class=="channel-pic" src="{{ video.channel_pic }}">
+        <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a>
+        <!-- Back end does not allow access to subscription status -->
+        {% if false %}
+            <button id="subscribe-button" class="subscribed">Subscribed</button>
+        {% else %}
+            <button id="subscribe-button" class="subscribe">Subscribe</button>
+        {% endif %}
+    </div>
+    <div class="video-info">
+        <p>{{ video.views }} views</p>
+        <p>{{ video.date_stamp }}</p>
+    </div>
+    <p class="description read-more">{{ video.description }}</p>
+
+    <div class="comments-section">
+        <h2>Comments</h2>
+        {% for comment in comments %}
+            <div class="comment-box">
+                <div class="comment" id="{{ comment.id }}">
+                    {% if comment.is_pinned %}
+                        <span class="pinned-by-uploader">📌 Pinned by creator</span>
+                    {% endif %}
+                    <img src="{{ comment.author_thumbnail_url }}">
+                    <span class="comment-author {{ 'by-uploader' if comment.author_is_uploader else '' }}">
+                        {% if comment.author_is_verified %}
+                            <span class="author-verified">✓</span>
+                        {% endif %}
+                        <a href="{{ url_for('main.channel_overview', channel_id=comment.author_id) }}">{{ comment.author }}</a>
+                        {{ comment.time_str }}
+                    </span>
+                    <p>{{ comment.text }}</p>
+                    <div class="comment-info">
+                        {% if comment.has_several_likes %}
+                            <span>{{ comment.like_count }} likes</span>
+                        {% else %}
+                            <span>{{ comment.like_count }} like</span>
+                        {% endif %}
+                        {% if comment.is_favorited %}
+                            <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
+                        {% endif %}
+
+                        {% if comment.reply_count > 0 %}
+                            <div><a class="toggle-replies" data-reply-count="{{ comment.reply_count }}"></a></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="replies hidden">
+                    {% for reply in comment.replies %}
+                        <div class="reply" id="{{ reply.comment_id }}">
+                            {% if reply.is_pinned %}
+                                <span class="pinned-by-uploader">📌 Pinned by creator</span>
+                            {% endif %}
+                            <img src="{{ reply.author_thumbnail_url }}">
+                            <span class="comment-author {{ 'by-uploader' if reply.author_is_uploader else '' }}">
+                                {% if reply.author_is_verified %}
+                                    <span class="author-verified">✓ Verified</span>
+                                {% endif %}
+                                <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
+                                {{ reply.time_str }}
+                            </span>
+                            <p>{{ reply.text }}</p>
+                            <div class="comment-info">
+                                {% if reply.has_several_likes %}
+                                    <span>{{ reply.like_count }} likes</span>
+                                {% else %}
+                                    <span>{{ reply.like_count }} like</span>
+                                {% endif %}
+                                {% if reply.is_favorited %}
+                                    <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
