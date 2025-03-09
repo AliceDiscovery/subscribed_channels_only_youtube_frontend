@@ -1,4 +1,6 @@
 """ defines a function to convert a YouTube internal datestamp to a humanreadable date """
+
+
 def convert_date(youtube_date_stamp: str | None) -> str | None:
     """ converts a YouTube internal datestamp to a humanreadable date """
 
@@ -35,9 +37,11 @@ def convert_date(youtube_date_stamp: str | None) -> str | None:
         '0': '\u1D57\u02B0'
     }
 
+    youtube_date_stamp = youtube_date_stamp.replace('-', '')  # remove dashes from the date stamp
+
     year = youtube_date_stamp[:4]
     month_number = int(youtube_date_stamp[4:6]) - 1
-    day = int(youtube_date_stamp[6:]) - 1
+    day = int(youtube_date_stamp[6:8]) - 1
 
     suffix = SUFFIX_MAP[str(day)[-1]]
     month = MONTH_MAP[month_number-1]
