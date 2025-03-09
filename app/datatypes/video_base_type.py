@@ -9,5 +9,5 @@ class VideoBaseType:
     channel_id: str
     channel_name: str
     title: str
-    thumbnail: str
     views: str
+    thumbnail: str = None
