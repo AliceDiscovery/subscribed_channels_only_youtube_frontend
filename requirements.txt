@@ -3,3 +3,4 @@ yt-dlp>=0.0.0
 requests==2.32.3
 beautifulsoup4==4.13.3
 python-dotenv==1.0.1
+google-api-python-client==2.163.0
