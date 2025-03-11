@@ -15,11 +15,11 @@ def index():
 
 @bp.route('/search/<search_terms>')
 def search(search_terms):
-    videos, shorts = scrape_search_data(search_terms)
+    videos = youtube.get_search_results(search_terms)
     return render_template(
         'search_page.html',
         videos=videos,
-        shorts=shorts
+        shorts=[]  # shorts have not been tested yet
     )
 
 
