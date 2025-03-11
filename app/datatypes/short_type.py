@@ -3,7 +3,7 @@ from .video_base_type import VideoBaseType
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass
 class ShortType(VideoBaseType):
     """ a dataclass that stores metadata about a YouTube short """
     channel_id: str
