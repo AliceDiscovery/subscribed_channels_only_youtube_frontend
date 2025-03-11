@@ -1,6 +1,6 @@
 """ define all url routes """
 from flask import Blueprint, render_template
-from app.web_scraping_scripts import scrape_channel_data, scrape_search_data, scrape_video_comments
+from app.web_scraping_scripts import scrape_channel_data
 from app.youtube_api import YouTubeAPI
 
 
@@ -36,10 +36,9 @@ def channel_overview(channel_id):
 
 @bp.route('/video/<video_id>')
 def video_page(video_id):
-    video_data = youtube.get_video_page_data(video_id)
-    comments = scrape_video_comments(video_id)
+    video_data = youtube.get_video_page(video_id)
     return render_template(
         'video_page.html',
         video=video_data,
-        comments=comments
+        comments=video_data.comments
     )
