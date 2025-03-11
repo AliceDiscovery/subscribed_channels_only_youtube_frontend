@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass
 class VideoBaseType:
     """ a base dataclass that store metadata about a YouTube video """
     video_id: str
