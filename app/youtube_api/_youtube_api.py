@@ -5,7 +5,7 @@ from app.web_scraping_scripts import get_profile_icon, get_several_profile_icons
 from app.web_scraping_scripts.data_conversion import convert_date, human_readable_large_numbers, human_readable_times
 
 from app.validators import validate_video_id, validate_channel_id, ValidationError
-from app.datatypes import VideoType, ShortType, ChannelType, VideoPreviewType, CommentType
+from app.datatypes import VideoType, ChannelType, VideoPreviewType, CommentType
 
 
 class YouTubeAPI:
@@ -177,7 +177,14 @@ class YouTubeAPI:
 
         return video_previews
 
-    def get_channel_page_data(self, channel_id: str) -> ChannelType:
+    def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType]]:
+        channel_data = self.get_channel_data(channel_id)
+        first_page_of_videos = self.get_page_of_videos_from_channel(
+            playlist_id=channel_data.playlist_id
+        )
+        return [channel_data, first_page_of_videos]
+
+    def get_channel_data(self, channel_id: str) -> ChannelType:
         if not validate_channel_id(channel_id):
             raise ValidationError('Invalid channel ID')
 
@@ -206,3 +213,43 @@ class YouTubeAPI:
             description=channel_snippet.get('description', '')
         )
         return channel_info
+
+    def get_page_of_videos_from_channel(self, playlist_id: str, next_page_token=None) -> [VideoPreviewType]:
+        video_id_response = self._api.playlistItems().list(
+            part='snippet',
+            playlistId=playlist_id,
+            maxResults=50,
+            pageToken=next_page_token
+        ).execute()
+
+        video_ids = [video_id
+                     for video in video_id_response.get('items', {})
+                     if (video_id := video.get('snippet', {}).get('resourceId').get('videoId', ''))
+                     ]
+
+        # if there are no videos uploaded to the channel
+        if not video_ids:
+            return []
+
+        videos = []
+
+        video_response = self._api.videos().list(
+            part='snippet,contentDetails,statistics',
+            id=','.join(video_ids)
+        ).execute()
+
+        for video_data in video_response.get('items', []):
+            video_snippet = video_data.get('snippet', {})
+            video_statistic = video_data.get('statistics', {})
+            video_content_details = video_data.get('contentDetails', {})
+            videos.append(VideoPreviewType(
+                video_id=video_data.get('id', ''),
+                title=video_snippet.get('title', ''),
+                thumbnail=video_snippet.get('thumbnails', {}).get('default', {}).get('url', ''),
+                views=video_statistic.get('viewCount', 0),
+                description=video_snippet.get('description', ''),
+                duration=video_content_details.get('duration', ''),
+                date_stamp=video_snippet.get('publishedAt', '')
+            ))
+
+        return videos
