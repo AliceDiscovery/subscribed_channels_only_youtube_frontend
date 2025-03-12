@@ -2,10 +2,10 @@ from googleapiclient.discovery import build
 from .api_key import APIKey
 
 from app.web_scraping_scripts import get_profile_icon, get_several_profile_icons
-from app.web_scraping_scripts.data_conversion import convert_date, human_readable_large_numbers
+from app.web_scraping_scripts.data_conversion import convert_date, human_readable_large_numbers, human_readable_times
 
-from app.validators import validate_video_id, ValidationError
-from app.datatypes import VideoType, VideoPreviewType, CommentType
+from app.validators import validate_video_id, validate_channel_id, ValidationError
+from app.datatypes import VideoType, ShortType, ChannelType, VideoPreviewType, CommentType
 
 
 class YouTubeAPI:
@@ -176,3 +176,33 @@ class YouTubeAPI:
                 video_previews.append(video)
 
         return video_previews
+
+    def get_channel_page_data(self, channel_id: str) -> ChannelType:
+        if not validate_channel_id(channel_id):
+            raise ValidationError('Invalid channel ID')
+
+        channel_response = self._api.channels().list(
+            part='snippet,statistics,contentDetails,brandingSettings',
+            id=channel_id
+        ).execute()
+
+        if not channel_response.get('items', []):
+            raise ValidationError('Channel not found')
+
+        channel_data = channel_response.get('items', [])[0]
+        channel_snippet = channel_data.get('snippet', {})
+        channel_statistics = channel_data.get('statistics', {})
+        channel_content_details = channel_data.get('contentDetails', {})
+        channel_branding = channel_data.get('brandingSettings', {})
+        channel_info = ChannelType(
+            channel_id=channel_id,
+            banner=channel_branding.get('image', {}).get('bannerExternalUrl', ''),
+            profile_pic=channel_snippet.get('thumbnails', {}).get('default', {}).get('url', None),
+            title=channel_snippet.get('title', ''),
+            handle=channel_snippet.get('customUrl', ''),
+            subscribers=channel_statistics.get('subscriberCount', 0),
+            num_videos=channel_statistics.get('videoCount', 0),
+            playlist_id=channel_content_details.get('relatedPlaylists', {}).get('uploads', []),
+            description=channel_snippet.get('description', '')
+        )
+        return channel_info
