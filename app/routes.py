@@ -12,11 +12,16 @@ def index():
     return render_template('index.html')
 
 
+@bp.route('/search')
+def search():
+    return render_template('search_page.html')
+
+
 @bp.route('/search/<search_terms>')
-def search(search_terms):
+def search_results(search_terms):
     videos = youtube.get_search_results(search_terms)
     return render_template(
-        'search_page.html',
+        'search_results_page.html',
         videos=videos,
         shorts=[]  # shorts have not been tested yet
     )
