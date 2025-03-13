@@ -1,6 +1,5 @@
 """ define all url routes """
 from flask import Blueprint, render_template
-from app.web_scraping_scripts import scrape_channel_data
 from app.youtube_api import YouTubeAPI
 
 
