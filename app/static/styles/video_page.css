@@ -243,6 +243,7 @@ a:hover {
         width: 100vw;
         margin-left: -1rem;
         height: 56.25vw;
+        border-radius: 0;
     }
 }
 
