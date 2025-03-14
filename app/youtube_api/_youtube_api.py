@@ -1,8 +1,9 @@
 from googleapiclient.discovery import build
 from .api_key import APIKey
 
-from app.web_scraping_scripts import get_profile_icon, get_several_profile_icons
-from app.web_scraping_scripts.data_conversion import convert_date, human_readable_large_numbers, human_readable_times
+from threading import Thread
+
+from app.web_scraping_scripts.data_conversion import convert_date, human_readable_large_numbers
 
 from app.validators import validate_video_id, validate_channel_id, ValidationError
 from app.datatypes import VideoType, ChannelType, VideoPreviewType, CommentType
@@ -39,7 +40,7 @@ class YouTubeAPI:
             title=snippet.get('title', ''),
             views=statistics.get('viewCount', ''),
             description=snippet.get('description', ''),
-            channel_pic=get_profile_icon(snippet.get('channelId')),
+            channel_pic=self.fetch_profile_pictures(snippet.get('channelId', '')),
             date_stamp=convert_date(snippet.get('publishedAt'))
         )
 
@@ -146,7 +147,7 @@ class YouTubeAPI:
         )
         video_response = video_request.execute()
 
-        channel_icons = get_several_profile_icons(
+        channel_icons = self.fetch_profile_pictures(
             *[video['snippet']['channelId']
                 for video in video_response.get('items', [])
                 if video.get('snippet', {}).get('channelId')
@@ -253,3 +254,40 @@ class YouTubeAPI:
             ))
 
         return videos
+
+    def fetch_profile_pictures(self, *channel_ids: [str]) -> dict | str:
+        """ retrieves the urls for YouTube profile icons """
+
+        def fetch_batch_of_icons(batch_of_ids: [str], results):
+            """ fetches the channel icons for a multiple channel ids (no more than 50) """
+            request = self._api.channels().list(
+                part='snippet',
+                id=','.join(batch_of_ids)
+            )
+            response = request.execute()
+
+            if 'items' in response:
+                for item in response.get('items', []):
+                    channel_id = item.get('id', '')
+                    results[channel_id] = item.get('snippet', {}).get('thumbnails', {}).get('default', {}).get('url', '')
+
+        def chunk_and_fetch() -> dict | str:
+            """ retrieves channel icons in batches of 50 """
+            threads = []
+            results = {}
+
+            for i in range(0, len(channel_ids), 50):
+                batch_of_ids = channel_ids[i:i + 50]
+                thread = Thread(target=fetch_batch_of_icons, args=(batch_of_ids, results))
+                threads.append(thread)
+                thread.start()
+
+            for thread in threads:
+                thread.join()
+
+            return results
+
+        profile_pics = chunk_and_fetch()
+        if len(profile_pics) == 1:
+            return next(iter(profile_pics.values()))  # return the one url as a string
+        return profile_pics
