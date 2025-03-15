@@ -1,5 +1,6 @@
 from googleapiclient.discovery import build
 from .api_key import APIKey
+from .youtube_data_convertions import convert_iso_duration
 
 from threading import Thread
 
@@ -170,7 +171,7 @@ class YouTubeAPI:
                     views=human_readable_large_numbers(int(video_statistics.get('viewCount', 0))),
                     thumbnail=video_snippet.get('thumbnails', {}).get('high', {}).get('url', ''),
                     description=video_snippet.get('description', ''),
-                    duration=video_content_details.get('duration', ''),  # this is returned in a different format
+                    duration=convert_iso_duration(video_content_details.get('duration', '')),
                     channel_pic=channel_icons.get(video_snippet.get('channelId'), ''),
                     date_stamp=convert_date(video_snippet.get('publishedAt'))
                 )
@@ -249,7 +250,7 @@ class YouTubeAPI:
                 thumbnail=video_snippet.get('thumbnails', {}).get('default', {}).get('url', ''),
                 views=video_statistic.get('viewCount', 0),
                 description=video_snippet.get('description', ''),
-                duration=video_content_details.get('duration', ''),
+                duration=convert_iso_duration(video_content_details.get('duration', '')),
                 date_stamp=video_snippet.get('publishedAt', '')
             ))
 
