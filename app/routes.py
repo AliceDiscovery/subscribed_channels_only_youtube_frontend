@@ -12,7 +12,7 @@ def index():
     return render_template('index.html')
 
 
-@bp.route('/search')
+@bp.route('/search/')
 def search():
     return render_template('search_page.html')
 
