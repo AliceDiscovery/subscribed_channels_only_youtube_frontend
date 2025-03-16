@@ -1,3 +1,43 @@
-h1 {
-    color: blue;
+.moving-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #070000;
+}
+
+.search-container {
+  position: relative;
+  color: #E0E0E0;
+  padding-top: 5vh;
+  text-align: center;
+}
+
+.search-container #searchInput {
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  outline: none;
+  background: none;
+  color: #E0E0E0;
+  font-size: 24px;
+  padding: 5px;
+  width: 80%;
+}
+
+.search-container .buttons a {
+  color: #E0E0E0;
+  text-decoration: none;
+  margin: 1%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+::placeholder {
+  font-size: 12px;
+  opacity: 1; /* Firefox */
+  color: #E0E0E0;
+}
+
+::-ms-input-placeholder { /* Edge 12 - 18 */
+  font-size: 12px;
+  color: #E0E0E0;
 }

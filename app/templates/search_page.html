@@ -1,10 +1,25 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>yt - search</title>
+<title>yt - Search</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/search_page.css') }}">
+
+<script defer src="{{url_for('static', filename='scripts/animated_background.js')}}"></script>
+<script defer src="{{ url_for('static', filename='scripts/search_box.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<h1>Hello World!</h1>
+<canvas class="moving-background"></canvas>
+
+<div class="search-container">
+  <h1 class="title">search</h1>
+  <input type="text" id="searchInput" autofocus placeholder="search..">
+
+  <button id="searchButton">Search</button>
+
+ <div class="buttons">
+    <a href="">home</a>
+  </div>
+</div>
 {% endblock %}
+
