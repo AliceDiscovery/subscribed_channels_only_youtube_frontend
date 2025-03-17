@@ -13,9 +13,13 @@
 
 <div class="search-container">
   <h1 class="title">search</h1>
-  <input type="text" id="searchInput" autofocus placeholder="search..">
+  <div class="search-box">
+    <input type="text" id="searchInput" autofocus placeholder="search..">
 
-  <button id="searchButton">Search</button>
+    <button id="search-button">
+      <img src="{{ url_for('static', filename='resources/assets/magnifying-glass-icon.svg') }}"></img>
+    </button>
+  </div>
 
  <div class="buttons">
     <a href="">home</a>

@@ -9,7 +9,7 @@ function performSearch() {
     }
 }
 
-document.getElementById('searchButton').addEventListener('click', performSearch);
+document.getElementById('search-button').addEventListener('click', performSearch);
 
 document.getElementById('searchInput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
