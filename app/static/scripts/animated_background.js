@@ -15,6 +15,8 @@ function onKonamiCode(cb) {
   
 onKonamiCode(function () {
     secret_mode = true;
+    color_index = 0;
+    colors = secret_colors;
 })
 
 
@@ -24,9 +26,6 @@ const c = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
-var frame_num = 0;
-var color_index = 0
 
 const default_speed = 0.2; // In seconds
 
@@ -53,16 +52,16 @@ const secret_colors = [
     '#F5A9B8'
 ]
 
+var frame_num = 0;
+var color_index = 0
+var colors = default_colors;
 
-function animate(colors) {
+
+function animate() {
     frame_num = frame_num + 1;
     if (frame_num % 60 == 0) {
         color_index = color_index + 1;
         if (color_index >= colors.length) {
-            color_index = 0;
-        }
-        if (secret_mode) {
-            colors = secret_colors;
             color_index = 0;
         }
     }
@@ -89,4 +88,4 @@ window.addEventListener('resize', function(event) {
 }, true);
 
 
-animate(default_colors);
+animate();
