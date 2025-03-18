@@ -45,7 +45,8 @@
 }
 
 .search-container .search-box #search-button img {
-  height: 100%;
+  height: calc(100% - 10px);
+  margin: 5px 0;
   filter: invert(100%);
 }
 
