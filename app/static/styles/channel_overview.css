@@ -22,6 +22,7 @@
     width: 100%;
     min-height: 6rem;
     border-radius: 25px;
+    object-fit: cover;
 }
 
 .channel-banner #profile-info {
@@ -266,4 +267,41 @@
     max-width: 100%;
     width: auto;
     height: auto;
+}
+
+/* Responsiveness */
+
+@media screen and (max-width: 1200px) {
+    .channel-banner #profile-info > img {
+        width: 5rem;
+        height: 5rem;
+        margin-right: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .channel-banner #profile-info h1 {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .channel-banner .channel-description-container {
+        max-width: 100%;
+    }
+    .channel-banner {
+        width: calc(100% - 8rem);
+    }
+    .channel-banner #profile-info h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .channel-banner #profile-info {
+        flex-direction: column;
+    }
+    .channel-banner #profile-info > img {
+        margin-bottom: 0;
+    }
 }
