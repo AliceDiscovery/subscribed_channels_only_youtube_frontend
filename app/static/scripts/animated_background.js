@@ -1,3 +1,24 @@
+let secret_mode = false;
+
+function onKonamiCode(cb) {
+    var input = '';
+    var key = '38384040373937396665';
+    document.addEventListener('keydown', function (e) {
+      input += ("" + e.keyCode);
+      if (input === key) {
+        return cb();
+      }
+      if (!key.indexOf(input)) return;
+      input = ("" + e.keyCode);
+    });
+}
+  
+onKonamiCode(function () {
+    secret_mode = true;
+})
+
+
+
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -7,9 +28,9 @@ canvas.height = window.innerHeight;
 var frame_num = 0;
 var color_index = 0
 
-const speed = 0.2; // In seconds
+const default_speed = 0.2; // In seconds
 
-const colors = [
+const default_colors = [
     '#007F00',
     '#00FF00',
     '#FFFF00',
@@ -23,14 +44,27 @@ const colors = [
     '#00FFFF'
 ];
 
+const secret_speed = 0.02; // In seconds
 
-function animate() {
+const secret_colors = [
+    '#5BCEFA',
+    '#F5A9B8',
+    '#FFFFFF',
+    '#F5A9B8'
+]
+
+
+function animate(colors) {
     frame_num = frame_num + 1;
     if (frame_num % 60 == 0) {
-	color_index = color_index + 1;
-	if (color_index >= colors.length) {
-	    color_index = 0;
-	}
+        color_index = color_index + 1;
+        if (color_index >= colors.length) {
+            color_index = 0;
+        }
+        if (secret_mode) {
+            colors = secret_colors;
+            color_index = 0;
+        }
     }
 
     c.fillStyle = 'rgba(0, 0, 0, 0.01)';
@@ -45,8 +79,8 @@ function animate() {
     c.stroke();
 
     setTimeout(function(){
-        animate();
-    }, 1000 * speed);
+        animate(colors);
+    }, 1000 * (secret_mode ? secret_speed : default_speed));
 }
 
 window.addEventListener('resize', function(event) {
@@ -55,4 +89,4 @@ window.addEventListener('resize', function(event) {
 }, true);
 
 
-animate();
+animate(default_colors);
