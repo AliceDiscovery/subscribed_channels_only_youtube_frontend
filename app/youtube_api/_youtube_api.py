@@ -41,7 +41,7 @@ class YouTubeAPI:
             title=snippet.get('title', ''),
             views=statistics.get('viewCount', ''),
             description=snippet.get('description', ''),
-            channel_pic=self.fetch_profile_pictures(snippet.get('channelId', '')),
+            channel_pic=self.fetch_profile_picture(snippet.get('channelId', '')),
             date_stamp=convert_date(snippet.get('publishedAt'))
         )
 
@@ -256,7 +256,7 @@ class YouTubeAPI:
 
         return videos
 
-    def fetch_profile_pictures(self, *channel_ids: [str]) -> dict | str:
+    def fetch_profile_pictures(self, *channel_ids: [str]) -> dict:
         """ retrieves the urls for YouTube profile icons """
 
         def fetch_batch_of_icons(batch_of_ids: [str], results):
@@ -289,6 +289,8 @@ class YouTubeAPI:
             return results
 
         profile_pics = chunk_and_fetch()
-        if len(profile_pics) == 1:
-            return next(iter(profile_pics.values()))  # return the one url as a string
         return profile_pics
+
+    def fetch_profile_picture(self, channel_id: str) -> str:
+        return self.fetch_profile_pictures(channel_id).get(channel_id, '')
+
