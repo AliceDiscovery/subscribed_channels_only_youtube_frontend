@@ -7,6 +7,8 @@ canvas.height = window.innerHeight;
 var frame_num = 0;
 var color_index = 0
 
+const speed = 0.2; // In seconds
+
 const colors = [
     '#007F00',
     '#00FF00',
@@ -44,7 +46,7 @@ function animate() {
 
     setTimeout(function(){
         animate();
-    }, 200);
+    }, 1000 * speed);
 }
 
 window.addEventListener('resize', function(event) {
