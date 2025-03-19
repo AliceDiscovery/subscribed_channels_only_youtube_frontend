@@ -30,7 +30,7 @@ class Animator {
         if (value >= 0) {
             this._animationSpeed = value;
         } else {
-            console.error("`animationSpeed` must be a greater than 0.");
+            console.error("`animationSpeed` must be a greater than, or equal to 0.");
         }
     }
 
@@ -54,10 +54,11 @@ class Animator {
         }
 
 	// animate frame
-        this._currentAnimation(this._frameNum);
+        this._currentAnimation.nextFrame(this._frameNum);
         this._frameNum += 1;
 
 	// recurse to animate next frame
+	this._animationSpeed = this._currentAnimation.animationSpeed;
         this._isAnimating = true;
         setTimeout(() => {
             this._animate();
@@ -124,35 +125,84 @@ listenForKonamiCode();
 */
 
 
-function colorSineWaveTemplate(frameNum, colorArray, framesPerColor, ghostFrames) {
-    c.clearRect(0, 0, canvas.width, canvas.height);
-    for (i=0; i<ghostFrames; i++) {
-        let _index = Math.floor((frameNum + i) / framesPerColor);
+class ColorSineWave {
+    constructor(colorArray, framesPerColor, numGhostFrames, animationSpeed) {
+        this._colorArray = colorArray;
+	this._framesPerColor = framesPerColor;
+	this._numGhostFrames = numGhostFrames;
+	this._animationSpeed = animationSpeed
+    }
 
-        c.moveTo(0, canvas.height/2);
-        c.beginPath();
-        for (let j=0; j<canvas.width; j++){
-        c.lineTo(j, (canvas.height/2) + (Math.sin((j+i+frameNum) * 0.01) * ((canvas.height-50) / 2)));
+    get colorArray() {
+        return this._colorArray;
+    }
+
+    set colorArray(value) {
+        this._colorArray = value;
+    }
+
+    get framesPerColor() {
+        return this._framesPerColor;
+    }
+
+    set framesPerColor(value) {
+        if (value > 0) {
+            this._framesPerColor = value;
+        } else {
+            console.error("`framesPerColor` must be a greater than 0.");
         }
-        c.strokeStyle = colorArray[_index % colorArray.length];
-        c.stroke();
+    }
+
+    get numGhostFrames() {
+	return this._numGhostFrames;
+    }
+
+    set numGhostFrames(value) {
+        if (value > 0) {
+            this._numGhostFrames = value;
+        } else {
+            console.error("`numGhostFrames` must be a greater than 0.");
+        }
+    }
+
+    get animationSpeed() {
+	return this._animationSpeed;
+    }
+
+    set animationSpeed(value) {
+        if (value > 0) {
+            this._animationSpeed = value;
+        } else {
+            console.error("`animationSpeed` must be a greater than 0.");
+        }
+    }
+
+    nextFrame(frameNum) {
+        c.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i=0; i<this._numGhostFrames; i++) {
+            let _index = Math.floor((frameNum + i) / this._framesPerColor);
+
+            c.moveTo(0, canvas.height/2);
+            c.beginPath();
+            for (let j=0; j<canvas.width; j++){
+                c.lineTo(j, (canvas.height/2) + (Math.sin((j+i+frameNum) * 0.01) * ((canvas.height-50) / 2)));
+            }
+            c.strokeStyle = this._colorArray[_index % this._colorArray.length];
+            c.stroke();
+        }
     }
 }
 
 
 /*
-+=====================+
-+ animation functions +
-+=====================+
++===================+
++ preset animations +
++===================+
 */
 
 
-function rainbowSineWaveAnimation(frameNum) {
-    animator.animationSpeed = 200;
-    const framesPerColor = 7;
-    const ghostFrames = 40;
-
-    let colorArray = [
+rainbowSineWaveAnimation = new ColorSineWave(
+    colorArray = [
         '#007F00',
         '#00FF00',
         '#FFFF00',
@@ -164,27 +214,25 @@ function rainbowSineWaveAnimation(frameNum) {
         '#0000FF',
         '#007FFF',
         '#00FFFF'
-    ];
+    ],
+    framesPerColor = 7,
+    numGhostFrames = 40,
+    animationSpeed = 200,
+);
 
-    colorSineWaveTemplate(frameNum, colorArray, framesPerColor, ghostFrames);
-}
-
-function transFlagSineWaveAnimation(frameNum) {
-    animator.animationSpeed = 60;
-    const framesPerColor = 40;
-    const ghostFrames = 60;
-
-    let colorArray = [
+transFlagSineWaveAnimation = new ColorSineWave(
+    colorArray = [
         '#5BCEFA',
         '#F5A9B8',
         '#FFFFFF',
         '#F5A9B8',
         '#5BCEFA',
-	'#202020'
-    ];
-
-    colorSineWaveTemplate(frameNum, colorArray, framesPerColor, ghostFrames);
-}
+	'#000000'
+    ],
+    framesPerColor = 7,
+    numGhostFrames = 107,
+    animationSpeed = 60,
+);
 
 
 // play animation on start up
