@@ -124,19 +124,19 @@ listenForKonamiCode();
 */
 
 
-function colorSineWaveTemplate(frameNum, colorArray, framesPerColor) {
-    const _index = Math.floor(frameNum / 7);
+function colorSineWaveTemplate(frameNum, colorArray, framesPerColor, ghostFrames) {
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    for (i=0; i<ghostFrames; i++) {
+        let _index = Math.floor((frameNum + i) / framesPerColor);
 
-    c.fillStyle = 'rgba(0, 0, 0, 0.01)';
-    c.fillRect(0, 0, canvas.width, canvas.height);
-
-    c.moveTo(0, canvas.height/2);
-    c.beginPath();
-    for (let i=0; i<canvas.width; i++){
-        c.lineTo(i, (canvas.height/2) + (Math.sin((i+frameNum) * 0.01) * ((canvas.height-50) / 2)));
+        c.moveTo(0, canvas.height/2);
+        c.beginPath();
+        for (let j=0; j<canvas.width; j++){
+        c.lineTo(j, (canvas.height/2) + (Math.sin((j+i+frameNum) * 0.01) * ((canvas.height-50) / 2)));
+        }
+        c.strokeStyle = colorArray[_index % colorArray.length];
+        c.stroke();
     }
-    c.strokeStyle = colorArray[_index % colorArray.length];
-    c.stroke();
 }
 
 
@@ -150,6 +150,7 @@ function colorSineWaveTemplate(frameNum, colorArray, framesPerColor) {
 function rainbowSineWaveAnimation(frameNum) {
     animator.animationSpeed = 200;
     const framesPerColor = 7;
+    const ghostFrames = 40;
 
     let colorArray = [
         '#007F00',
@@ -165,12 +166,13 @@ function rainbowSineWaveAnimation(frameNum) {
         '#00FFFF'
     ];
 
-    colorSineWaveTemplate(frameNum, colorArray, framesPerColor)
+    colorSineWaveTemplate(frameNum, colorArray, framesPerColor, ghostFrames);
 }
 
 function transFlagSineWaveAnimation(frameNum) {
     animator.animationSpeed = 60;
     const framesPerColor = 40;
+    const ghostFrames = 60;
 
     let colorArray = [
         '#5BCEFA',
@@ -181,7 +183,7 @@ function transFlagSineWaveAnimation(frameNum) {
 	'#202020'
     ];
 
-    colorSineWaveTemplate(frameNum, colorArray, framesPerColor)
+    colorSineWaveTemplate(frameNum, colorArray, framesPerColor, ghostFrames);
 }
 
 
