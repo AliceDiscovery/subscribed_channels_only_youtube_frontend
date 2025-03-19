@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/collapse_comment_replies.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/format_links.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -44,7 +45,7 @@
                         <a href="{{ url_for('main.channel_overview', channel_id=comment.author_id) }}">{{ comment.author }}</a>
                         {{ comment.time_str }}
                     </span>
-                    <p>{{ comment.text }}</p>
+                    <p>{{ comment.text|safe }}</p>
                     <div class="comment-info">
                         {% if comment.has_several_likes %}
                             <span>{{ comment.like_count }} likes</span>
@@ -75,7 +76,7 @@
                                 <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
                                 {{ reply.time_str }}
                             </span>
-                            <p>{{ reply.text }}</p>
+                            <p>{{ reply.text|safe }}</p>
                             <div class="comment-info">
                                 {% if reply.has_several_likes %}
                                     <span>{{ reply.like_count }} likes</span>
