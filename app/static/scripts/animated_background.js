@@ -94,6 +94,30 @@ const animator = new Animator();
 
 
 /*
++==============================+
++ when to change the animation +
++==============================+
+*/
+
+
+function listenForKonamiCode() {
+    var input = '';
+    // up up down down left right left right b a
+    var key = '38384040373937396665';
+    document.addEventListener('keydown', function (e) {
+        input += ("" + e.keyCode);
+        if (input === key) {
+	    animator.startAnimation(transFlagSineWaveAnimation);
+        }
+        if (!key.indexOf(input)) return;
+        input = ("" + e.keyCode);
+    });
+}
+  
+listenForKonamiCode();
+
+
+/*
 +=====================+
 + animation templates +
 +=====================+
@@ -121,6 +145,7 @@ function colorSineWaveTemplate(frameNum, colorArray, framesPerColor) {
 + animation functions +
 +=====================+
 */
+
 
 function rainbowSineWaveAnimation(frameNum) {
     animator.animationSpeed = 200;
