@@ -158,3 +158,7 @@ function transFlagSineWaveAnimation(frameNum) {
 
     colorSineWaveTemplate(frameNum, colorArray, framesPerColor)
 }
+
+
+// play animation on start up
+animator.startAnimation(rainbowSineWaveAnimation);
