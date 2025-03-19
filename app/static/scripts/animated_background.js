@@ -169,7 +169,7 @@ function rainbowSineWaveAnimation(frameNum) {
 }
 
 function transFlagSineWaveAnimation(frameNum) {
-    animator.animationSpeed = 20;
+    animator.animationSpeed = 60;
     const framesPerColor = 40;
 
     let colorArray = [
@@ -178,7 +178,7 @@ function transFlagSineWaveAnimation(frameNum) {
         '#FFFFFF',
         '#F5A9B8',
         '#5BCEFA',
-	'#000000'
+	'#202020'
     ];
 
     colorSineWaveTemplate(frameNum, colorArray, framesPerColor)
