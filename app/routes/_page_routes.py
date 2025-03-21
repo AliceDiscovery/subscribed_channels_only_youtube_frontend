@@ -46,3 +46,4 @@ def video_page(video_id):
         video=video_data,
         comments=video_data.comments
     )
+
