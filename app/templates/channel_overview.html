@@ -37,10 +37,10 @@
             <a id="videos" class="active">Videos</a> | <a id="shorts">Shorts</a>
         </span>
     </div>
-    <div class="feed-container">
+    <div class="feed-container videos">
         <div class="video-feed">
-        {% for video in videos %}
-            
+            <div class="page">
+            {% for video in videos %}
                 <div class="video-container">
                     <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
                         <img src="{{ video.thumbnail }}" loading="lazy">
@@ -51,21 +51,23 @@
                         <h2>{{ video.title }}</h2>
                     </a>
                 </div>
-            
-        {% endfor %}
+            {% endfor %}
+            </div>
         </div>
         <div class="short-feed">
-        {% for short in shorts %}
-            <a href="{{ url_for('main.video_page', video_id=short.video_id) }}">
-                <div class="short-container">
-                    <img src="{{ short.thumbnail }}" loading="lazy">
-                    <div>
-                        <h2>{{ short.title }}</h2>
-                        <span>{{ short.views }}</span>
+            <div class="page">
+            {% for short in shorts %}
+                <a href="{{ url_for('main.video_page', video_id=short.video_id) }}">
+                    <div class="short-container">
+                        <img src="{{ short.thumbnail }}" loading="lazy">
+                        <div>
+                            <h2>{{ short.title }}</h2>
+                            <span>{{ short.views }}</span>
+                        </div>
                     </div>
-                </div>
-            </a>
-        {% endfor %}
+                </a>
+            {% endfor %}
+            </div>
         </div>
     </div>
     <div class="page-nav">

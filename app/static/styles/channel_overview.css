@@ -147,6 +147,10 @@
 /* Videos */
 
 .video-feed {
+    width: 100%;
+}
+
+.video-feed > .page {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -211,6 +215,10 @@
 /* Shorts */
 
 .short-feed {
+    width: 100%;
+}
+
+.short-feed > .page {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -220,7 +228,7 @@
     width: 100%;
 }
 
-.short-feed > a {
+.short-feed > .page > a {
     width: fit-content;
     height: fit-content;
     margin: 0.5rem;
