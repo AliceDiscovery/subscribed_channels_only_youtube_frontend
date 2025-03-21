@@ -6,6 +6,12 @@
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/videos_or_shorts.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
+
+<script>
+    const playlist_id = "{{ channel_info.playlist_id }}";
+</script>
+
+<script defer src="{{ url_for('static', filename='scripts/change_page_button.js') }}" />
 {% endblock %}
 
 {% block content %}
@@ -73,6 +79,6 @@
     <div class="page-nav">
         <a href="#">&lt</a>
         <a href="#">1</a>
-        <a href="#">&gt</a>
+        <a id="nextPageButton" href="#">&gt</a>
     </div>
 {% endblock %}

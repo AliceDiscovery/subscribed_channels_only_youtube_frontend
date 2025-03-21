@@ -181,7 +181,7 @@ class YouTubeAPI:
 
     def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType]]:
         channel_data = self.get_channel_data(channel_id)
-        first_page_of_videos = self.get_page_of_videos_from_channel(
+        first_page_of_videos, _ = self.get_page_of_videos_from_channel(
             playlist_id=channel_data.playlist_id
         )
         return [channel_data, first_page_of_videos]
@@ -216,13 +216,15 @@ class YouTubeAPI:
         )
         return channel_info
 
-    def get_page_of_videos_from_channel(self, playlist_id: str, next_page_token=None) -> [VideoPreviewType]:
+    def get_page_of_videos_from_channel(self, playlist_id: str, next_page_token=None) -> ([VideoPreviewType], str):
         video_id_response = self._api.playlistItems().list(
             part='snippet',
             playlistId=playlist_id,
             maxResults=50,
             pageToken=next_page_token
         ).execute()
+
+        next_page_token = video_id_response.get('nextPageToken')
 
         video_ids = [video_id
                      for video in video_id_response.get('items', {})
@@ -254,7 +256,7 @@ class YouTubeAPI:
                 date_stamp=video_snippet.get('publishedAt', '')
             ))
 
-        return videos
+        return videos, next_page_token
 
     def fetch_profile_pictures(self, *channel_ids: [str]) -> dict:
         """ retrieves the urls for YouTube profile icons """
