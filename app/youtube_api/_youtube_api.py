@@ -179,12 +179,12 @@ class YouTubeAPI:
 
         return video_previews
 
-    def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType]]:
+    def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType], str]:
         channel_data = self.get_channel_data(channel_id)
-        first_page_of_videos, _ = self.get_page_of_videos_from_channel(
+        first_page_of_videos, next_page_token = self.get_page_of_videos_from_channel(
             playlist_id=channel_data.playlist_id
         )
-        return [channel_data, first_page_of_videos]
+        return [channel_data, first_page_of_videos, next_page_token]
 
     def get_channel_data(self, channel_id: str) -> ChannelType:
         if not validate_channel_id(channel_id):
