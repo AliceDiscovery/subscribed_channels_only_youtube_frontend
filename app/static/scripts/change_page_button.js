@@ -54,6 +54,7 @@ function createPageElement(pageData) {
 
 
 let nextPageToken = null;
+let hasMorePages = true;
 
 
 function fetchNextChannelPage(playlistId, nextPageToken) {
@@ -68,10 +69,15 @@ function fetchNextChannelPage(playlistId, nextPageToken) {
 }
 
 document.getElementById('nextPageButton').addEventListener('click', function() {
-    fetchNextChannelPage(playlist_id, nextPageToken)
-        .then(data => {
-            nextPageToken = data['next-page-token'];
-	    createPageElement(data.page);
-        });
+    if (hasMorePages) {
+        fetchNextChannelPage(playlist_id, nextPageToken)
+            .then(data => {
+                createPageElement(data.page);
+                nextPageToken = data['next-page-token'];
+                if (nextPageToken == null) {
+            	hasMorePages = false;
+                }
+            });
+    }
 });
 
