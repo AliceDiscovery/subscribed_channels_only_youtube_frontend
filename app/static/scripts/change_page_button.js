@@ -53,7 +53,7 @@ function createPageElement(pageData) {
 
 
 
-let next_page_token = null;
+let nextPageToken = null;
 
 
 function fetchNextChannelPage(playlistId, nextPageToken) {
@@ -68,9 +68,9 @@ function fetchNextChannelPage(playlistId, nextPageToken) {
 }
 
 document.getElementById('nextPageButton').addEventListener('click', function() {
-    fetchNextChannelPage(playlist_id, next_page_token)
+    fetchNextChannelPage(playlist_id, nextPageToken)
         .then(data => {
-            next_page_token = data['next-page-token'];
+            nextPageToken = data['next-page-token'];
 	    createPageElement(data.page);
         });
 });
