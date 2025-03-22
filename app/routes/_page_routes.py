@@ -29,11 +29,12 @@ def search_results(search_terms):
 
 @page_bp.route('/channel/<channel_id>')
 def channel_overview(channel_id):
-    channel_info, videos = youtube.get_channel_page(channel_id)
+    channel_info, videos, next_page_token = youtube.get_channel_page(channel_id)
     return render_template(
         'channel_overview.html',
         channel_info=channel_info,
         videos=videos,
+        next_page_token=next_page_token,
         shorts=[]  # sorting of shorts not implemented yet
     )
 
