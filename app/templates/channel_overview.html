@@ -11,7 +11,7 @@
     const playlist_id = "{{ channel_info.playlist_id }}";
 </script>
 
-<script defer src="{{ url_for('static', filename='scripts/change_page_button.js') }}" />
+<script defer src="{{ url_for('static', filename='scripts/change_page_button.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -44,7 +44,7 @@
         </span>
     </div>
     <div class="feed-container videos">
-        <div class="video-feed">
+        <div id="video-feed">
             <div class="page">
             {% for video in videos %}
                 <div class="video-container">
