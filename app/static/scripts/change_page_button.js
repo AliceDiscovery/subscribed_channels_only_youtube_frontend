@@ -14,6 +14,22 @@ function updateCurrentPageNum() {
         }
 	index ++;
     }
+
+    hidePageArrowsIfNeeded();
+}
+
+function hidePageArrowsIfNeeded() {
+    if (currentPageNum <= 1) {
+	document.getElementById('previousPageButton').classList.add("no-show");
+    } else {
+	document.getElementById('previousPageButton').classList.remove("no-show");
+    }
+
+    if (currentPageNum < numPagesLoaded || (currentPageNum == numPagesLoaded && hasMorePages)) {
+	document.getElementById('nextPageButton').classList.remove("no-show");
+    } else {
+	document.getElementById('nextPageButton').classList.add("no-show");
+    }
 }
 
 
@@ -101,14 +117,14 @@ function moveToNextPage() {
             .then(data => {
                 createPageElement(data.page);
 
-		numPagesLoaded ++;
-		currentPageNum = numPagesLoaded;
-		updateCurrentPageNum();
-
                 nextPageToken = data['next-page-token'];
                 if (nextPageToken == null) {
             	hasMorePages = false;
                 }
+
+		numPagesLoaded ++;
+		currentPageNum = numPagesLoaded;
+		updateCurrentPageNum();
             });
     }
 }
