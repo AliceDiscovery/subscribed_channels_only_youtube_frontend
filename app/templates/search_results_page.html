@@ -6,8 +6,8 @@
 <script defer src="{{ url_for('static', filename='scripts/shorts_carousel.js') }}"></script>
 
 <script>
-    const query="{{ query }}";
-    let nextPageToken = "{{ next_page_token }}";
+    const query = {{ query|tojson|safe }};
+    let nextPageToken = {{ next_page_token|tojson|safe }};
 </script>
 
 <script defer src="{{ url_for('static', filename='scripts/fetch_more_search_results.js') }}"></script>
