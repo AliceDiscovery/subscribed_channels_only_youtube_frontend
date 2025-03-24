@@ -1,3 +1,23 @@
+/* Load more button */
+
+#fetchMoreSearchResultsButtonContainer {
+    width: fit-content;
+    padding: 5rem 0;
+    margin: auto;
+    cursor: pointer;
+}
+
+#fetchMoreSearchResultsButton {
+    display: block;
+    width: fit-content;
+    padding: 1rem 2rem;
+    border-radius: 5rem;
+    box-shadow: 0.5rem 0.5rem 0.25rem #0007, inset 0 0 0.25rem 0.125rem #0003;
+    font-weight: bolder;
+}
+
+
+
 /* Videos */
 
 #videos {
