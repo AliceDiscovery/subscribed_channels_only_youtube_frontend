@@ -1,4 +1,5 @@
 let currentPageNum = 1
+let numPagesLoaded = 1;
 
 
 function updateCurrentPageNum() {
@@ -25,7 +26,7 @@ function hidePageArrowsIfNeeded() {
 	document.getElementById('previousPageButton').classList.remove("no-show");
     }
 
-    if (currentPageNum < numPagesLoaded || (currentPageNum == numPagesLoaded && hasMorePages)) {
+    if (currentPageNum < numPagesLoaded || (currentPageNum == numPagesLoaded && nextPageToken != null)) {
 	document.getElementById('nextPageButton').classList.remove("no-show");
     } else {
 	document.getElementById('nextPageButton').classList.add("no-show");
@@ -86,12 +87,6 @@ function createPageElement(pageData) {
 }
 
 
-
-
-let hasMorePages = true;
-let numPagesLoaded = 1;
-
-
 function fetchNextChannelPage(playlistId, nextPageToken) {
     return fetch('/data/get-channel-videos', {
         method: 'GET',
@@ -104,23 +99,16 @@ function fetchNextChannelPage(playlistId, nextPageToken) {
 }
 
 
-
-
-
 function moveToNextPage() {
     if (currentPageNum < numPagesLoaded) {
 	currentPageNum ++;
 	updateCurrentPageNum();
     }
-    else if (currentPageNum == numPagesLoaded && hasMorePages) {
+    else if (currentPageNum == numPagesLoaded && nextPageToken != null) {
         fetchNextChannelPage(playlist_id, nextPageToken)
             .then(data => {
+		nextPageToken = data['next-page-token'];
                 createPageElement(data.page);
-
-                nextPageToken = data['next-page-token'];
-                if (nextPageToken == null) {
-            	hasMorePages = false;
-                }
 
 		numPagesLoaded ++;
 		currentPageNum = numPagesLoaded;
@@ -137,5 +125,6 @@ function moveToPreviousPage() {
 }
 
 
+hidePageArrowsIfNeeded();
 document.getElementById('nextPageButton').addEventListener('click', moveToNextPage);
 document.getElementById('previousPageButton').addEventListener('click', moveToPreviousPage);
