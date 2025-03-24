@@ -1,4 +1,5 @@
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from .api_key import APIKey
 from .youtube_data_convertions import convert_iso_duration
 
@@ -123,7 +124,7 @@ class YouTubeAPI:
 
         return comments.values()
 
-    def get_search_results(self, query: str, next_page_token=None, max_results=50) -> [[VideoPreviewType], str]:
+    def get_search_results(self, query: str, next_page_token=None, max_results=50) -> [[VideoPreviewType], str|None]:
         """ searches YouTube and returns results as a list of video previews """
 
         search_request = self._api.search().list(
@@ -144,7 +145,7 @@ class YouTubeAPI:
             if video.get('id', {}).get('videoId')
         ]
         if not video_ids:
-            return []
+            return [[], None]
 
         video_request = self._api.videos().list(
             part='snippet,contentDetails,statistics',
@@ -183,7 +184,7 @@ class YouTubeAPI:
 
         return video_previews, next_page_token
 
-    def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType], str]:
+    def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType], str|None]:
         channel_data = self.get_channel_data(channel_id)
         first_page_of_videos, next_page_token = self.get_page_of_videos_from_channel(
             playlist_id=channel_data.playlist_id
@@ -220,13 +221,16 @@ class YouTubeAPI:
         )
         return channel_info
 
-    def get_page_of_videos_from_channel(self, playlist_id: str, next_page_token=None) -> ([VideoPreviewType], str):
-        video_id_response = self._api.playlistItems().list(
-            part='snippet',
-            playlistId=playlist_id,
-            maxResults=50,
-            pageToken=next_page_token
-        ).execute()
+    def get_page_of_videos_from_channel(self, playlist_id: str, next_page_token=None) -> ([VideoPreviewType], str|None):
+        try:
+            video_id_response = self._api.playlistItems().list(
+                part='snippet',
+                playlistId=playlist_id,
+                maxResults=50,
+                pageToken=next_page_token
+            ).execute()
+        except HttpError:
+            return ([], None)
 
         next_page_token = video_id_response.get('nextPageToken')
 
