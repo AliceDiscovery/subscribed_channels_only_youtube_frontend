@@ -137,7 +137,6 @@ class YouTubeAPI:
         search_response = search_request.execute()
 
         next_page_token = search_response.get('nextPageToken')
-        print(f"{next_page_token=}")
 
         video_ids = [
             video['id']['videoId']
