@@ -19,10 +19,12 @@ def search():
 
 @page_bp.route('/search/<search_terms>')
 def search_results(search_terms):
-    videos = youtube.get_search_results(search_terms)
+    videos, next_page_token = youtube.get_search_results(search_terms)
     return render_template(
         'search_results_page.html',
         videos=videos,
+        query=search_terms,
+        next_page_token=next_page_token,
         shorts=[]  # shorts have not been tested yet
     )
 

@@ -123,16 +123,20 @@ class YouTubeAPI:
 
         return comments.values()
 
-    def get_search_results(self, query: str, max_results=10) -> [VideoPreviewType]:
+    def get_search_results(self, query: str, next_page_token=None, max_results=50) -> [[VideoPreviewType], str]:
         """ searches YouTube and returns results as a list of video previews """
 
         search_request = self._api.search().list(
             part='snippet',
             q=query,
             maxResults=max_results,
+            pageToken=next_page_token,
             type='video'  # restrict results to videos for now
         )
         search_response = search_request.execute()
+
+        next_page_token = search_response.get('nextPageToken')
+        print(f"{next_page_token=}")
 
         video_ids = [
             video['id']['videoId']
@@ -177,7 +181,7 @@ class YouTubeAPI:
                 )
                 video_previews.append(video)
 
-        return video_previews
+        return video_previews, next_page_token
 
     def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType], str]:
         channel_data = self.get_channel_data(channel_id)
