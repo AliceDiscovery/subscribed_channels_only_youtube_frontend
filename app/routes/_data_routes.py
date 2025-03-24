@@ -22,3 +22,19 @@ def get_channel_videos():
 
     return jsonify({'page': video_page, 'next-page-token': next_page_token})
 
+
+@data_bp.route('/get-search-results', methods=['GET'])
+def get_search_results():
+    query = request.headers.get('query')
+    next_page_token = request.headers.get('next-page-token')
+
+    if next_page_token == 'null':
+        next_page_token = None
+
+    search_results_page, next_page_token = youtube.get_search_results(
+        query=query,
+        next_page_token=next_page_token
+    )
+
+    return jsonify({'page': search_results_page, 'next-page-token': next_page_token})
+

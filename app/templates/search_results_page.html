@@ -4,6 +4,14 @@
 <title>yt - search</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/search_results_page.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/shorts_carousel.js') }}"></script>
+
+<script>
+    const query="{{ query }}";
+    let nextPageToken = "{{ next_page_token }}";
+</script>
+
+<script defer src="{{ url_for('static', filename='scripts/fetch_more_search_results.js') }}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -30,27 +38,31 @@
     </div>
     {% endif %}
 
-    <div class="videos">
-        {% for video in videos %}
-        <div class="video-container">
-            <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
-                <img src="{{ video.thumbnail }}"/>
-                {% if video.duration %}
-                    <span>{{ video.duration }}</span>
+    <div id="videos">
+	<div class="page">
+            {% for video in videos %}
+            <div class="video-container">
+                <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
+                    <img src="{{ video.thumbnail }}"/>
+                    {% if video.duration %}
+                        <span>{{ video.duration }}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('main.video_page', video_id=video.video_id) }}"><h2>{{ video.title }}</h2></a>
+                <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
+                    <div class="channel-info">
+                        <img src="{{ video.channel_pic }}"/>
+                        <span>{{ video.channel_name }}</span>
+                    </div>
+                </a>
+                <p>{{ video.views }} views</p>
+                {% if video.description %}
+                    <p>{{ video.description }}</p>
                 {% endif %}
-            </a>
-            <a href="{{ url_for('main.video_page', video_id=video.video_id) }}"><h2>{{ video.title }}</h2></a>
-            <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">
-                <div class="channel-info">
-                    <img src="{{ video.channel_pic }}"/>
-                    <span>{{ video.channel_name }}</span>
-                </div>
-            </a>
-            <p>{{ video.views }} views</p>
-            {% if video.description %}
-                <p>{{ video.description }}</p>
-            {% endif %}
-        </div>
-        {% endfor %}
+            </div>
+            {% endfor %}
+	</div>
     </div>
+
+<a id="fetchMoreSearchResultsButton">show more</a>
 {% endblock %}
