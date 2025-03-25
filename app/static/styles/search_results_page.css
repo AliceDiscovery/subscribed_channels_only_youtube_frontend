@@ -1,13 +1,13 @@
 /* Load more button */
 
-#fetchMoreSearchResultsButtonContainer {
+.more-results-container {
     width: fit-content;
     padding: 5rem 0;
     margin: auto;
     cursor: pointer;
 }
 
-#fetchMoreSearchResultsButton {
+.more-results-container > * {
     display: block;
     width: fit-content;
     padding: 1rem 2rem;
