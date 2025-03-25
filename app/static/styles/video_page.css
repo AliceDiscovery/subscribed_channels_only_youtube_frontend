@@ -107,6 +107,28 @@ a:hover {
     text-decoration: underline;
 }
 
+
+
+/* Load more button */
+
+.more-comments-container {
+    width: fit-content;
+    padding: 2.5rem 0;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.more-comments-container > * {
+    display: block;
+    width: fit-content;
+    padding: 1rem 2rem;
+    border-radius: 5rem;
+    border: #0003 solid 2px;
+    font-weight: bolder;
+}
+
+
+
 /* Comments */
 
 .comment-box {

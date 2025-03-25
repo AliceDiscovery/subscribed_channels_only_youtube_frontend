@@ -31,6 +31,7 @@
 
     <div class="comments-section">
         <h2>Comments</h2>
+        <div class="page">
         {% for comment in comments %}
             <div class="comment-box">
                 <div class="comment" id="{{ comment.id }}">
@@ -92,6 +93,8 @@
                 </div>
             </div>
         {% endfor %}
+        </div>
+        <div class="more-comments-container"><a id="fetchMoreCommentsButton">Show more</a></div>
     </div>
 </div>
 {% endblock %}
