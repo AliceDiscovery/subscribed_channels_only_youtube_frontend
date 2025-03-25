@@ -15,10 +15,11 @@ class YouTubeAPI:
     def __init__(self):
         self._api = build("youtube", "v3", developerKey=APIKey.VALUE)
 
-    def get_video_page(self, video_id: str) -> VideoType:
+    def get_video_page(self, video_id: str) -> (VideoType, str):
         video = self.get_video_page_data(video_id)
-        video.comments += self.get_video_comments(video_id=video_id, channel_id=video.channel_id)
-        return video
+        comments, next_page_token = self.get_video_comments(video_id=video_id, channel_id=video.channel_id)
+        video.comments += comments
+        return (video, next_page_token)
 
     def get_video_page_data(self, video_id: str) -> VideoType:
         if not validate_video_id(video_id):
@@ -46,7 +47,7 @@ class YouTubeAPI:
             date_stamp=convert_date(snippet.get('publishedAt'))
         )
 
-    def get_video_comments(self, video_id: str, channel_id: str = None) -> [CommentType]:
+    def get_video_comments(self, video_id: str, channel_id: str = None, next_page_token=None) -> ([CommentType], str):
         """ gets the first page of YouTube comments on a video. By passing the channel_id it saves an api call """
 
         if not validate_video_id(video_id):
@@ -68,9 +69,12 @@ class YouTubeAPI:
         comment_response = self._api.commentThreads().list(
             part='snippet,replies',
             videoId=video_id,
+            pageToken=next_page_token,
             maxResults=100,  # restrict to only the first 100 comments
             order='relevance'  # sort comments by relevance
         ).execute()
+
+        next_page_token = comment_response.get('nextPageToken', None)
 
         comments = {}
 
@@ -122,7 +126,7 @@ class YouTubeAPI:
                     comment.replies.append(reply)
                     comment.reply_count += 1
 
-        return comments.values()
+        return (list(comments.values()), next_page_token)
 
     def get_search_results(self, query: str, next_page_token=None, max_results=50) -> [[VideoPreviewType], str|None]:
         """ searches YouTube and returns results as a list of video previews """

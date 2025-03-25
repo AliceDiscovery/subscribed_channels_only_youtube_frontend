@@ -152,11 +152,11 @@ a:hover {
     margin-left: 5rem;
 }
 
-.comments-section {
+#comments-section {
     padding-bottom: 2rem;
 }
 
-.comments-section h2 {
+#comments-section h2 {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: #0001 solid 1px;

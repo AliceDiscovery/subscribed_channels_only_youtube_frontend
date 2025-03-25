@@ -38,3 +38,24 @@ def get_search_results():
 
     return jsonify({'page': search_results_page, 'next-page-token': next_page_token})
 
+
+@data_bp.route('/get-comments', methods=['GET'])
+def get_comments():
+    video_id = request.headers.get('video-id')
+    channel_id = request.headers.get('channel-id')
+    next_page_token = request.headers.get('next-page-token')
+
+    if channel_id == 'null':
+        channel_id = None
+
+    if next_page_token == 'null':
+        next_page_token = None
+
+    comments, next_page_token = youtube.get_video_comments(
+        video_id=video_id,
+        channel_id=channel_id,
+        next_page_token=next_page_token
+    )
+
+    return jsonify({'page': comments, 'next-page-token': next_page_token})
+
