@@ -6,6 +6,13 @@
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/collapse_comment_replies.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/format_links.js') }}"></script>
+
+<script>
+    videoId = {{ video.video_id|tojson|safe }};
+    channelId = {{ video.channel_id|tojson|safe }};
+    nextPageToken = {{ next_page_token|tojson|safe }};
+</script>
+<script defer src="{{ url_for('static', filename='scripts/fetch_more_comments.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +36,7 @@
     </div>
     <p class="description read-more">{{ video.description }}</p>
 
-    <div class="comments-section">
+    <div id="comments-section">
         <h2>Comments</h2>
         <div class="page">
         {% for comment in comments %}
@@ -94,7 +101,7 @@
             </div>
         {% endfor %}
         </div>
-        <div class="more-comments-container"><a id="fetchMoreCommentsButton">Show more</a></div>
     </div>
+    <div class="more-comments-container"><a id="fetchMoreCommentsButton">Show more</a></div>
 </div>
 {% endblock %}

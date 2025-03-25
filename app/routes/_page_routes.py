@@ -43,10 +43,11 @@ def channel_overview(channel_id):
 
 @page_bp.route('/video/<video_id>')
 def video_page(video_id):
-    video_data = youtube.get_video_page(video_id)
+    video_data, next_page_token = youtube.get_video_page(video_id)
     return render_template(
         'video_page.html',
         video=video_data,
-        comments=video_data.comments
+        comments=video_data.comments,
+        next_page_token=next_page_token
     )
 
