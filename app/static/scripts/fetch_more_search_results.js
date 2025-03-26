@@ -11,7 +11,8 @@ function createVideoElement(videoData) {
     const videoContainer = document.createElement('div');
     videoContainer.className = 'video-container';
 
-    // create thumbnail container and it's contents
+
+    // add thumbnail
     const thumbnailContainer = document.createElement('a');
     thumbnailContainer.className = 'thumbnail-container';
     thumbnailContainer.href = `/video/${videoData.video_id}`;
@@ -19,18 +20,16 @@ function createVideoElement(videoData) {
     const thumbnailImg = document.createElement('img');
     thumbnailImg.src = videoData.thumbnail;
     thumbnailImg.loading = 'lazy';
+    thumbnailContainer.appendChild(thumbnailImg);
 
     const durationOverlay = document.createElement('span');
     durationOverlay.textContent = videoData.duration;
-
-    thumbnailContainer.appendChild(thumbnailImg);
     thumbnailContainer.appendChild(durationOverlay);
 
+    videoContainer.appendChild(thumbnailContainer);
 
-    // video info
-    const viewCount = document.createElement('p');
-    viewCount.textContent = videoData.views;
 
+    // add title
     const titleLink = document.createElement('a');
     titleLink.href = `/video/${videoData.video_id}`;
 
@@ -38,10 +37,39 @@ function createVideoElement(videoData) {
     titleContents.textContent = videoData.title;
     titleLink.appendChild(titleContents);
 
-    // append the contents to the video container element
-    videoContainer.appendChild(thumbnailContainer);
-    videoContainer.appendChild(viewCount);
     videoContainer.appendChild(titleLink);
+
+    // add channel info
+    const channelLink = document.createElement('a');
+    channelLink.href = `/channel/${videoData.channel_id}`;
+
+    const channelContainer = document.createElement('div');
+    channelContainer.className = 'channel-info';
+    
+    const channelImg = document.createElement('img');
+    channelImg.src = videoData.channel_pic;
+    channelImg.loading = 'lazy';
+    channelContainer.appendChild(channelImg);
+
+    const channelName = document.createElement('span');
+    channelName.textContent = videoData.channel_name;
+    channelContainer.appendChild(channelName);
+
+    channelLink.appendChild(channelContainer);
+
+    videoContainer.appendChild(channelLink);
+
+
+    // add view count
+    const viewCount = document.createElement('p');
+    viewCount.textContent = `${videoData.views} views`;
+    videoContainer.appendChild(viewCount);
+
+    // add description
+    const description = document.createElement('p');
+    description.textContent = videoData.description;
+    videoContainer.appendChild(description);
+
 
     return videoContainer;
 }
