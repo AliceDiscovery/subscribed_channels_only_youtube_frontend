@@ -80,7 +80,6 @@ function fetchMoreSearchResults() {
     if (nextPageToken != null) {
         fetchNextSearchResultsPage(query, nextPageToken)
             .then(data => {
-		console.log(data);
                 createPageElement(data.page);
 
                 nextPageToken = data['next-page-token'];
