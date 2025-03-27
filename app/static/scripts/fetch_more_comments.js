@@ -169,6 +169,10 @@ function createCommentBoxElement(commentData) {
     }
     commentBox.appendChild(replies);
 
+    // Add show replies button functionality
+    const replyButtons = commentBox.querySelectorAll('.toggle-replies');
+    initializeCollapsableReplies(replyButtons)
+
     return commentBox;
 }
 
