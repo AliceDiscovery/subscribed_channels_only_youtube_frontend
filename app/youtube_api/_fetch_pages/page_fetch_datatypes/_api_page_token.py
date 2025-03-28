@@ -24,13 +24,16 @@ class ApiPageToken:
             raise TypeError(f'{self.__class__.__name__}.token must be a str or None, not {type(value)}')
         self._token = value
 
-    def json_serialize(self) -> str:
-        """ returns the json representation of the data """
-        data = {
+    def serialize_data(self) -> dict:
+        """ returns the data as a dictionary """
+        return {
             'reference': self.reference,
             'token': self.token
         }
-        return dumps(data)
+
+    def json_serialize(self) -> str:
+        """ returns the json representation of the data """
+        return dumps(self.serialize_data)
 
     @classmethod
     def load_json(cls, json: str):
