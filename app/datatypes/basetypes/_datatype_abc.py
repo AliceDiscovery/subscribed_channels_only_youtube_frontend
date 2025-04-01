@@ -1,6 +1,17 @@
 """ implements a base class for all data classes """
 from abc import ABC
-from inspect import stack, currentframe
+
+import ast
+from inspect import stack, currentframe, getsource
+
+from typing import Callable, Optional, TypeVar
+
+
+F = TypeVar('F', bound=Callable)
+
+def constructor_include(func: F) -> F:
+    ''' defines a decorator used to add properties to the __repr__ '''
+    return func
 
 
 class DatatypeABC(ABC):
@@ -52,15 +63,42 @@ class DatatypeABC(ABC):
         else:
             raise ValueError('Variable name can not be found.')
 
-    def _serialize_data(self) -> dict:
+    def _serialize_data(self, *filter_decorators: Optional[Callable[[F], F]]) -> dict:
+        # code snippet `get_decorators` create by
+        # https://stackoverflow.com/users/5006/jaymon
+        #
+        # view the original post at
+        # https://stackoverflow.com/a/31197273
+        def get_decorators(cls):
+            target = cls
+            decorators = {}
+
+            def visit_FunctionDef(node):
+                decorators[node.name] = []
+                for n in node.decorator_list:
+                    name = ''
+                    if isinstance(n, ast.Call):
+                        name = n.func.attr if isinstance(n.func, ast.Attribute) else n.func.id
+                    else:
+                        name = n.attr if isinstance(n, ast.Attribute) else n.id
+
+                    decorators[node.name].append(name)
+
+            node_iter = ast.NodeVisitor()
+            node_iter.visit_FunctionDef = visit_FunctionDef
+            node_iter.visit(ast.parse(getsource(target)))
+            return decorators
+
         properties = {}
-        for attribute in dir(self):
-            if not attribute.startswith('_'):
-                if isinstance(getattr(self.__class__, attribute), property):
+        for attribute, decorators in get_decorators(type(self)).items():
+            if isinstance(getattr(self.__class__, attribute), property):
+                if filter_decorators is None or \
+                    any(d.__name__ in decorators for d in filter_decorators):
+
                     properties[attribute] = getattr(self, attribute)
         return properties
 
     def __repr__(self):
-        properties = self._serialize_data()
+        properties = self._serialize_data(constructor_include)
         properties_str = ', '.join(f'{key}={value!r}' for key, value in properties.items())
         return f'{self.__class__.__name__}({properties_str})'
