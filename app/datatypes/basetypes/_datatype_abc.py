@@ -16,7 +16,7 @@ def constructor_include(func: F) -> F:
 
 class DatatypeABC(ABC):
     """ implements a base class for all data classes """
-    def _validate_setter_type(self, value, valid_types: list|set|tuple, attribute_name: str=None):
+    def validate_setter_type(self, value, valid_types: list|set|tuple, attribute_name: str=None):
         """ allows type validation for setter input values. """
         def raise_error(attribute_name: str, value, valid_types):
             type_names = [t.__name__ if t is not None else 'None' for t in valid_types]
@@ -50,11 +50,11 @@ class DatatypeABC(ABC):
                 raise_error(str(attribute_name), value, valid_types)
             raise_error(f'{self.__class__.__name__}.{stack()[1].function}', value, valid_types)
 
-    def _validate_argument_type(self, variable, valid_types: list|set|tuple):
+    def validate_argument_type(self, variable, valid_types: list|set|tuple):
         """ allows type validation for function input arguments """
         for variable_name, variable_val in currentframe().f_back.f_locals.items():
             if variable_val is variable:
-                self._validate_setter_type(
+                self.validate_setter_type(
                     value=variable,
                     valid_types=valid_types,
                     attribute_name=variable_name
@@ -63,7 +63,7 @@ class DatatypeABC(ABC):
         else:
             raise ValueError('Variable name can not be found.')
 
-    def _serialize_data(self, *filter_decorators: Optional[Callable[[F], F]]) -> dict:
+    def serialize_data(self, *filter_decorators: Optional[Callable[[F], F]]) -> dict:
         # code snippet `get_decorators` create by
         # https://stackoverflow.com/users/5006/jaymon
         #
@@ -99,6 +99,6 @@ class DatatypeABC(ABC):
         return properties
 
     def __repr__(self):
-        properties = self._serialize_data(constructor_include)
+        properties = self.serialize_data(constructor_include)
         properties_str = ', '.join(f'{key}={value!r}' for key, value in properties.items())
         return f'{self.__class__.__name__}({properties_str})'
