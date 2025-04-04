@@ -41,3 +41,11 @@ def video_page(video_id):
         video=video_data,
         comments=comments
     )
+
+@bp.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@bp.route('/login')
+def login():
+    return render_template('login.html')
