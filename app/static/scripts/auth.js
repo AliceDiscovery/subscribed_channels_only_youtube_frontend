@@ -64,5 +64,5 @@ if (signupForm) signupForm.addEventListener('submit', e => {
     const email = e.target[0].value;
     const password = e.target[1].value;
     const password2 = e.target[2].value;
-    if (!validateForm(email, password, password2)) signup(email, password);
+    if (validateForm(email, password, password2)) signup(email, password);
 });
