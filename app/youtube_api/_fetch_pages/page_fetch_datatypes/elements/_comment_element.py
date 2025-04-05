@@ -146,14 +146,3 @@ class JsonCommentElement(JsonDatatypeABC):
         for reply in replies:
             self.validate_argument_type(reply, {JsonCommentElement})
         self._replies.extend(replies)
-
-    def json_compatible_serialize_data(self) -> dict:
-        """ returns the data as a dictionary """
-        serial_data = super().json_compatible_serialize_data()
-
-        reply_json = []
-        for reply in serial_data.get('replies', []):
-            reply_json.append(reply.json_compatible_serialize_data())
-
-        serial_data['replies'] = reply_json
-        return serial_data
