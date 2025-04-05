@@ -63,7 +63,11 @@ class DatatypeABC(ABC):
         else:
             raise ValueError('Variable name can not be found.')
 
-    def serialize_data(self, *filter_decorators: Optional[Callable[[F], F]]) -> dict:
+    def serialize_data(self,
+            *filter_decorators: Optional[Callable[[F], F]],
+            recursive_serialization: bool = False) -> dict:
+        """ convert properties with the requested decorators into a dict """
+
         # code snippet `get_decorators` create by
         # https://stackoverflow.com/users/5006/jaymon
         #
@@ -89,13 +93,26 @@ class DatatypeABC(ABC):
             node_iter.visit(ast.parse(getsource(target)))
             return decorators
 
+        def serialize_data_recursive(data):
+            if isinstance(data, DatatypeABC):
+                return data.serialize_data(*filter_decorators, recursive_serialization=True)
+
+            if isinstance(data, list):
+                return [serialize_data_recursive(item) for item in data]
+            if isinstance(data, dict):
+                return {key: serialize_data_recursive(value) for key, value in data.items()}
+            return data
+
         properties = {}
         for attribute, decorators in get_decorators(type(self)).items():
             if isinstance(getattr(self.__class__, attribute), property):
                 if filter_decorators is None or \
                     any(d.__name__ in decorators for d in filter_decorators):
 
-                    properties[attribute] = getattr(self, attribute)
+                    if recursive_serialization:
+                        properties[attribute] = serialize_data_recursive(getattr(self, attribute))
+                    else:
+                        properties[attribute] = getattr(self, attribute)
         return properties
 
     def __repr__(self):

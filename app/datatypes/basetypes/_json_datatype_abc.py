@@ -16,7 +16,9 @@ class JsonDatatypeABC(DatatypeABC):
     """ implements a base datatype that can be converted to json """
     def json_serialize(self) -> str:
         """ returns the json representation of the data """
+        print(self.json_compatible_serialize_data())
         return dumps(self.json_compatible_serialize_data(), indent=4)
 
     def json_compatible_serialize_data(self) -> dict:
-        return self.serialize_data(json_include)
+        """ it may be nessecary to overwrite this class in order to output the desired json """
+        return self.serialize_data(json_include, recursive_serialization=True)
