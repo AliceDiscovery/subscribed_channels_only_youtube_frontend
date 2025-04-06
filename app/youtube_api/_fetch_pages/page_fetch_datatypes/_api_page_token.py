@@ -1,46 +1,66 @@
-""" implements a dataclass to store data required to fetch another page of api results """
-from json import loads, dumps
+""" implements a datatype to store data required to fetch another page of api results """
+from app.datatypes.basetypes import JsonDatatypeABC, constructor_include, json_include
 
 
-class ApiPageToken:
-    """ a dataclass to store data required to fetch another page of api results """
-    def __init__(self, reference=str, token: str|None = None):
-        self.reference = reference
-        self.token = token
+class ApiPageToken(JsonDatatypeABC):
+    """ a datatype to store data required to fetch another page of api results """
+    def __init__(self,
+            video_id: str|None = None,
+            channel_id: str|None = None,
+            playlist_id: str|None = None,
+            search_query: str|None = None,
+            token: str|None = None,
+            is_last_page: bool = False):
+
+        if not any((video_id, channel_id, playlist_id, search_query)):
+            raise ValueError('must provide at least one reference')
+
+        self.validate_argument_type(video_id, {str, None})
+        self.validate_argument_type(channel_id, {str, None})
+        self.validate_argument_type(playlist_id, {str, None})
+        self.validate_argument_type(search_query, {str, None})
+        self.validate_argument_type(token, {str, None})
+        self.validate_argument_type(is_last_page, {bool})
+
+        self._video_id = video_id
+        self._channel_id = channel_id
+        self._playlist_id = playlist_id
+        self._search_query = search_query
+        self._token = token
+        self._is_last_page = is_last_page
 
     @property
-    def reference(self) -> str:
-        """ returns a reference such as a playlist id or a search query for the youtube api """
-        return self._reference
+    @json_include
+    @constructor_include
+    def video_id(self) -> str | None:
+        return self._video_id
 
     @property
-    def token(self) -> str|None:
-        """ returns a next page token for the youtube api """
+    @json_include
+    @constructor_include
+    def channel_id(self) -> str | None:
+        return self._channel_id
+
+    @property
+    @json_include
+    @constructor_include
+    def playlist_id(self) -> str | None:
+        return self._playlist_id
+
+    @property
+    @json_include
+    @constructor_include
+    def search_query(self) -> str | None:
+        return self._search_query
+
+    @property
+    @json_include
+    @constructor_include
+    def token(self) -> str | None:
         return self._token
 
-    @token.setter
-    def token(self, value: str|None) -> str|None:
-        if not isinstance(value, str) and value is not None:
-            raise TypeError(f'{self.__class__.__name__}.token must be a str or None, not {type(value)}')
-        self._token = value
-
-    def serialize_data(self) -> dict:
-        """ returns the data as a dictionary """
-        return {
-            'reference': self.reference,
-            'token': self.token
-        }
-
-    def json_serialize(self) -> str:
-        """ returns the json representation of the data """
-        return dumps(self.serialize_data)
-
-    @classmethod
-    def load_json(cls, json: str):
-        """ converts a json representation of the class into a class instance """
-        data = loads(json)
-        return cls(**data)
-
-    def __repr__(self):
-        return f'{self.__class__.__name__}(reference={repr(self.reference)}, token={repr(self.token)})'
-
+    @property
+    @json_include
+    @constructor_include
+    def is_last_page(self) -> bool:
+        return self._is_last_page
