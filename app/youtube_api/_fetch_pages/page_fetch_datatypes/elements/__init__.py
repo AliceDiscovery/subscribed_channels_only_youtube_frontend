@@ -1,1 +1,2 @@
 from ._comment_element import JsonCommentElement
+from ._video_preview_element import JsonVideoPreviewElement
