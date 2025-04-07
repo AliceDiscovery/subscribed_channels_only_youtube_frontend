@@ -82,13 +82,13 @@ span {
     color: #333;
 }
 
-#errorMessage {
-    color: white;
+#emailErrorMessage,
+#passwordErrorMessage,
+#password2ErrorMessage {
+    color: red;
     font-weight: bold;
     display: inline-block;
     width: fit-content;
-    background-color: red;
-    padding: 10px 20px;
-    border-radius: 10px;
-    margin: 10px auto;
+    height: 18px;
+    margin: -5px auto 15px;
 }
