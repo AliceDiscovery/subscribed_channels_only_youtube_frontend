@@ -1,7 +1,17 @@
-const errorMessage = document.getElementById('errorMessage');
-function setError(message) {
-    errorMessage.innerText = message;
-    errorMessage.className = '';
+const emailErrorMessage = document.getElementById('emailErrorMessage');
+function setEmailError(message) {
+    emailErrorMessage.innerText = message;
+    emailErrorMessage.className = '';
+}
+const passwordErrorMessage = document.getElementById('passwordErrorMessage');
+function setPasswordError(message) {
+    passwordErrorMessage.innerText = message;
+    passwordErrorMessage.className = '';
+}
+const password2ErrorMessage = document.getElementById('password2ErrorMessage');
+function setPassword2Error(message) {
+    password2ErrorMessage.innerText = message;
+    password2ErrorMessage.className = '';
 }
 
 function signup() {
@@ -15,29 +25,25 @@ function validateForm(email, password, password2) {
     function isEmail(str) {
         return /^[\w\-\.]+(\+[\w\-\.]+)?@([\w-]+\.)+[\w-]{2,}$/.test(str);
     }
-    if (!email && !password) {
-        setError('Please enter your email and password');
-        return false;
-    }
     if (!email) {
-        setError('Please enter your email');
-        return false;
-    }
-    if (!password) {
-        setError('Please enter your password');
+        setEmailError('Please enter your email');
         return false;
     }
     if (!isEmail(email)) {
-        setError('Invalid email address');
+        setEmailError('Invalid email address');
+        return false;
+    }
+    if (!password) {
+        setPasswordError('Please enter your password');
         return false;
     }
     if (password2 !== undefined) {
         if (!password2) {
-            setError('Please re-enter your password');
+            setPassword2Error('Please re-enter your password');
             return false;
         }
         if (password !== password2) {
-            setError('Passwords must be identical');
+            setPassword2Error('Passwords must be identical');
             return false;
         }
     }
@@ -47,7 +53,8 @@ function validateForm(email, password, password2) {
 function submitHandler(e) {
     e.stopPropagation();
     e.preventDefault();
-    errorMessage.className = 'hidden'
+    emailErrorMessage.className = 'hidden';
+    passwordErrorMessage.className = 'hidden';
 }
 
 const loginForm = document.getElementById('loginForm');
@@ -61,6 +68,7 @@ if (loginForm) loginForm.addEventListener('submit', e => {
 const signupForm = document.getElementById('signupForm');
 if (signupForm) signupForm.addEventListener('submit', e => {
     submitHandler(e);
+    password2ErrorMessage.className = 'hidden';
     const email = e.target[0].value;
     const password = e.target[1].value;
     const password2 = e.target[2].value;
