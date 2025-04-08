@@ -1,1 +1,2 @@
+from ._fetch_profile_pictures import fetch_profile_pictures
 from ._fetch_video_comments import fetch_video_comments
