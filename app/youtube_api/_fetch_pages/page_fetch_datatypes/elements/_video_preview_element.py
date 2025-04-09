@@ -7,13 +7,12 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
     def __init__(self,
         channel_id: str,
         banner: str,
-        profile_pic: str,
+        profile_pic: str | None,
         title: str,
         handle: str,
         subscribers: str,
         num_videos: str,
         description: str,
-        playlist_id: str | None = None,
         is_subscribed: bool = False):
 
         self.validate_setter_type(channel_id, {str}, 'channel_id')
@@ -24,7 +23,6 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
         self.validate_setter_type(subscribers, {str}, 'subscribers')
         self.validate_setter_type(num_videos, {str}, 'num_videos')
         self.validate_setter_type(description, {str}, 'description')
-        self.validate_setter_type(playlist_id, {str, None}, 'playlist_id')
         self.validate_setter_type(is_subscribed, {bool}, 'is_subscribed')
 
         self._channel_id = channel_id
@@ -35,7 +33,6 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
         self._subscribers = subscribers
         self._num_videos = num_videos
         self._description = description
-        self._playlist_id = playlist_id
         self._is_subscribed = is_subscribed
 
     @property
@@ -85,12 +82,6 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
     @constructor_include
     def description(self) -> str:
         return self._description
-
-    @property
-    @json_include
-    @constructor_include
-    def playlist_id(self) -> str:
-        return self._playlist_id
 
     @property
     @json_include
