@@ -1,13 +1,16 @@
 """ fetch profile icons from channel ids """
 from threading import Thread
 
+from .._api import API
 
-def fetch_profile_pictures(api, *channel_ids: [str]) -> [str]:
+
+def fetch_profile_pictures(*channel_ids: [str|None]) -> [str]:
     """ retrieves the urls for YouTube profile icons """
+    results = {}
 
-    def fetch_batch_of_icons(batch_of_ids: [str], results):
+    def fetch_batch_of_icons(batch_of_ids: [str]):
         """ fetches the channel icons for a multiple channel ids (no more than 50) """
-        request = api.channels().list(
+        request = API.CLIENT.channels().list(
             part='snippet',
             id=','.join(batch_of_ids)
         )
@@ -21,11 +24,10 @@ def fetch_profile_pictures(api, *channel_ids: [str]) -> [str]:
     def chunk_and_fetch() -> dict | str:
         """ retrieves channel icons in batches of 50 """
         threads = []
-        results = {}
 
         for i in range(0, len(channel_ids), 50):
             batch_of_ids = channel_ids[i:i + 50]
-            thread = Thread(target=fetch_batch_of_icons, args=(batch_of_ids, results))
+            thread = Thread(target=fetch_batch_of_icons, args=(batch_of_ids, ))
             threads.append(thread)
             thread.start()
 
@@ -35,4 +37,4 @@ def fetch_profile_pictures(api, *channel_ids: [str]) -> [str]:
         return results
 
     profile_pics = chunk_and_fetch()
-    return [profile_pics[channel_id] for channel_id in channel_ids]
+    return [profile_pics.get(channel_id, None) for channel_id in channel_ids]
