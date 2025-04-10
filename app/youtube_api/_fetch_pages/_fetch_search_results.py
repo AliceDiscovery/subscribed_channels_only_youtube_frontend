@@ -64,13 +64,14 @@ def fetch_search_results(page_token: ApiPageToken) -> PageType:
                 stats = video.get('statistics', {})
 
                 preview = JsonVideoPreviewElement(
-                    channel_id=snippet.get('channelId', ''),
-                    banner=snippet.get('thumbnails', {}).get('high', {}).get('url', ''),
+                    uploader_id=snippet.get('channelId', ''),
+                    video_id=video_id,
+                    thumbnail=snippet.get('thumbnails', {}).get('high', {}).get('url', ''),
                     profile_pic=profile_pic,
                     title=snippet.get('title', ''),
-                    handle=snippet.get('channelTitle', ''),
-                    subscribers=human_readable_large_numbers(int(stats.get('viewCount', 0))),
-                    num_videos=convert_iso_duration(details.get('duration', '')),
+                    uploader=snippet.get('channelTitle', ''),
+                    view_count=human_readable_large_numbers(int(stats.get('viewCount', 0))),
+                    duration=convert_iso_duration(details.get('duration', '')),
                     description=snippet.get('description', ''),
                     is_subscribed=False  # subscription tracking not implemented yet
                 )
@@ -89,3 +90,9 @@ def fetch_search_results(page_token: ApiPageToken) -> PageType:
     profile_pics_list = fetch_profile_pics(video_response)
     video_previews_list = build_video_previews(video_response, profile_pics_list)
     return PageType(page=video_previews_list, page_token=new_page_token)
+
+
+def create_search_token(search_query: str) -> ApiPageToken:
+    return ApiPageToken(
+        search_query=search_query
+    )
