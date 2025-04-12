@@ -4,7 +4,7 @@ from json import loads
 
 from app.youtube_api import YouTubeAPI
 
-from app.youtube_api._fetch_pages.page_fetch_datatypes import ApiPageToken
+from app.youtube_api.get_requests.request_datatypes import ApiPageToken
 
 
 data_bp = Blueprint('data', __name__, url_prefix='/data')

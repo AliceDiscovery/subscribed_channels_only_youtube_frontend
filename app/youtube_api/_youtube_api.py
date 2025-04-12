@@ -3,9 +3,9 @@ from googleapiclient.errors import HttpError
 
 from .api_key import APIKey
 from .youtube_data_convertions import convert_iso_duration
-from ._fetch_pages import fetch_search_results, create_search_token
+from .get_requests import fetch_search_results, create_search_token
 
-from ._fetch_pages.page_fetch_datatypes import PageType, ApiPageToken
+from .get_requests.request_datatypes import PageType, ApiPageToken
 
 from threading import Thread
 

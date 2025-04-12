@@ -3,8 +3,8 @@ from typing import List
 from .._api import API
 
 from ._fetch_profile_pictures import fetch_profile_pictures
-from .page_fetch_datatypes import PageType, ApiPageToken
-from .page_fetch_datatypes.elements import JsonVideoPreviewElement
+from .request_datatypes import PageType, ApiPageToken
+from .request_datatypes.elements import JsonVideoPreviewElement
 
 from ..youtube_data_convertions import convert_iso_duration, human_readable_large_numbers
 
