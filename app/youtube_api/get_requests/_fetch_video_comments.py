@@ -1,7 +1,7 @@
 """ fetches YouTube comments on a video """
 from typing import List
-from .page_fetch_datatypes import PageType, ApiPageToken
-from .page_fetch_datatypes.elements import JsonCommentElement
+from .request_datatypes import PageType, ApiPageToken
+from .request_datatypes.elements import JsonCommentElement
 
 
 def fetch_video_comments(api, page_token: ApiPageToken) -> PageType:
