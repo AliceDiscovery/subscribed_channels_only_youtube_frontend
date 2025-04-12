@@ -1,6 +1,10 @@
-""" define routes for transfering json data """
+""" define routes for transferring json data """
 from flask import Blueprint, jsonify, request
+from json import loads
+
 from app.youtube_api import YouTubeAPI
+
+from app.youtube_api._fetch_pages.page_fetch_datatypes import ApiPageToken
 
 
 data_bp = Blueprint('data', __name__, url_prefix='/data')
@@ -25,18 +29,14 @@ def get_channel_videos():
 
 @data_bp.route('/get-search-results', methods=['GET'])
 def get_search_results():
-    query = request.headers.get('query')
-    next_page_token = request.headers.get('next-page-token')
+    page_token_dict = loads(request.headers.get('token', {}))
+    page_token = ApiPageToken(**page_token_dict)
 
-    if next_page_token == 'null':
-        next_page_token = None
-
-    search_results_page, next_page_token = youtube.get_search_results(
-        query=query,
-        next_page_token=next_page_token
+    return_data = youtube.fetch_search_results(
+        token=page_token
     )
 
-    return jsonify({'page': search_results_page, 'next-page-token': next_page_token})
+    return jsonify({'data': return_data.json_compatible_serialize_data()})
 
 
 @data_bp.route('/get-comments', methods=['GET'])
