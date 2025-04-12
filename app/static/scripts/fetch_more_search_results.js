@@ -1,8 +1,11 @@
+let pageToken;
+
+
 function hideNextPageButtonIfNeeded() {
-    if (nextPageToken == null) {
-	document.getElementById('fetchMoreSearchResultsButton').classList.add("no-show");
+    if (pageToken.is_last_page) {
+	    document.getElementById('fetchMoreSearchResultsButton').classList.add("no-show");
     } else {
-	document.getElementById('fetchMoreSearchResultsButton').classList.remove("no-show");
+	    document.getElementById('fetchMoreSearchResultsButton').classList.remove("no-show");
     }
 }
 
@@ -15,7 +18,7 @@ function createVideoElement(videoData) {
     // add thumbnail
     const thumbnailContainer = document.createElement('a');
     thumbnailContainer.className = 'thumbnail-container';
-    thumbnailContainer.href = `/video/${videoData.video_id}`;
+    thumbnailContainer.href = videoData.video_url;
 
     const thumbnailImg = document.createElement('img');
     thumbnailImg.src = videoData.thumbnail;
@@ -31,7 +34,7 @@ function createVideoElement(videoData) {
 
     // add title
     const titleLink = document.createElement('a');
-    titleLink.href = `/video/${videoData.video_id}`;
+    titleLink.href = videoData.video_url;
 
     const titleContents = document.createElement('h2');
     titleContents.textContent = videoData.title;
@@ -41,18 +44,18 @@ function createVideoElement(videoData) {
 
     // add channel info
     const channelLink = document.createElement('a');
-    channelLink.href = `/channel/${videoData.channel_id}`;
+    channelLink.href = videoData.uploader_url;
 
     const channelContainer = document.createElement('div');
     channelContainer.className = 'channel-info';
-    
+
     const channelImg = document.createElement('img');
-    channelImg.src = videoData.channel_pic;
+    channelImg.src = videoData.profile_pic;
     channelImg.loading = 'lazy';
     channelContainer.appendChild(channelImg);
 
     const channelName = document.createElement('span');
-    channelName.textContent = videoData.channel_name;
+    channelName.textContent = videoData.uploader;
     channelContainer.appendChild(channelName);
 
     channelLink.appendChild(channelContainer);
@@ -62,7 +65,7 @@ function createVideoElement(videoData) {
 
     // add view count
     const viewCount = document.createElement('p');
-    viewCount.textContent = `${videoData.views} views`;
+    viewCount.textContent = `${videoData.view_count} views`;
     videoContainer.appendChild(viewCount);
 
     // add description
@@ -73,6 +76,7 @@ function createVideoElement(videoData) {
 
     return videoContainer;
 }
+
 
 function createPageElement(pageData) {
     const page = document.createElement("div");
@@ -88,35 +92,27 @@ function createPageElement(pageData) {
 }
 
 
-
-
-function fetchNextSearchResultsPage(query, nextPageToken) {
-    return fetch('/data/get-search-results', {
-        method: 'GET',
-        headers: {
-            'query': query,
-            'next-page-token': nextPageToken
-        }
-    })
-    .then(response => response.json());
+function processPage(page) {
+    createPageElement(page.page);
+    pageToken = page.page_token;
 }
 
 
-
-
 function fetchMoreSearchResults() {
-    if (nextPageToken != null) {
-        fetchNextSearchResultsPage(query, nextPageToken)
-            .then(data => {
-                createPageElement(data.page);
-
-                nextPageToken = data['next-page-token'];
-		hideNextPageButtonIfNeeded();
-            });
+    if (!pageToken.is_last_page) {
+        return fetch('/data/get-search-results', {
+            method: 'GET',
+            headers: {'token': JSON.stringify(pageToken)}
+        })
+    .then(response => response.json()).then(response => {
+        processPage(response.data);
+        hideNextPageButtonIfNeeded();
+        });
     }
 }
 
 
+processPage(JSON.parse(data));
 hideNextPageButtonIfNeeded();
-document.getElementById('fetchMoreSearchResultsButton').addEventListener('click', fetchMoreSearchResults);
 
+document.getElementById('fetchMoreSearchResultsButton').addEventListener('click', fetchMoreSearchResults);
