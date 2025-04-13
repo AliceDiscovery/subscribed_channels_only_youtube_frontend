@@ -85,3 +85,9 @@ def fetch_video_comments(api, page_token: ApiPageToken) -> PageType:
 
     )
     return PageType(page=comments, page_token=new_page_token)
+
+
+def create_comments_token(video_id: str) -> ApiPageToken:
+    return ApiPageToken(
+        video_id=video_id
+    )
