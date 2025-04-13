@@ -149,65 +149,6 @@ class YouTubeAPI:
         return fetch_search_results(token)
 
 
-#    def get_search_results(self, query: str, next_page_token=None, max_results=50) -> [[VideoPreviewType], str|None]:
-#        """ searches YouTube and returns results as a list of video previews """
-#
-#        search_request = self._api.search().list(
-#            part='snippet',
-#            q=query,
-#            maxResults=max_results,
-#            pageToken=next_page_token,
-#            type='video'  # restrict results to videos for now
-#        )
-#        search_response = search_request.execute()
-#
-#        next_page_token = search_response.get('nextPageToken')
-#
-#        video_ids = [
-#            video['id']['videoId']
-#            for video in search_response.get('items', [])
-#            if video.get('id', {}).get('videoId')
-#        ]
-#        if not video_ids:
-#            return [[], None]
-#
-#        video_request = self._api.videos().list(
-#            part='snippet,contentDetails,statistics',
-#            id=','.join(video_ids)
-#        )
-#        video_response = video_request.execute()
-#
-#        channel_icons = self.fetch_profile_pictures(
-#            *[video['snippet']['channelId']
-#                for video in video_response.get('items', [])
-#                if video.get('snippet', {}).get('channelId')
-#            ]
-#        )
-#
-#        video_previews = []
-#        for video in video_response.get('items', []):
-#            video_id = video.get('id')
-#            if video_id:
-#                video_snippet = video.get('snippet', {})
-#                video_content_details = video.get('contentDetails', {})
-#                video_statistics = video.get('statistics', {})
-#
-#                video = VideoPreviewType(
-#                    video_id=video_id,
-#                    channel_id=video_snippet.get('channelId', ''),
-#                    channel_name=video_snippet.get('channelTitle', ''),
-#                    title=video_snippet.get('title', ''),
-#                    views=human_readable_large_numbers(int(video_statistics.get('viewCount', 0))),
-#                    thumbnail=video_snippet.get('thumbnails', {}).get('high', {}).get('url', ''),
-#                    description=video_snippet.get('description', ''),
-#                    duration=convert_iso_duration(video_content_details.get('duration', '')),
-#                    channel_pic=channel_icons.get(video_snippet.get('channelId'), ''),
-#                    date_stamp=convert_date(video_snippet.get('publishedAt'))
-#                )
-#                video_previews.append(video)
-#
-#        return video_previews, next_page_token
-
     def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType], str|None]:
         channel_data = self.get_channel_data(channel_id)
         first_page_of_videos, next_page_token = self.get_page_of_videos_from_channel(
