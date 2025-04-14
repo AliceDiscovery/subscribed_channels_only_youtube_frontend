@@ -51,6 +51,7 @@ class JsonCommentElement(JsonDatatypeABC):
         return self._comment_id
 
     @property
+    @json_include
     @constructor_include
     def text(self) -> str:
         """ returns the text content of the comment """
@@ -132,6 +133,12 @@ class JsonCommentElement(JsonDatatypeABC):
     def reply_count(self) -> int:
         """ returns the raw number of replies """
         return len(self._replies)
+
+    @property
+    @json_include
+    def has_replies(self) -> bool:
+        """ returns true if the comment has one or more replies """
+        return bool(self.replies)
 
     @property
     @json_include
