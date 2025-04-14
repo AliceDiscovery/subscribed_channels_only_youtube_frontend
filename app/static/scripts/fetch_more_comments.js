@@ -1,24 +1,20 @@
+let pageToken;
+
+
 function hideMoreCommentsButtonIfNeeded() {
-    if (nextPageToken == null) {
+    if (pageToken.is_last_page) {
         document.getElementById('fetchMoreCommentsButton').classList.add("no-show");
     } else {
         document.getElementById('fetchMoreCommentsButton').classList.remove("no-show");
     }
 }
 
+
 function createCommentElement(commentData) {
     // Create comment container
     const comment = document.createElement('div');
     comment.className = 'comment';
-    comment.id = commentData.id;
-
-    // Pinned comment display
-    if (commentData.is_pinned) {
-        const pin = document.createElement('span');
-        pin.className = 'pinned-by-uploader';
-        pin.innerText = '📌 Pinned by creator';
-        comment.append(pin);
-    }
+    comment.id = commentData.comment_id;
 
     // Author's profile picture
     const pfp = document.createElement('img');
@@ -29,21 +25,16 @@ function createCommentElement(commentData) {
     const author = document.createElement('span');
     author.className = 'comment-author';
     // Check if uploader
-    if (commentData.author_is_uploader) author.classList.add('by-uploader');
-    // Check if verified
-    if (commentData.author_is_verified) {
-        const check = document.createElement('span');
-        check.className = 'author-verified';
-        check.innerText = '✓';
-        author.appendChild(check);
-    }
+    if (commentData.is_author_uploader) author.classList.add('by-uploader');
+
     // Author name
     const authorLink = document.createElement('a');
-    authorLink.href = '/channel/' + commentData.author_id;
+    authorLink.href = commentData.author_url
     authorLink.innerText = commentData.author;
     author.appendChild(authorLink);
+
     // Post time
-    const time = document.createTextNode(' '+commentData.time_str);
+    const time = document.createTextNode(' '+commentData.time_stamp_formatted);
     author.appendChild(time);
     comment.appendChild(author);
 
@@ -55,26 +46,18 @@ function createCommentElement(commentData) {
     // Comment info
     const info = document.createElement('div');
     info.className = 'comment-info';
+
     // Likes
     const likes = document.createElement('span');
-    likes.innerText = `${commentData.like_count} like`;
-    if (commentData.has_several_likes) likes.innerText += 's';
+    likes.innerText = commentData.like_count_formatted;
     info.appendChild(likes);
-    // Liked by creator
-    if (commentData.is_favorited) {
-        const div = document.createElement('div');
-        div.className = 'liked-by-uploader';
-        const span = document.createElement('span');
-        span.innerText = '❤️ Liked by creator';
-        div.appendChild(span);
-        info.appendChild(div);
-    }
+
     // Reply count
-    if (commentData.reply_count > 0) {
+    if (commentData.has_replies) {
         const div = document.createElement('div');
         const a = document.createElement('a');
         a.className = 'toggle-replies';
-        a.setAttribute('data-reply-count', commentData.reply_count);
+        a.setAttribute('data-reply-count', commentData.reply_count_formatted);
         div.appendChild(a);
         info.appendChild(div);
     }
@@ -87,15 +70,7 @@ function createReplyElement(replyData) {
     // Create reply container
     const reply = document.createElement('div');
     reply.className = 'reply';
-    reply.id = replyData.id;
-
-    // Pinned reply display
-    if (replyData.is_pinned) {
-        const pin = document.createElement('span');
-        pin.className = 'pinned-by-uploader';
-        pin.innerText = '📌 Pinned by creator';
-        reply.append(pin);
-    }
+    reply.id = replyData.comment_id;
 
     // Author's profile picture
     const pfp = document.createElement('img');
@@ -105,22 +80,18 @@ function createReplyElement(replyData) {
     // Author info
     const author = document.createElement('span');
     author.className = 'comment-author';
+
     // Check if uploader
     if (replyData.author_is_uploader) author.classList.add('by-uploader');
-    // Check if verified
-    if (replyData.author_is_verified) {
-        const check = document.createElement('span');
-        check.className = 'author-verified';
-        check.innerText = '✓';
-        author.appendChild(check);
-    }
+
     // Author name
     const authorLink = document.createElement('a');
-    authorLink.href = '/channel/' + replyData.author_id;
+    authorLink.href = replyData.author_url;
     authorLink.innerText = replyData.author;
     author.appendChild(authorLink);
+
     // Post time
-    const time = document.createTextNode(' '+replyData.time_str);
+    const time = document.createTextNode(' '+replyData.time_stamp_formatted);
     author.appendChild(time);
     reply.appendChild(author);
 
@@ -132,24 +103,17 @@ function createReplyElement(replyData) {
     // Reply info
     const info = document.createElement('div');
     info.className = 'comment-info';
+
     // Likes
     const likes = document.createElement('span');
-    likes.innerText = `${replyData.like_count} like`;
-    if (replyData.has_several_likes) likes.innerText += 's';
+    likes.innerText = replyData.like_count_formatted;
     info.appendChild(likes);
-    // Liked by creator
-    if (replyData.is_favorited) {
-        const div = document.createElement('div');
-        div.className = 'liked-by-uploader';
-        const span = document.createElement('span');
-        span.innerText = '❤️ Liked by creator';
-        div.appendChild(span);
-        info.appendChild(div);
-    }
+
     reply.appendChild(info);
 
     return reply;
 }
+
 
 function createCommentBoxElement(commentData) {
     // Create container element
@@ -191,32 +155,27 @@ function createPageElement(pageData) {
 }
 
 
-function fetchNextCommentPage(videoId, channelId, nextPageToken) {
-    return fetch('/data/get-comments', {
-        method: 'GET',
-        headers: {
-	    'video-id': videoId,
-	    'channel-id': channelId,
-            'next-page-token': nextPageToken
-        }
-    })
-    .then(response => response.json());
+function processPage(page) {
+    createPageElement(page.page);
+    pageToken = page.page_token;
 }
 
 
 function fetchMoreComments() {
-    if (nextPageToken != null) {
-        fetchNextCommentPage(videoId, channelId, nextPageToken)
-            .then(data => {
-                createPageElement(data.page);
-
-                nextPageToken = data['next-page-token'];
-		hideMoreCommentsButtonIfNeeded();
-            });
+    if (!pageToken.is_last_page) {
+        return fetch('/data/get-comments', {
+            method: 'GET',
+            headers: {'token': JSON.stringify(pageToken)}
+        })
+    .then(response => response.json()).then(response => {
+        processPage(response.data);
+        hideMoreCommentsButtonIfNeeded();
+        });
     }
 }
 
 
+processPage(JSON.parse(commentData));
 hideMoreCommentsButtonIfNeeded();
-document.getElementById('fetchMoreCommentsButton').addEventListener('click', fetchMoreComments);
 
+document.getElementById('fetchMoreCommentsButton').addEventListener('click', fetchMoreComments);
