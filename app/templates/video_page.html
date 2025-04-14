@@ -8,9 +8,7 @@
 <script defer src="{{ url_for('static', filename='scripts/format_links.js') }}"></script>
 
 <script>
-    videoId = {{ video.video_id|tojson|safe }};
-    channelId = {{ video.channel_id|tojson|safe }};
-    nextPageToken = {{ next_page_token|tojson|safe }};
+    commentData = {{ comment_data|tojson|safe }};
 </script>
 <script defer src="{{ url_for('static', filename='scripts/fetch_more_comments.js') }}"></script>
 {% endblock %}
@@ -38,69 +36,6 @@
 
     <div id="comments-section">
         <h2>Comments</h2>
-        <div class="page">
-        {% for comment in comments %}
-            <div class="comment-box">
-                <div class="comment" id="{{ comment.id }}">
-                    {% if comment.is_pinned %}
-                        <span class="pinned-by-uploader">📌 Pinned by creator</span>
-                    {% endif %}
-                    <img src="{{ comment.author_thumbnail_url }}">
-                    <span class="comment-author {{ 'by-uploader' if comment.author_is_uploader else '' }}">
-                        {% if comment.author_is_verified %}
-                            <span class="author-verified">✓</span>
-                        {% endif %}
-                        <a href="{{ url_for('main.channel_overview', channel_id=comment.author_id) }}">{{ comment.author }}</a>
-                        {{ comment.time_str }}
-                    </span>
-                    <p>{{ comment.text|safe }}</p>
-                    <div class="comment-info">
-                        {% if comment.has_several_likes %}
-                            <span>{{ comment.like_count }} likes</span>
-                        {% else %}
-                            <span>{{ comment.like_count }} like</span>
-                        {% endif %}
-                        {% if comment.is_favorited %}
-                            <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
-                        {% endif %}
-
-                        {% if comment.reply_count > 0 %}
-                            <div><a class="toggle-replies" data-reply-count="{{ comment.reply_count }}"></a></div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="replies hidden">
-                    {% for reply in comment.replies %}
-                        <div class="reply" id="{{ reply.comment_id }}">
-                            {% if reply.is_pinned %}
-                                <span class="pinned-by-uploader">📌 Pinned by creator</span>
-                            {% endif %}
-                            <img src="{{ reply.author_thumbnail_url }}">
-                            <span class="comment-author {{ 'by-uploader' if reply.author_is_uploader else '' }}">
-                                {% if reply.author_is_verified %}
-                                    <span class="author-verified">✓ Verified</span>
-                                {% endif %}
-                                <a href="{{ url_for('main.channel_overview', channel_id=reply.author_id) }}">{{ reply.author }}</a>
-                                {{ reply.time_str }}
-                            </span>
-                            <p>{{ reply.text|safe }}</p>
-                            <div class="comment-info">
-                                {% if reply.has_several_likes %}
-                                    <span>{{ reply.like_count }} likes</span>
-                                {% else %}
-                                    <span>{{ reply.like_count }} like</span>
-                                {% endif %}
-                                {% if reply.is_favorited %}
-                                    <div class="liked-by-uploader"><span>❤️ Liked by creator</span></div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
-        </div>
     </div>
     <div class="more-comments-container"><a id="fetchMoreCommentsButton">Show more</a></div>
 </div>

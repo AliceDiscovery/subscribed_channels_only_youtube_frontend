@@ -3,7 +3,7 @@ from googleapiclient.errors import HttpError
 
 from .api_key import APIKey
 from .youtube_data_convertions import convert_iso_duration
-from .get_requests import fetch_search_results, create_search_token
+from .get_requests import fetch_search_results, create_search_token, fetch_video_comments, create_comments_token
 
 from .get_requests.request_datatypes import PageType, ApiPageToken
 
@@ -18,12 +18,6 @@ from app.datatypes import VideoType, ChannelType, VideoPreviewType, CommentType
 class YouTubeAPI:
     def __init__(self):
         self._api = build("youtube", "v3", developerKey=APIKey.VALUE)
-
-    def get_video_page(self, video_id: str) -> (VideoType, str):
-        video = self.get_video_page_data(video_id)
-        comments, next_page_token = self.get_video_comments(video_id=video_id, channel_id=video.channel_id)
-        video.comments += comments
-        return (video, next_page_token)
 
     def get_video_page_data(self, video_id: str) -> VideoType:
         if not validate_video_id(video_id):
@@ -51,86 +45,21 @@ class YouTubeAPI:
             date_stamp=convert_date(snippet.get('publishedAt'))
         )
 
-    def get_video_comments(self, video_id: str, channel_id: str = None, next_page_token=None) -> ([CommentType], str):
-        """ gets the first page of YouTube comments on a video. By passing the channel_id it saves an api call """
+    def fetch_video_comments(self, video_id: str | None = None, token: ApiPageToken | None = None) -> PageType:
+        """ fetches the comments under a video; returns PageType """
+        def get_token(video_id: str | None, token: ApiPageToken | None) -> ApiPageToken:
+            if video_id is None and token is None:
+                raise ValueError(f'video_id or token must be provided')
 
-        if not validate_video_id(video_id):
-            raise ValidationError('Invalid video ID')
+            if isinstance(video_id, str):
+                return create_comments_token(video_id)
+            if isinstance(token, ApiPageToken):
+                return token
+            else:
+                raise TypeError(f'token must be of type ApiPageToken')
 
-        # gets the uploader's channel ID if it wasn't passed as an argument
-        # this is in order to implement the CommentType.author_is_uploader value
-        if channel_id is None:
-            video_response = self._api.videos().list(
-                part='snippet',
-                id=video_id
-            ).execute()
-
-            if not video_response.get('items'):
-                raise Exception('Invalid video ID or video not found')
-
-            channel_id = video_response.get('items', [{}])[0].get('snippet', {}).get('channelId', '')
-
-        comment_response = self._api.commentThreads().list(
-            part='snippet,replies',
-            videoId=video_id,
-            pageToken=next_page_token,
-            maxResults=100,  # restrict to only the first 100 comments
-            order='relevance'  # sort comments by relevance
-        ).execute()
-
-        next_page_token = comment_response.get('nextPageToken', None)
-
-        comments = {}
-
-        for root_comment in comment_response.get('items', []):
-            snippet = root_comment.get('snippet', {}).get('topLevelComment', {}).get('snippet', {})
-            author_channel_id = snippet.get('authorChannelId', {}).get('value', '')
-
-            comment = CommentType(
-                comment_id=root_comment.get('id', ''),
-                text=snippet.get('textDisplay', ''),
-                like_count=human_readable_large_numbers(snippet.get('likeCount', 0)),
-                has_several_likes=(snippet.get('likeCount', 0) != 1),
-                author_id=author_channel_id,
-                author=snippet.get('authorDisplayName', ''),
-                author_thumbnail_url=snippet.get('authorProfileImageUrl', ''),
-                author_is_uploader=(author_channel_id == channel_id),
-                author_is_verified=False,  # not available yet
-                is_favorited=False,  # not available yet
-                is_pinned=False,  # not available yet
-                time_str=snippet.get('publishedAt', ''),
-                replies=[],
-                reply_count=0,
-            )
-
-            comments[comment.comment_id] = comment
-
-            # process replies of the comment
-            if 'replies' in root_comment:
-                for reply_comment in root_comment.get('replies', {}).get('comments', []):
-                    reply_snippet = reply_comment.get('snippet', '')
-                    reply_author_channel_id = reply_snippet.get('authorChannelId', {}).get('value', '')
-
-                    reply = CommentType(
-                        comment_id=reply_comment['id'],
-                        text=reply_snippet.get('textDisplay', ''),
-                        like_count=human_readable_large_numbers(reply_snippet.get('likeCount', 0)),
-                        has_several_likes=(reply_snippet.get('likeCount', 0) != 1),
-                        author_id=reply_author_channel_id,
-                        author=reply_snippet.get('authorDisplayName', ''),
-                        author_thumbnail_url=reply_snippet.get('authorProfileImageUrl', ''),
-                        author_is_uploader=(reply_author_channel_id == channel_id),
-                        author_is_verified=False,  # not available yet
-                        is_favorited=False,  # not available yet
-                        is_pinned=False,  # not available yet
-                        time_str=reply_snippet.get('publishedAt', ''),
-                        replies=[],  # no nested replies
-                        reply_count=0,
-                    )
-                    comment.replies.append(reply)
-                    comment.reply_count += 1
-
-        return (list(comments.values()), next_page_token)
+        token = get_token(video_id=video_id, token=token)
+        return fetch_video_comments(self._api, token)
 
     @staticmethod
     def fetch_search_results(query: str | None = None, token: ApiPageToken | None = None) -> PageType:

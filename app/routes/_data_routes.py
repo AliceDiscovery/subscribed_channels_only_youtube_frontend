@@ -41,21 +41,11 @@ def get_search_results():
 
 @data_bp.route('/get-comments', methods=['GET'])
 def get_comments():
-    video_id = request.headers.get('video-id')
-    channel_id = request.headers.get('channel-id')
-    next_page_token = request.headers.get('next-page-token')
+    page_token_dict = loads(request.headers.get('token', {}))
+    page_token = ApiPageToken(**page_token_dict)
 
-    if channel_id == 'null':
-        channel_id = None
-
-    if next_page_token == 'null':
-        next_page_token = None
-
-    comments, next_page_token = youtube.get_video_comments(
-        video_id=video_id,
-        channel_id=channel_id,
-        next_page_token=next_page_token
+    return_data = youtube.fetch_video_comments(
+        token=page_token
     )
 
-    return jsonify({'page': comments, 'next-page-token': next_page_token})
-
+    return jsonify({'data': return_data.json_compatible_serialize_data()})
