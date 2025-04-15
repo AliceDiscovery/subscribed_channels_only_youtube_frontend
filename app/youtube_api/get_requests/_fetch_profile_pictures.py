@@ -1,12 +1,17 @@
-""" fetch profile icons from channel ids """
+from collections import OrderedDict
 from threading import Thread
 
 from .._api import API
 
+# cache stores already fetched profile icon urls
+cache = OrderedDict()
+MAX_CACHE_SIZE = 5000
 
-def fetch_profile_pictures(*channel_ids: [str|None]) -> [str]:
+
+def fetch_profile_pictures(*channel_ids: [str | None]) -> [str]:
     """ retrieves the urls for YouTube profile icons """
     results = {}
+    uncached_ids = [channel_id for channel_id in channel_ids if channel_id not in cache]
 
     def fetch_batch_of_icons(batch_of_ids: [str]):
         """ fetches the channel icons for a multiple channel ids (no more than 50) """
@@ -19,15 +24,21 @@ def fetch_profile_pictures(*channel_ids: [str|None]) -> [str]:
         if 'items' in response:
             for item in response.get('items', []):
                 channel_id = item.get('id', '')
-                results[channel_id] = item.get('snippet', {}).get('thumbnails', {}).get('default', {}).get('url', '')
+                icon_url = item.get('snippet', {}).get('thumbnails', {}).get('default', {}).get('url', '')
+                results[channel_id] = icon_url
 
-    def chunk_and_fetch() -> dict | str:
+                # Cache profile picture URL
+                cache[channel_id] = icon_url
+                while len(cache) > MAX_CACHE_SIZE:
+                    cache.popitem(last=False)  # removes oldest profile pic from cache
+
+    def chunk_and_fetch() -> dict:
         """ retrieves channel icons in batches of 50 """
         threads = []
 
-        for i in range(0, len(channel_ids), 50):
-            batch_of_ids = channel_ids[i:i + 50]
-            thread = Thread(target=fetch_batch_of_icons, args=(batch_of_ids, ))
+        for i in range(0, len(uncached_ids), 50):
+            batch_of_ids = uncached_ids[i:i + 50]
+            thread = Thread(target=fetch_batch_of_icons, args=(batch_of_ids,))
             threads.append(thread)
             thread.start()
 
@@ -36,5 +47,13 @@ def fetch_profile_pictures(*channel_ids: [str|None]) -> [str]:
 
         return results
 
-    profile_pics = chunk_and_fetch()
-    return [profile_pics.get(channel_id, None) for channel_id in channel_ids]
+    # Fetch uncached icons
+    if uncached_ids:
+        fetched_results = chunk_and_fetch()
+        results.update(fetched_results)
+
+    # Combine cached and fetched icons
+    for channel_id in channel_ids:
+        results[channel_id] = cache.get(channel_id, results.get(channel_id))
+
+    return [results.get(channel_id, None) for channel_id in channel_ids]
