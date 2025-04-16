@@ -21,7 +21,7 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
         self.validate_setter_type(uploader_id, {str}, 'uploader_id')
         self.validate_setter_type(uploader_id, {str}, 'video_id')
         self.validate_setter_type(thumbnail, {str}, 'thumbnail')
-        self.validate_setter_type(profile_pic, {str}, 'profile_pic')
+        self.validate_setter_type(profile_pic, {str, None}, 'profile_pic')
         self.validate_setter_type(title, {str}, 'title')
         self.validate_setter_type(uploader, {str}, 'uploader')
         self.validate_setter_type(view_count, {str}, 'view_count')
