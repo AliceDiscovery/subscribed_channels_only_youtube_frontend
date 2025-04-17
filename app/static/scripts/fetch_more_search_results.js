@@ -44,7 +44,6 @@ function createVideoElement(videoData) {
 
     // add channel info
     if (videoData.has_uploader_info) {
-        console.log(videoData.uploader_info);
         const channelLink = document.createElement('a');
         channelLink.href = videoData.uploader_info.uploader_url;
 
