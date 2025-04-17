@@ -3,7 +3,9 @@ from googleapiclient.errors import HttpError
 
 from .api_key import APIKey
 from .youtube_data_convertions import convert_iso_duration
-from .get_requests import fetch_search_results, create_search_token, fetch_video_comments, create_comments_token
+from .get_requests import fetch_search_results, create_search_token, \
+    fetch_video_comments, create_comments_token, \
+    fetch_channel_videos, create_channel_token
 
 from .get_requests.request_datatypes import PageType, ApiPageToken
 
@@ -77,14 +79,6 @@ class YouTubeAPI:
         token = get_token(query=query, token=token)
         return fetch_search_results(token)
 
-
-    def get_channel_page(self, channel_id: str) -> [ChannelType, [VideoPreviewType], str|None]:
-        channel_data = self.get_channel_data(channel_id)
-        first_page_of_videos, next_page_token = self.get_page_of_videos_from_channel(
-            playlist_id=channel_data.playlist_id
-        )
-        return [channel_data, first_page_of_videos, next_page_token]
-
     def get_channel_data(self, channel_id: str) -> ChannelType:
         if not validate_channel_id(channel_id):
             raise ValidationError('Invalid channel ID')
@@ -115,50 +109,20 @@ class YouTubeAPI:
         )
         return channel_info
 
-    def get_page_of_videos_from_channel(self, playlist_id: str, next_page_token=None) -> ([VideoPreviewType], str|None):
-        try:
-            video_id_response = self._api.playlistItems().list(
-                part='snippet',
-                playlistId=playlist_id,
-                maxResults=50,
-                pageToken=next_page_token
-            ).execute()
-        except HttpError:
-            return ([], None)
+    def fetch_channel_videos(self, channel_id: str | None = None, token: ApiPageToken | None = None) -> PageType:
+        def get_token(channel_id: str | None, token: ApiPageToken | None) -> ApiPageToken:
+            if channel_id is None and token is None:
+                raise ValueError(f'channel_id or token must be provided')
 
-        next_page_token = video_id_response.get('nextPageToken')
+            if isinstance(channel_id, str):
+                return create_channel_token(channel_id)
+            if isinstance(token, ApiPageToken):
+                return token
+            else:
+                raise TypeError(f'token must be of type ApiPageToken')
 
-        video_ids = [video_id
-                     for video in video_id_response.get('items', {})
-                     if (video_id := video.get('snippet', {}).get('resourceId').get('videoId', ''))
-                     ]
-
-        # if there are no videos uploaded to the channel
-        if not video_ids:
-            return []
-
-        videos = []
-
-        video_response = self._api.videos().list(
-            part='snippet,contentDetails,statistics',
-            id=','.join(video_ids)
-        ).execute()
-
-        for video_data in video_response.get('items', []):
-            video_snippet = video_data.get('snippet', {})
-            video_statistic = video_data.get('statistics', {})
-            video_content_details = video_data.get('contentDetails', {})
-            videos.append(VideoPreviewType(
-                video_id=video_data.get('id', ''),
-                title=video_snippet.get('title', ''),
-                thumbnail=video_snippet.get('thumbnails', {}).get('default', {}).get('url', ''),
-                views=video_statistic.get('viewCount', 0),
-                description=video_snippet.get('description', ''),
-                duration=convert_iso_duration(video_content_details.get('duration', '')),
-                date_stamp=video_snippet.get('publishedAt', '')
-            ))
-
-        return videos, next_page_token
+        token = get_token(channel_id=channel_id, token=token)
+        return fetch_channel_videos(self._api, token)
 
     def fetch_profile_pictures(self, *channel_ids: [str]) -> dict:
         """ retrieves the urls for YouTube profile icons """
