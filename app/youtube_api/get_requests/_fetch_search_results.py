@@ -4,7 +4,7 @@ from .._api import API
 
 from ._fetch_profile_pictures import fetch_profile_pictures
 from .request_datatypes import PageType, ApiPageToken
-from .request_datatypes.elements import JsonVideoPreviewElement
+from .request_datatypes.elements import JsonVideoPreviewElement, VideoPreviewUploaderInfo
 
 from ..youtube_data_convertions import convert_iso_duration, human_readable_large_numbers
 
@@ -64,12 +64,14 @@ def fetch_search_results(page_token: ApiPageToken) -> PageType:
                 stats = video.get('statistics', {})
 
                 preview = JsonVideoPreviewElement(
-                    uploader_id=snippet.get('channelId', ''),
+                    uploader_info=VideoPreviewUploaderInfo(
+                        uploader_id=snippet.get('channelId', ''),
+                        uploader=snippet.get('channelTitle', ''),
+                        profile_picture_url=profile_pic
+                    ),
                     video_id=video_id,
                     thumbnail=snippet.get('thumbnails', {}).get('high', {}).get('url', ''),
-                    profile_pic=profile_pic,
                     title=snippet.get('title', ''),
-                    uploader=snippet.get('channelTitle', ''),
                     view_count=human_readable_large_numbers(int(stats.get('viewCount', 0))),
                     duration=convert_iso_duration(details.get('duration', '')),
                     description=snippet.get('description', ''),
