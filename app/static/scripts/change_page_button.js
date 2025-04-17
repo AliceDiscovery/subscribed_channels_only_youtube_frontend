@@ -21,7 +21,6 @@ function updateCurrentPageNum() {
 }
 
 function hidePageArrowsIfNeeded() {
-    console.log("Checking if page arrows need to be hidden");
     if (currentPageNum <= 1) {
 	document.getElementById('previousPageButton').classList.add("no-show");
     } else {
@@ -147,7 +146,6 @@ function moveToNextPage() {
 		        numPagesLoaded ++;
 		        currentPageNum = numPagesLoaded;
 		        updateCurrentPageNum();
-		        console.log(pageToken);
             });
     }
 }
