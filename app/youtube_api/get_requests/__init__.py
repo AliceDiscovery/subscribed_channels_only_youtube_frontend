@@ -1,3 +1,4 @@
 from ._fetch_profile_pictures import fetch_profile_pictures
 from ._fetch_search_results import fetch_search_results, create_search_token
 from ._fetch_video_comments import fetch_video_comments, create_comments_token
+from ._fetch_channel_videos import fetch_channel_videos, create_channel_token

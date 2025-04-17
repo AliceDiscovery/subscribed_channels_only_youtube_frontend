@@ -28,13 +28,12 @@ def search_results(search_terms):
 
 @page_bp.route('/channel/<channel_id>')
 def channel_overview(channel_id):
-    channel_info, videos, next_page_token = youtube.get_channel_page(channel_id)
+    channel_info = youtube.get_channel_data(channel_id)
+    channel_videos = youtube.fetch_channel_videos(channel_id)
     return render_template(
         'channel_overview.html',
         channel_info=channel_info,
-        videos=videos,
-        next_page_token=next_page_token,
-        shorts=[]  # sorting of shorts not implemented yet
+        channel_videos=channel_videos.json_serialize()
     )
 
 
@@ -47,4 +46,3 @@ def video_page(video_id):
         video=video_data,
         comment_data=comment_data.json_serialize()
     )
-
