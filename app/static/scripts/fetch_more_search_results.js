@@ -43,24 +43,27 @@ function createVideoElement(videoData) {
     videoContainer.appendChild(titleLink);
 
     // add channel info
-    const channelLink = document.createElement('a');
-    channelLink.href = videoData.uploader_url;
+    if (videoData.has_uploader_info) {
+        console.log(videoData.uploader_info);
+        const channelLink = document.createElement('a');
+        channelLink.href = videoData.uploader_info.uploader_url;
 
-    const channelContainer = document.createElement('div');
-    channelContainer.className = 'channel-info';
+        const channelContainer = document.createElement('div');
+        channelContainer.className = 'channel-info';
 
-    const channelImg = document.createElement('img');
-    channelImg.src = videoData.profile_pic;
-    channelImg.loading = 'lazy';
-    channelContainer.appendChild(channelImg);
+        const channelImg = document.createElement('img');
+        channelImg.src = videoData.uploader_info.profile_picture_url;
+        channelImg.loading = 'lazy';
+        channelContainer.appendChild(channelImg);
 
-    const channelName = document.createElement('span');
-    channelName.textContent = videoData.uploader;
-    channelContainer.appendChild(channelName);
+        const channelName = document.createElement('span');
+        channelName.textContent = videoData.uploader_info.uploader;
+        channelContainer.appendChild(channelName);
 
-    channelLink.appendChild(channelContainer);
+        channelLink.appendChild(channelContainer);
 
-    videoContainer.appendChild(channelLink);
+        videoContainer.appendChild(channelLink);
+    }
 
 
     // add view count
