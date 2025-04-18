@@ -6,11 +6,17 @@
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
 
+
+<script src="{{ url_for('static', filename='scripts/content_loader.js') }}"></script>
 <script>
-    let channelVideos = {{ channel_videos|tojson|safe }};
+    document.addEventListener("DOMContentLoaded", function() {
+        const channelVideosFirstPage = JSON.parse({{ channel_videos_first_page|tojson|safe }});
+        const channelVideosHandler = new ChannelVideosHandler();
+
+        channelVideosHandler.processPage(channelVideosFirstPage);
+    });
 </script>
 
-<script defer src="{{ url_for('static', filename='scripts/change_page_button.js') }}"></script>
 {% endblock %}
 
 {% block content %}
