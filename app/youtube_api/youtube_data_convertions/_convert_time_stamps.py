@@ -7,14 +7,23 @@ def human_readable_time_delta(timestamp):
     delta = datetime.now(timezone.utc) - datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
     total_seconds = int(delta.total_seconds())
 
-    if total_seconds < 60:
-        return f"{total_seconds} seconds ago"
-    elif total_seconds < 3600:
-        minutes = total_seconds // 60
-        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
-    elif total_seconds < 86400:
-        hours = total_seconds // 3600
-        return f"{hours} hour{'s' if hours != 1 else ''} ago"
-    else:
-        days = total_seconds // 86400
-        return f"{days} day{'s' if days != 1 else ''} ago"
+    just_now_threshold_seconds = 300  # Threshold for "Just now" (in seconds)
+
+    if total_seconds < just_now_threshold_seconds:
+        return 'Just now'
+
+    units = [
+        ('year', 31536000),  # assumes 365 days in a year
+        ('month', 2592000),  # assumes 30 days in a month
+        ('week', 604800),
+        ('day', 86400),
+        ('hour', 3600),
+        ('minute', 60),
+        ('second', 1)
+    ]
+
+    for unit, seconds_in_unit in units:
+        if total_seconds >= seconds_in_unit:
+            value = total_seconds // seconds_in_unit
+            return f"{value} {unit}{'s' if value != 1 else ''} ago"
+    return 'Just now'  # fallback
