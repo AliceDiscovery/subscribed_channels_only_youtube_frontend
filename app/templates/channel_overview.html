@@ -4,7 +4,6 @@
 <title>yt - channel</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/channel_overview.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
-<script defer src="{{ url_for('static', filename='scripts/videos_or_shorts.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
 
 
@@ -44,15 +43,9 @@
             {% endif %}
         </div>
     </div>
-    <div class="feed-selector">
-        <span>
-            <a id="videos" class="active">Videos</a> | <a id="shorts">Shorts</a>
-        </span>
-    </div>
-    <div class="feed-container videos">
-        <div id="video-feed">
-        </div>
-    </div>
+
+    <div id="video-feed"></div>
+
     <div class="page-nav">
         <a id="previousPageButton" href="#" class="no-show">&lt</a>
         <a id="currentPageNum">1</a>
