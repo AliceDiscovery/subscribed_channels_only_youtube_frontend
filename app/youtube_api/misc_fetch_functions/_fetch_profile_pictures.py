@@ -1,21 +1,21 @@
 from collections import OrderedDict
 from threading import Thread
 
-from .._api import API
+from .._api_client import YoutubeDataV3API
 
 # cache stores already fetched profile icon urls
 cache = OrderedDict()
 MAX_CACHE_SIZE = 5000
 
 
-def fetch_profile_pictures(*channel_ids: [str | None]) -> [str]:
+def fetch_profile_pictures(api: YoutubeDataV3API, *channel_ids: [str | None]) -> [str]:
     """ retrieves the urls for YouTube profile icons """
     results = {}
     uncached_ids = [channel_id for channel_id in channel_ids if channel_id not in cache]
 
     def fetch_batch_of_icons(batch_of_ids: [str]):
         """ fetches the channel icons for a multiple channel ids (no more than 50) """
-        request = API.CLIENT.channels().list(
+        request = api.client.channels().list(
             part='snippet',
             id=','.join(batch_of_ids)
         )
@@ -57,3 +57,8 @@ def fetch_profile_pictures(*channel_ids: [str | None]) -> [str]:
         results[channel_id] = cache.get(channel_id, results.get(channel_id))
 
     return [results.get(channel_id, None) for channel_id in channel_ids]
+
+
+def fetch_profile_picture(api: YoutubeDataV3API, channel_id: str) -> str:
+    """ retrieves the URL for the profile icon of a given channel id """
+    return fetch_profile_pictures(api, channel_id)[0]

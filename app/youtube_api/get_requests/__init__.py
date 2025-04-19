@@ -1,4 +1,32 @@
-from ._fetch_profile_pictures import fetch_profile_pictures
-from ._fetch_search_results import fetch_search_results, create_search_token
-from ._fetch_video_comments import fetch_video_comments, create_comments_token
-from ._fetch_channel_videos import fetch_channel_videos, create_channel_token
+from .._api_client import YoutubeDataV3API
+from .request_datatypes import ApiPageToken, PageType
+
+from . import _fetch_channel_videos
+from . import _fetch_search_results
+from . import _fetch_video_comments
+
+
+class GetRequestsHandler:
+    def __init__(self, api: YoutubeDataV3API):
+        self._api = api
+
+    def fetch_channel_videos(self, channel_id: str) -> PageType:
+        token = _fetch_channel_videos.create_channel_token(channel_id=channel_id)
+        return _fetch_channel_videos.fetch_channel_videos(self._api, token)
+
+    def fetch_search_results(self, search_query: str) -> PageType:
+        token = _fetch_search_results.create_search_token(search_query=search_query)
+        return _fetch_search_results.fetch_search_results(self._api, token)
+
+    def fetch_video_comments(self, video_id: str) -> PageType:
+        token = _fetch_video_comments.create_comments_token(video_id=video_id)
+        return _fetch_video_comments.fetch_video_comments(self._api, token)
+
+    def fetch_more_channel_videos(self, token: ApiPageToken) -> PageType:
+        return _fetch_channel_videos.fetch_channel_videos(self._api, token)
+
+    def fetch_more_search_results(self, token: ApiPageToken) -> PageType:
+        return _fetch_search_results.fetch_search_results(self._api, token)
+
+    def fetch_more_video_comments(self, token: ApiPageToken) -> PageType:
+        return _fetch_video_comments.fetch_video_comments(self._api, token)

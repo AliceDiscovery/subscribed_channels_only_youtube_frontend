@@ -16,7 +16,7 @@ def get_channel_videos():
     page_token_dict = loads(request.headers.get('token', {}))
     page_token = ApiPageToken(**page_token_dict)
 
-    return_data = youtube.fetch_channel_videos(
+    return_data = youtube.get_requests.fetch_more_channel_videos(
         token=page_token
     )
 
@@ -28,7 +28,7 @@ def get_search_results():
     page_token_dict = loads(request.headers.get('token', {}))
     page_token = ApiPageToken(**page_token_dict)
 
-    return_data = youtube.fetch_search_results(
+    return_data = youtube.get_requests.fetch_more_search_results(
         token=page_token
     )
 
@@ -40,7 +40,7 @@ def get_comments():
     page_token_dict = loads(request.headers.get('token', {}))
     page_token = ApiPageToken(**page_token_dict)
 
-    return_data = youtube.fetch_video_comments(
+    return_data = youtube.get_requests.fetch_more_video_comments(
         token=page_token
     )
 
