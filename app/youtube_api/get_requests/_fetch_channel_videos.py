@@ -1,3 +1,4 @@
+""" implements a function that fetches the next page of videos uploaded to a specific channel """
 from typing import List
 from .._api_client import YoutubeDataV3API
 
@@ -7,6 +8,7 @@ from ..youtube_data_convertions import human_readable_large_numbers, convert_iso
 
 
 def fetch_channel_videos(api: YoutubeDataV3API, token: ApiPageToken) -> PageType:
+    """ fetches the next page of videos uploaded to a specific channel """
     def get_playlist_id(channel_id: str):
         response = api.client.channels().list(
             part='contentDetails',
@@ -76,6 +78,7 @@ def fetch_channel_videos(api: YoutubeDataV3API, token: ApiPageToken) -> PageType
 
 
 def create_channel_token(channel_id: str) -> ApiPageToken:
+    """ creates a blank token used for fetching pages of videos from a channel """
     return ApiPageToken(
         channel_id=channel_id
     )
