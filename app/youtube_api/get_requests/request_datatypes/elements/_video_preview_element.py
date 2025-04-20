@@ -19,11 +19,13 @@ class VideoPreviewUploaderInfo(JsonDatatypeABC):
     @json_include
     @constructor_include
     def uploader_id(self) -> str:
+        """ the ID of the video's uploader """
         return self._uploader_id
 
     @property
     @json_include
     def uploader_url(self) -> str | None:
+        """ the URL of the uploader's page (requires Flask server to be active) """
         try:
             return url_for('main.channel_overview', channel_id=self.uploader_id)
         except RuntimeError:
@@ -33,12 +35,14 @@ class VideoPreviewUploaderInfo(JsonDatatypeABC):
     @json_include
     @constructor_include
     def uploader(self) -> str:
+        """ the username of the video's uploader """
         return self._uploader
 
     @property
     @json_include
     @constructor_include
     def profile_picture_url(self) -> str:
+        """ a URL for the uploader's profile picture """
         return self._profile_picture_url
 
 
@@ -75,22 +79,26 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
     @json_include
     @constructor_include
     def uploader_info(self) -> VideoPreviewUploaderInfo | None:
+        """ info about the video's uploader (optional) """
         return self._uploader_info
 
     @property
     @json_include
     def has_uploader_info(self) -> bool:
+        """ a boolean value of whether the (optional) uploader's info is available"""
         return bool(self.uploader_info)
 
     @property
     @json_include
     @constructor_include
     def video_id(self) -> str:
+        """ the ID of the video """
         return self._video_id
 
     @property
     @json_include
     def video_url(self) -> str | None:
+        """ the URL to the video's page (requires Flask server to be active) """
         try:
             return url_for('main.video_page', video_id=self.video_id)
         except RuntimeError:
@@ -100,34 +108,40 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
     @json_include
     @constructor_include
     def thumbnail(self) -> str:
+        """ the URL to the video's thumbnail """
         return self._thumbnail
 
     @property
     @json_include
     @constructor_include
     def title(self) -> str:
+        """ the video's title """
         return self._title
 
     @property
     @json_include
     @constructor_include
     def view_count(self) -> str:
+        """ the video's view count string """
         return self._view_count
 
     @property
     @json_include
     @constructor_include
     def duration(self) -> str:
+        """ the video's duration string """
         return self._duration
 
     @property
     @json_include
     @constructor_include
     def description(self) -> str:
+        """ the video's description """
         return self._description
 
     @property
     @json_include
     @constructor_include
     def is_subscribed(self) -> bool:
+        """ a boolean value of whether the user has subscribed to the video's uploader """
         return self._is_subscribed
