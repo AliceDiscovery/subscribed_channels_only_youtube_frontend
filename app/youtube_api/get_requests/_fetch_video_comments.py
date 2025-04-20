@@ -90,6 +90,7 @@ def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
 
 
 def create_comments_token(video_id: str) -> ApiPageToken:
+    """ creates a blank token used for fetching pages of comments under a video """
     return ApiPageToken(
         video_id=video_id
     )
