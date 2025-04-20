@@ -1,3 +1,4 @@
+""" implements a function that fetches the next page of search results """
 from typing import List
 from .._api_client import YoutubeDataV3API
 
@@ -9,6 +10,7 @@ from ..youtube_data_convertions import convert_iso_duration, human_readable_larg
 
 
 def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> PageType:
+    """ fetches the next page of search results """
     max_results = 50
 
     def validate_token():
@@ -94,6 +96,7 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
 
 
 def create_search_token(search_query: str) -> ApiPageToken:
+    """ creates a blank token used for fetching pages of search results """
     return ApiPageToken(
         search_query=search_query
     )
