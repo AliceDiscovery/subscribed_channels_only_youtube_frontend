@@ -1,3 +1,4 @@
+""" implements a function that retrieves the urls for YouTube profile icons """
 from collections import OrderedDict
 from threading import Thread
 

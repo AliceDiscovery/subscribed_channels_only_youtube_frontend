@@ -33,34 +33,40 @@ class ApiPageToken(JsonDatatypeABC):
     @json_include
     @constructor_include
     def video_id(self) -> str | None:
+        """ the target video ID if provided """
         return self._video_id
 
     @property
     @json_include
     @constructor_include
     def channel_id(self) -> str | None:
+        """ the target channel ID if provided """
         return self._channel_id
 
     @property
     @json_include
     @constructor_include
     def playlist_id(self) -> str | None:
+        """ the target playlist ID if provided """
         return self._playlist_id
 
     @property
     @json_include
     @constructor_include
     def search_query(self) -> str | None:
+        """ the search query text if provided """
         return self._search_query
 
     @property
     @json_include
     @constructor_include
     def token(self) -> str | None:
+        """ the token used to fetch the next page """
         return self._token
 
     @property
     @json_include
     @constructor_include
     def is_last_page(self) -> bool:
+        """ boolean value of whether the current page is the last page of content """
         return self._is_last_page
