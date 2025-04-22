@@ -1,13 +1,16 @@
+""" implements a function that fetches the next page of videos uploaded to a specific channel """
 from typing import List
+from .._api_client import YoutubeDataV3API
 
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonVideoPreviewElement
 from ..youtube_data_convertions import human_readable_large_numbers, convert_iso_duration
 
 
-def fetch_channel_videos(api, token: ApiPageToken) -> PageType:
-    def get_playlist_id(api, channel_id: str):
-        response = api.channels().list(
+def fetch_channel_videos(api: YoutubeDataV3API, token: ApiPageToken) -> PageType:
+    """ fetches the next page of videos uploaded to a specific channel """
+    def get_playlist_id(channel_id: str):
+        response = api.client.channels().list(
             part='contentDetails',
             id=channel_id
         ).execute()
@@ -39,9 +42,9 @@ def fetch_channel_videos(api, token: ApiPageToken) -> PageType:
     if playlist_id is None:
         if token.channel_id is None:
             raise ValueError('token must contain a channel_id for this function')
-        playlist_id = get_playlist_id(api, token.channel_id)
+        playlist_id = get_playlist_id(token.channel_id)
 
-    video_id_response = api.playlistItems().list(
+    video_id_response = api.client.playlistItems().list(
         part='snippet',
         playlistId=playlist_id,
         maxResults=50,
@@ -64,7 +67,7 @@ def fetch_channel_videos(api, token: ApiPageToken) -> PageType:
     if not video_ids:
         return PageType(page=[], page_token=new_page_token)
 
-    video_response = api.videos().list(
+    video_response = api.client.videos().list(
         part='snippet,contentDetails,statistics',
         id=','.join(video_ids)
     ).execute()
@@ -75,6 +78,7 @@ def fetch_channel_videos(api, token: ApiPageToken) -> PageType:
 
 
 def create_channel_token(channel_id: str) -> ApiPageToken:
+    """ creates a blank token used for fetching pages of videos from a channel """
     return ApiPageToken(
         channel_id=channel_id
     )

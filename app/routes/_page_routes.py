@@ -19,17 +19,17 @@ def search():
 
 @page_bp.route('/search/<search_terms>')
 def search_results(search_terms):
-    search_results_first_page = youtube.fetch_search_results(search_terms).json_serialize()
+    search_results_first_page = youtube.get_requests.fetch_search_results(search_terms)
     return render_template(
         'search_results_page.html',
-        search_results_first_page=search_results_first_page
+        search_results_first_page=search_results_first_page.json_serialize()
     )
 
 
 @page_bp.route('/channel/<channel_id>')
 def channel_overview(channel_id):
-    channel_info = youtube.get_channel_data(channel_id)
-    channel_videos_first_page = youtube.fetch_channel_videos(channel_id)
+    channel_info = youtube.fetch_channel_info(channel_id)
+    channel_videos_first_page = youtube.get_requests.fetch_channel_videos(channel_id)
     return render_template(
         'channel_overview.html',
         channel_info=channel_info,
@@ -39,8 +39,8 @@ def channel_overview(channel_id):
 
 @page_bp.route('/video/<video_id>')
 def video_page(video_id):
-    video_data = youtube.get_video_page_data(video_id)
-    video_comments_first_page = youtube.fetch_video_comments(video_id)
+    video_data = youtube.fetch_video_info(video_id)
+    video_comments_first_page = youtube.get_requests.fetch_video_comments(video_id)
     return render_template(
         'video_page.html',
         video=video_data,

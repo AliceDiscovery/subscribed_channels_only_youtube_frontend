@@ -1,10 +1,12 @@
 """ fetches YouTube comments on a video """
 from typing import List
+from .._api_client import YoutubeDataV3API
+
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonCommentElement
 
 
-def fetch_video_comments(api, page_token: ApiPageToken) -> PageType:
+def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> PageType:
     """ fetches YouTube comments on a video """
     def convert_comments(comment_response: dict, video_uploader_id: str) -> List[JsonCommentElement]:
         def convert_single_comment(snippet: dict, comment_id: str) -> JsonCommentElement:
@@ -43,7 +45,7 @@ def fetch_video_comments(api, page_token: ApiPageToken) -> PageType:
         return comment_array
 
     def get_channel_id(video_id: str) -> str:
-        video_response = api.videos().list(
+        video_response = api.client.videos().list(
             part='snippet',
             id=video_id
         ).execute()
@@ -66,7 +68,7 @@ def fetch_video_comments(api, page_token: ApiPageToken) -> PageType:
         channel_id = get_channel_id(page_token.video_id)
 
     # fetch a page of comments
-    comment_response = api.commentThreads().list(
+    comment_response = api.client.commentThreads().list(
         part='snippet,replies',
         videoId=page_token.video_id,
         pageToken=page_token.token,
@@ -88,6 +90,7 @@ def fetch_video_comments(api, page_token: ApiPageToken) -> PageType:
 
 
 def create_comments_token(video_id: str) -> ApiPageToken:
+    """ creates a blank token used for fetching pages of comments under a video """
     return ApiPageToken(
         video_id=video_id
     )
