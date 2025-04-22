@@ -1,13 +1,16 @@
-from .._api_client import YoutubeDataV3API
+""" implements a function that returns the basic information about a video """
 
 from app.datatypes import VideoType
 from app.validators import validate_video_id, ValidationError
+
+from .._api_client import YoutubeDataV3API
 
 from ..youtube_data_convertions import convert_date
 from ._fetch_profile_pictures import fetch_profile_picture
 
 
 def fetch_video_info(api: YoutubeDataV3API, video_id: str) -> VideoType:
+    """ returns the basic information about a video """
     if not validate_video_id(video_id):
         raise ValidationError("Invalid video ID")
 

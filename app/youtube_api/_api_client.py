@@ -1,3 +1,4 @@
+""" implements a class that stores an instance of the YouTube API client """
 from googleapiclient.discovery import build
 
 
