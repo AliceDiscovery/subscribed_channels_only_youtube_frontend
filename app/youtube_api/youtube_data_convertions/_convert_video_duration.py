@@ -1,6 +1,5 @@
 """ converts an ISO 8601 duration into a formated duration string """
 from isodate import parse_duration
-from datetime import timedelta
 
 
 def convert_iso_duration(iso_duration: str) -> str:

@@ -1,8 +1,9 @@
 """ implements a function that returns the basic information about a channel """
-from .._api_client import YoutubeDataV3API
-
 from app.datatypes import ChannelType
 from app.validators import validate_channel_id, ValidationError
+
+from .._api_client import YoutubeDataV3API
+
 
 
 def fetch_channel_info(api: YoutubeDataV3API, channel_id: str) -> ChannelType:
