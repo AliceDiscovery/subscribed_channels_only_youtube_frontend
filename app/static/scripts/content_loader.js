@@ -172,7 +172,7 @@ class PageHandler {
         this.button = document.getElementById(buttonId);
         this.pageToken = null;
 
-        this.button.addEventListener('click', () => this.fetchMoreData());
+        this.button.addEventListener('click', () => this.onNextPageButton());
     }
 
     hideButtonIfNeeded() {
@@ -215,6 +215,10 @@ class PageHandler {
             .then(data => this.processPage(data.data));
         }
     }
+
+    onNextPageButton() {
+	this.fetchMoreData();
+    }
 }
 
 class PaginatedPageHandler extends PageHandler {
@@ -227,8 +231,7 @@ class PaginatedPageHandler extends PageHandler {
         this.currentPageNum = 1;
         this.numPagesLoaded = 1;
 
-        this.previousButton.addEventListener('click', () => this.moveToPreviousPage());
-        this.button.addEventListener('click', () => this.moveToNextPage());
+        this.previousButton.addEventListener('click', () => this.onPreviousPageButton());
     }
 
     updateCurrentPageNum() {
@@ -260,7 +263,7 @@ class PaginatedPageHandler extends PageHandler {
         }
     }
 
-    moveToNextPage() {
+    onNextPageButton() {
         if (this.currentPageNum < this.numPagesLoaded) {
             this.currentPageNum++;
             this.updateCurrentPageNum();
@@ -272,7 +275,7 @@ class PaginatedPageHandler extends PageHandler {
         }
     }
 
-    moveToPreviousPage() {
+    onPreviousPageButton() {
         if (this.currentPageNum > 1) {
             this.currentPageNum--;
             this.updateCurrentPageNum();
