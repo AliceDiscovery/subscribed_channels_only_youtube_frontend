@@ -1,6 +1,6 @@
 """ fetches YouTube comments on a video """
 from typing import List
-from .._api_client import YoutubeDataV3API
+from ..api_client import YoutubeDataV3API
 
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonCommentElement

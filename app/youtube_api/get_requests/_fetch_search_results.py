@@ -1,6 +1,6 @@
 """ implements a function that fetches the next page of search results """
 from typing import List
-from .._api_client import YoutubeDataV3API
+from ..api_client import YoutubeDataV3API
 
 from ..misc_fetch_functions import fetch_profile_pictures
 from .request_datatypes import PageType, ApiPageToken

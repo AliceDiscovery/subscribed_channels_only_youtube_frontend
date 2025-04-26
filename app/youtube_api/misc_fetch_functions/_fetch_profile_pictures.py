@@ -2,7 +2,7 @@
 from collections import OrderedDict
 from threading import Thread
 
-from .._api_client import YoutubeDataV3API
+from ..api_client import YoutubeDataV3API
 
 # cache stores already fetched profile icon urls
 cache = OrderedDict()
