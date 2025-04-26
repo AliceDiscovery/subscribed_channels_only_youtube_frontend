@@ -3,7 +3,7 @@ from typing import List
 from app.datatypes import VideoType, ChannelType
 
 from .api_key import APIKey
-from ._api_client import YoutubeDataV3API
+from .api_client import YoutubeDataV3API
 
 from .get_requests import GetRequestsHandler
 from . import misc_fetch_functions as _misc_fetch_functions

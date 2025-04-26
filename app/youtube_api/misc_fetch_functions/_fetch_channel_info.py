@@ -2,7 +2,7 @@
 from app.datatypes import ChannelType
 from app.validators import validate_channel_id, ValidationError
 
-from .._api_client import YoutubeDataV3API
+from ..api_client import YoutubeDataV3API
 
 
 
