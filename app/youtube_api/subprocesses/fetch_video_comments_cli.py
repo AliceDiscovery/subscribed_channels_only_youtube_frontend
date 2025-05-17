@@ -50,7 +50,7 @@ class VideoCommentsCLI:
         youtube = YoutubeDataV3API(APIKey.VALUE)
 
         return youtube.client.commentThreads().list(
-            part='snippet',
+            part='snippet,replies',
             videoId=video_id,
             maxResults=max_results,
             pageToken=token,
