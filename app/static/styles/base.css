@@ -19,6 +19,10 @@ body {
     display: none!important;
 }
 
+.no-show {
+    visibility: hidden;
+}
+
 .read-more {
     height: fit-content;
     z-index: inherit;
