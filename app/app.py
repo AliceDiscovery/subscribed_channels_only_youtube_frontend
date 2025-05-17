@@ -1,10 +1,12 @@
 """ server implementation """
 from flask import Flask
-from .routes import bp
+from .routes import BLUEPRINTS
 
 
 app = Flask(__name__)
-app.register_blueprint(bp)
+
+for blueprint in BLUEPRINTS:
+    app.register_blueprint(blueprint)
 
 
 def start_server():
@@ -14,3 +16,4 @@ def start_server():
 
 if __name__ == '__main__':
     start_server()
+

@@ -11,7 +11,7 @@ function findRepliesDiv(button) {
 
 function updateButtonText(button) {
     var replyCount = button.getAttribute('data-reply-count');
-    var showText = replyCount == 1 ? 'Show reply' : `show ${replyCount} replies.`;
+    var showText = replyCount == 1 ? 'Show reply' : `show ${replyCount} replies`;
     var hideText = replyCount == 1 ? 'Hide reply' : `hide ${replyCount} replies`;
     button.textContent = findRepliesDiv(button).classList.contains('hidden') ? showText : hideText;
 }
@@ -24,11 +24,11 @@ function toggleReplies(event) {
     updateButtonText(button);
 }
 
-function initializeCollapsableReplies() {
-    toggleButtons.forEach(function (button) {
+function initializeCollapsableReplies(buttons) {
+    buttons.forEach(function (button) {
         updateButtonText(button);
         button.addEventListener('click', toggleReplies);
     });
 }
 
-initializeCollapsableReplies();
+initializeCollapsableReplies(toggleButtons);

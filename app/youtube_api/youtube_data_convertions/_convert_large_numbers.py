@@ -1,13 +1,8 @@
 """ Converts large integers into humanreadable strings """
 
 
-def human_readable_large_numbers(num: int | None) -> str | None:
+def human_readable_large_numbers(num: int) -> str:
     """ Converts a large integer into a humanreadable string """
-
-    # Account for view_count being None
-    if num is None:
-        return None
-
     suffixes = ['', 'K', 'M', 'B']
 
     i = 0
