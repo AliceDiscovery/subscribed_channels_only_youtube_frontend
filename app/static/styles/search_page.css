@@ -71,3 +71,50 @@
   font-size: 18px;
   color: #E0E0E0;
 }
+
+
+/* Responsiveness */
+
+@media screen and (max-width: 1200px) {
+    .video-container {
+        margin-left: 1rem;
+        width: calc(100% - 2rem);
+    }
+    .video-container h2 {
+        font-size: 1.25rem;
+    }
+    .channel-info span {
+        font-size: 1rem;
+        font-weight: bolder;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .video-container {
+        margin-left: 1rem;
+        width: calc(100% - 2rem);
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .videos {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .video-container {
+        flex-direction: column;
+        height: unset;
+        width: 336px;
+    }
+    .video-container > * {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+    .video-container .thumbnail-container {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+}

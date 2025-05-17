@@ -23,6 +23,7 @@
     height: 20rem;
     object-fit: cover;
     border-radius: 25px;
+    object-fit: cover;
 }
 
 .channel-banner #profile-info {
@@ -191,4 +192,41 @@
     color: #000000;
     font-weight: bolder;
     margin: 0 0.25rem;
+}
+
+/* Responsiveness */
+
+@media screen and (max-width: 1200px) {
+    .channel-banner #profile-info > img {
+        width: 5rem;
+        height: 5rem;
+        margin-right: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .channel-banner #profile-info h1 {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .channel-banner .channel-description-container {
+        max-width: 100%;
+    }
+    .channel-banner {
+        width: calc(100% - 8rem);
+    }
+    .channel-banner #profile-info h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .channel-banner #profile-info {
+        flex-direction: column;
+    }
+    .channel-banner #profile-info > img {
+        margin-bottom: 0;
+    }
 }
