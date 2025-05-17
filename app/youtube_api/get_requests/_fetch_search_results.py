@@ -1,6 +1,11 @@
 """ implements a function that fetches the next page of search results """
 from typing import List
-from .._api_client import YoutubeDataV3API
+
+from pathlib import Path
+from subprocess import check_output
+from json import loads
+
+from ..api_client import YoutubeDataV3API
 
 from ..misc_fetch_functions import fetch_profile_pictures
 from .request_datatypes import PageType, ApiPageToken
@@ -18,13 +23,25 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             raise ValueError('page_token must contain a search_query for this function')
 
     def fetch_search_response() -> dict:
-        return api.client.search().list(
-            part='snippet',
-            q=page_token.search_query,
-            maxResults=max_results,
-            pageToken=page_token.token,
-            type='video'  # restrict results to videos only
-        ).execute()
+        """ fetch search results in a seperate subprocess """
+        target_file = 'fetch_search_results_cli.py'
+        directory = Path(__file__).parent.parent / 'subprocesses'
+        full_target_path = directory / target_file
+
+        command = [
+                'python3', full_target_path,
+                page_token.search_query,
+                '--max-results', str(max_results)]
+
+        if page_token.token is not None:
+            command += ['--token', page_token.token]
+
+        try:
+            result = check_output(command)
+            return loads(result)
+        except Exception as error:
+            print(f'Error in {target_file} subprocess: {error.output.decode()}')
+            return {}
 
     def create_page_token(response) -> ApiPageToken:
         new_token = response.get('nextPageToken')
