@@ -1,20 +1,58 @@
 """ implements a function that fetches the next page of videos uploaded to a specific channel """
 from typing import List
-from .._api_client import YoutubeDataV3API
 
+from pathlib import Path
+from subprocess import check_output
+from json import loads
+
+from ..api_client import YoutubeDataV3API
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonVideoPreviewElement
 from ..youtube_data_convertions import human_readable_large_numbers, convert_iso_duration
 
 
-def fetch_channel_videos(api: YoutubeDataV3API, token: ApiPageToken) -> PageType:
+def fetch_channel_videos(api: YoutubeDataV3API, page_token: ApiPageToken) -> PageType:
     """ fetches the next page of videos uploaded to a specific channel """
-    def get_playlist_id(channel_id: str):
-        response = api.client.channels().list(
-            part='contentDetails',
-            id=channel_id
-        ).execute()
-        return response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+    max_results = 50
+
+    def run_fetch_channel_videos() -> dict:
+        """ fetch channel videos in a separate subprocess """
+        target_file = 'fetch_channel_videos_cli.py'
+        directory = Path(__file__).parent.parent / 'subprocesses'
+        full_target_path = directory / target_file
+
+        command = [
+                'python3', full_target_path,
+                playlist_id,
+                '--max-results', str(max_results)]
+
+        if page_token.token is not None:
+            command += ['--token', page_token.token]
+
+        try:
+            result = check_output(command)
+            return loads(result)
+        except KeyboardInterrupt:
+            raise
+        except Exception as error:
+            print(f'Error in {target_file} subprocess: {error}')
+            return {}
+
+    def fetch_playlist_id(channel_id: str) -> str | None:
+        target_file = 'get_playlist_id.py'
+        directory = Path(__file__).parent.parent / 'subprocesses'
+        full_target_path = directory / target_file
+
+        command = [
+                'python3', full_target_path,
+                channel_id
+        ]
+
+        try:
+            return check_output(command).decode('utf-8').strip()
+        except Exception as error:
+            print(f'Error in {target_file} subprocess: {error}')
+            return None
 
     def build_video_previews(video_response) -> List[JsonVideoPreviewElement]:
         previews = []
@@ -38,20 +76,14 @@ def fetch_channel_videos(api: YoutubeDataV3API, token: ApiPageToken) -> PageType
                 previews.append(preview)
         return previews
 
-    playlist_id = token.playlist_id
+    playlist_id = page_token.playlist_id
     if playlist_id is None:
-        if token.channel_id is None:
+        if page_token.channel_id is None:
             raise ValueError('token must contain a channel_id for this function')
-        playlist_id = get_playlist_id(token.channel_id)
+        playlist_id = fetch_playlist_id(page_token.channel_id)
 
-    video_id_response = api.client.playlistItems().list(
-        part='snippet',
-        playlistId=playlist_id,
-        maxResults=50,
-        pageToken=token.token
-    ).execute()
-
-    new_token = video_id_response.get('nextPageToken')
+    channel_videos_response = run_fetch_channel_videos()
+    new_token = channel_videos_response.get('nextPageToken')
     new_page_token = ApiPageToken(
         playlist_id=playlist_id,
         is_last_page=(new_token is None),
@@ -59,8 +91,8 @@ def fetch_channel_videos(api: YoutubeDataV3API, token: ApiPageToken) -> PageType
     )
 
     video_ids = [video_id
-                 for video in video_id_response.get('items', {})
-                 if (video_id := video.get('snippet', {}).get('resourceId').get('videoId', ''))
+                 for video in channel_videos_response.get('items', {})
+                 if (video_id := video.get('snippet', {}).get('resourceId', {}).get('videoId', ''))
                  ]
 
     # if there are no videos uploaded to the channel

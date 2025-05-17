@@ -1,6 +1,10 @@
 """ fetches YouTube comments on a video """
 from typing import List
-from .._api_client import YoutubeDataV3API
+from ..api_client import YoutubeDataV3API
+
+from pathlib import Path
+from subprocess import check_output
+from json import loads
 
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonCommentElement
@@ -8,6 +12,8 @@ from .request_datatypes.elements import JsonCommentElement
 
 def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> PageType:
     """ fetches YouTube comments on a video """
+    max_results = 100
+
     def convert_comments(comment_response: dict, video_uploader_id: str) -> List[JsonCommentElement]:
         def convert_single_comment(snippet: dict, comment_id: str) -> JsonCommentElement:
             author_channel_id = snippet['authorChannelId']['value']
@@ -44,6 +50,28 @@ def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             raise KeyError(new_error_msg) from error
         return comment_array
 
+
+    def fetch_video_comments() -> dict:
+        """ fetch video comments in a seperate subprocess """
+        target_file = 'fetch_video_comments_cli.py'
+        directory = Path(__file__).parent.parent / 'subprocesses'
+        full_target_path = directory / target_file
+
+        command = [
+                'python3', full_target_path,
+                page_token.video_id,
+                '--max-results', str(max_results)]
+
+        if page_token.token is not None:
+            command += ['--token', page_token.token]
+
+        try:
+            result = check_output(command)
+            return loads(result)
+        except Exception as error:
+            print(f'Error in {target_file} subprocess: {error.output.decode()}')
+            return {}
+
     def get_channel_id(video_id: str) -> str:
         video_response = api.client.videos().list(
             part='snippet',
@@ -68,13 +96,7 @@ def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
         channel_id = get_channel_id(page_token.video_id)
 
     # fetch a page of comments
-    comment_response = api.client.commentThreads().list(
-        part='snippet,replies',
-        videoId=page_token.video_id,
-        pageToken=page_token.token,
-        maxResults=100,  # restrict to only the first 100 comments
-        order='relevance'  # sort comments by relevance
-    ).execute()
+    comment_response = fetch_video_comments()
     comments = convert_comments(comment_response, channel_id)
 
     # create token for fetching next page

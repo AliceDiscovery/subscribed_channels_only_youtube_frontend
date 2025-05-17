@@ -1,5 +1,5 @@
 """ implements a handler for api requests triggered by GET requests """
-from .._api_client import YoutubeDataV3API
+from ..api_client import YoutubeDataV3API
 from .request_datatypes import ApiPageToken, PageType
 
 from . import _fetch_channel_videos
