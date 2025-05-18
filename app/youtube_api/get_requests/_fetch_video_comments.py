@@ -6,6 +6,8 @@ from pathlib import Path
 from subprocess import check_output
 from json import loads
 
+from sys import executable as python_path
+
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonCommentElement
 
@@ -58,7 +60,7 @@ def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
         full_target_path = directory / target_file
 
         command = [
-                'python3', full_target_path,
+                python_path, full_target_path,
                 page_token.video_id,
                 '--max-results', str(max_results)]
 
