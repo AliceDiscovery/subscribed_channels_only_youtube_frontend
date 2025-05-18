@@ -159,18 +159,19 @@
     text-decoration: underline;
 }
 
-.thumbnail-container {
+.video-container > a {
     max-width: 21rem;
     max-height: 11.75rem;
     position: relative;
 }
 
-.thumbnail-container img {
-    max-width: 100%;
-    width: auto;
+.video-container > a img {
+    width: 336px;
+    height: 188px;
+    object-fit: cover;
 }
 
-.thumbnail-container span {
+.video-container > a span {
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
