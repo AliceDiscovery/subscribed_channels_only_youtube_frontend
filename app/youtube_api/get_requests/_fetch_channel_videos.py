@@ -5,6 +5,8 @@ from pathlib import Path
 from subprocess import check_output
 from json import loads
 
+from sys import executable as python_path
+
 from ..api_client import YoutubeDataV3API
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonVideoPreviewElement
@@ -22,7 +24,7 @@ def fetch_channel_videos(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
         full_target_path = directory / target_file
 
         command = [
-                'python3', full_target_path,
+                python_path, full_target_path,
                 playlist_id,
                 '--max-results', str(max_results)]
 
@@ -44,7 +46,7 @@ def fetch_channel_videos(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
         full_target_path = directory / target_file
 
         command = [
-                'python3', full_target_path,
+                python_path, full_target_path,
                 channel_id
         ]
 
