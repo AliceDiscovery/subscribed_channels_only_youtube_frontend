@@ -40,7 +40,10 @@ class PlaylistVideosCLI:
             self.args.token
         )
 
-        print(json.dumps(response, indent=4))
+        try:
+            print(json.dumps(response, indent=4))
+        except BrokenPipeError:
+            pass
 
     @staticmethod
     def fetch_playlist_videos(
