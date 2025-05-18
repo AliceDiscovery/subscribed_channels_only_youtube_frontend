@@ -69,7 +69,7 @@ def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             result = check_output(command)
             return loads(result)
         except Exception as error:
-            print(f'Error in {target_file} subprocess: {error.output.decode()}')
+            print(f'Error in {target_file} subprocess: {error}')
             return {}
 
     def get_channel_id(video_id: str) -> str:
