@@ -1,8 +1,10 @@
 """ a CLI that fetches videos of a playlist using the YouTube api and returns as JSON """
 import argparse
 import json
+
 from subprocess_api_key import APIKey
 from subprocess_api_client import YoutubeDataV3API
+from subprocess_output import print
 
 
 class PlaylistVideosCLI:
@@ -40,10 +42,7 @@ class PlaylistVideosCLI:
             self.args.token
         )
 
-        try:
-            print(json.dumps(response, indent=4))
-        except BrokenPipeError:
-            pass
+        print(json.dumps(response, indent=4))
 
     @staticmethod
     def fetch_playlist_videos(

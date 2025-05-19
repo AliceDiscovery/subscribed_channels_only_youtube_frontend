@@ -1,8 +1,10 @@
 """ a CLI that fetches comments from a YouTube video using the youtube api """
 import argparse
 import json
+
 from subprocess_api_key import APIKey
 from subprocess_api_client import YoutubeDataV3API
+from subprocess_output import print
 
 
 class VideoCommentsCLI:
@@ -39,10 +41,7 @@ class VideoCommentsCLI:
             self.args.token
         )
 
-        try:
-            print(json.dumps(response, indent=4))
-        except BrokenPipeError:
-            pass
+        print(json.dumps(response, indent=4))
 
     @staticmethod
     def fetch_comments_response(
