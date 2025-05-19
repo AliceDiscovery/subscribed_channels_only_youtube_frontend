@@ -27,6 +27,9 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             page_token.search_query,
             '--max-results', str(max_results)]
 
+        if page_token.token is not None:
+            args += ['--token', page_token.token]
+
         if result := FETCH_SEARCH_RESULTS.invoke(*args):
             return loads(result)
         return {}
