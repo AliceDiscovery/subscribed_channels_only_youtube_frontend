@@ -1,28 +1,27 @@
-""" a CLI that fetches videos of a playlist using the YouTube api and returns as JSON """
+""" a CLI that fetches search results using the youtube api """
 import argparse
 import json
 
-from subprocess_api_key import APIKey
-from subprocess_api_client import YoutubeDataV3API
-from subprocess_output import print
+from subprocess_passthrough.subprocess_api_key import APIKey
+from subprocess_passthrough.subprocess_api_client import YoutubeDataV3API
+from subprocess_helper_functions.subprocess_output import print
 
 
-class PlaylistVideosCLI:
-    """ a CLI that fetches videos of a playlist using the YouTube api and returns as JSON """
-
+class SearchQueryCLI:
+    """ a CLI that fetches search results using the youtube api """
     def __init__(self):
         self.parser = argparse.ArgumentParser(
-            description='Fetch JSON from a specific YouTube playlist.'
+            description='Process a query, an optional token, and max results.'
         )
 
         self._setup_arguments()
         self.args = None
 
     def _setup_arguments(self):
-        self.parser.add_argument('playlist_id', type=str, help='The ID of the YouTube playlist.')
+        self.parser.add_argument('query', type=str, help='The query to process.')
         self.parser.add_argument('--token', type=str, help='An optional token for pagination.')
         self.parser.add_argument('--max-results', type=self.validate_max_results, default=10,
-                help='The maximum number of results to return (1-50). Default is 10.'
+            help='The maximum number of results to return (1-50). Default is 10.'
         )
 
     @staticmethod
@@ -36,30 +35,31 @@ class PlaylistVideosCLI:
     def run(self):
         """ runs the CLI application """
         self.args = self.parser.parse_args()
-        response = self.fetch_playlist_videos(
-            self.args.playlist_id,
+        response = self.fetch_search_response(
             self.args.max_results,
+            self.args.query,
             self.args.token
         )
 
         print(json.dumps(response, indent=4))
 
     @staticmethod
-    def fetch_playlist_videos(
-            playlist_id: str,
+    def fetch_search_response(
             max_results: int,
+            search_query: str,
             token: str | None = None) -> dict:
-        """ fetches videos of a playlist using the YouTube api and returns as JSON """
+        """ fetches YouTube search results using the API """
         youtube = YoutubeDataV3API(APIKey.VALUE)
 
-        return youtube.client.playlistItems().list(
+        return youtube.client.search().list(
             part='snippet',
-            playlistId=playlist_id,
+            q=search_query,
             maxResults=max_results,
-            pageToken=token
+            pageToken=token,
+            type='video'  # restrict results to videos only
         ).execute()
 
 
 if __name__ == '__main__':
-    cli = PlaylistVideosCLI()
+    cli = SearchQueryCLI()
     cli.run()

@@ -1,11 +1,8 @@
 """ implements a function that fetches the next page of search results """
 from typing import List
 
-from pathlib import Path
-from subprocess import check_output
 from json import loads
-
-from sys import executable as python_path
+from ..subprocesses import FETCH_SEARCH_RESULTS
 
 from ..api_client import YoutubeDataV3API
 
@@ -25,25 +22,14 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             raise ValueError('page_token must contain a search_query for this function')
 
     def fetch_search_response() -> dict:
-        """ fetch search results in a seperate subprocess """
-        target_file = 'fetch_search_results_cli.py'
-        directory = Path(__file__).parent.parent / 'subprocesses'
-        full_target_path = directory / target_file
+        """ fetch search results in a separate subprocess """
+        args = [
+            page_token.search_query,
+            '--max-results', str(max_results)]
 
-        command = [
-                python_path, full_target_path,
-                page_token.search_query,
-                '--max-results', str(max_results)]
-
-        if page_token.token is not None:
-            command += ['--token', page_token.token]
-
-        try:
-            result = check_output(command)
+        if result := FETCH_SEARCH_RESULTS.invoke(*args):
             return loads(result)
-        except Exception as error:
-            print(f'Error in {target_file} subprocess: {error}')
-            return {}
+        return {}
 
     def create_page_token(response) -> ApiPageToken:
         new_token = response.get('nextPageToken')
@@ -66,7 +52,7 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             id=','.join(video_ids)
         ).execute()
 
-    def fetch_profile_pics(api: YoutubeDataV3API,video_response) -> List[str]:
+    def fetch_profile_pics(api: YoutubeDataV3API, video_response) -> List[str]:
         channel_ids = [
             video['snippet']['channelId']
             for video in video_response.get('items', [])
