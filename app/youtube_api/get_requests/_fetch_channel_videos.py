@@ -1,11 +1,8 @@
 """ implements a function that fetches the next page of videos uploaded to a specific channel """
 from typing import List
 
-from pathlib import Path
-from subprocess import check_output
 from json import loads
-
-from sys import executable as python_path
+from ..subprocesses import FETCH_CHANNEL_VIDEOS, FETCH_CHANNEL_PLAYLIST_ID
 
 from ..api_client import YoutubeDataV3API
 from .request_datatypes import PageType, ApiPageToken
@@ -19,42 +16,16 @@ def fetch_channel_videos(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
 
     def run_fetch_channel_videos() -> dict:
         """ fetch channel videos in a separate subprocess """
-        target_file = 'fetch_channel_videos_cli.py'
-        directory = Path(__file__).parent.parent / 'subprocesses'
-        full_target_path = directory / target_file
-
-        command = [
-                python_path, full_target_path,
+        args = [
                 playlist_id,
                 '--max-results', str(max_results)]
 
         if page_token.token is not None:
-            command += ['--token', page_token.token]
+            args += ['--token', page_token.token]
 
-        try:
-            result = check_output(command)
+        if result := FETCH_CHANNEL_VIDEOS.invoke(*args):
             return loads(result)
-        except KeyboardInterrupt:
-            raise
-        except Exception as error:
-            print(f'Error in {target_file} subprocess: {error}')
-            return {}
-
-    def fetch_playlist_id(channel_id: str) -> str | None:
-        target_file = 'get_playlist_id.py'
-        directory = Path(__file__).parent.parent / 'subprocesses'
-        full_target_path = directory / target_file
-
-        command = [
-                python_path, full_target_path,
-                channel_id
-        ]
-
-        try:
-            return check_output(command).decode('utf-8').strip()
-        except Exception as error:
-            print(f'Error in {target_file} subprocess: {error}')
-            return None
+        return {}
 
     def build_video_previews(video_response) -> List[JsonVideoPreviewElement]:
         previews = []
@@ -82,7 +53,7 @@ def fetch_channel_videos(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
     if playlist_id is None:
         if page_token.channel_id is None:
             raise ValueError('token must contain a channel_id for this function')
-        playlist_id = fetch_playlist_id(page_token.channel_id)
+        playlist_id = FETCH_CHANNEL_PLAYLIST_ID.invoke(page_token.channel_id)
 
     channel_videos_response = run_fetch_channel_videos()
     new_token = channel_videos_response.get('nextPageToken')

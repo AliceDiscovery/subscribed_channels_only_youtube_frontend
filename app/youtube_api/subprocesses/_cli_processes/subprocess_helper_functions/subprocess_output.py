@@ -4,9 +4,10 @@
 built_in_print = print
 
 
-def print(*args, **kvargs) -> None:
+def print(*args, **kwargs) -> None:
     """ a safe version of `print` that suppresses BrokenPipeError """
+    kwargs.setdefault('end', '')
     try:
-        built_in_print(*args, **kvargs)
+        built_in_print(*args, **kwargs)
     except BrokenPipeError:
         pass
