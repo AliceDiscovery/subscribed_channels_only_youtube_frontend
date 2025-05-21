@@ -1,4 +1,4 @@
-""" a CLI that fetches search results using the YouTube api """
+""" a CLI that fetches the playlist id for a given channel """
 import argparse
 
 from subprocess_passthrough.subprocess_api_key import APIKey
@@ -6,8 +6,8 @@ from subprocess_passthrough.subprocess_api_client import YoutubeDataV3API
 from subprocess_helper_functions.subprocess_output import print
 
 
-class SearchQueryCLI:
-    """ a CLI that fetches search results using the YouTube api """
+class GetPlaylistIdCLI:
+    """ a CLI that fetches the playlist id for a given channel """
     def __init__(self):
         self.parser = argparse.ArgumentParser(
             description='Fetches the playlist id of a given YouTube channel.'
@@ -17,7 +17,7 @@ class SearchQueryCLI:
         self.args = None
 
     def _setup_arguments(self):
-        self.parser.add_argument('channel_id', type=str, help='The query to process.')
+        self.parser.add_argument('channel_id', type=str, help='The target channel\'s ID')
 
     def run(self):
         """ runs the CLI application """
@@ -38,5 +38,5 @@ class SearchQueryCLI:
 
 
 if __name__ == '__main__':
-    cli = SearchQueryCLI()
+    cli = GetPlaylistIdCLI()
     cli.run()
