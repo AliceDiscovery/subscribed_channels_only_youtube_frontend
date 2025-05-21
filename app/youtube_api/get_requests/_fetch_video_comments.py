@@ -1,15 +1,14 @@
 """ fetches YouTube comments on a video """
 from typing import List
-from ..api_client import YoutubeDataV3API
 
 from json import loads
-from ..subprocesses import FETCH_VIDEO_COMMENTS
+from ..subprocesses import FETCH_VIDEO_COMMENTS, FETCH_UPLOADER_ID
 
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonCommentElement
 
 
-def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> PageType:
+def fetch_video_comments(page_token: ApiPageToken) -> PageType:
     """ fetches YouTube comments on a video """
     max_results = 100
 
@@ -62,28 +61,13 @@ def fetch_video_comments(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             return loads(result)
         return {}
 
-    def get_channel_id(video_id: str) -> str:
-        video_response = api.client.videos().list(
-            part='snippet',
-            id=video_id
-        ).execute()
-
-        if not video_response.get('items'):
-            raise ValueError('Invalid video ID or video not found')
-
-        try:
-            return video_response.get('items', [{}])[0].get('snippet', {})['channelId']
-        except KeyError as error:
-            new_error_msg = f'YouTube has changed their json for Comments; {error} not found'
-            raise KeyError(new_error_msg) from error
-
     if page_token.video_id is None:
         raise ValueError('page_token must contain a video_id for this function')
 
     # channel_id is needed to check if a comment's author is the video's uploader
     channel_id = page_token.channel_id
     if channel_id is None:
-        channel_id = get_channel_id(page_token.video_id)
+        channel_id = FETCH_UPLOADER_ID.invoke('--', page_token.video_id)
 
     # fetch a page of comments
     comment_response = fetch_video_comments_in_subprocess()
