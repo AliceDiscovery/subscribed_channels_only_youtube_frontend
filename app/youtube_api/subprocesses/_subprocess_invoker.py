@@ -24,11 +24,13 @@ class Subprocess:
 FETCH_CHANNEL_VIDEOS = Subprocess('fetch_channel_videos_cli.py')
 FETCH_SEARCH_RESULTS = Subprocess('fetch_search_results_cli.py')
 FETCH_VIDEO_COMMENTS = Subprocess('fetch_video_comments_cli.py')
+FETCH_VIDEO_PREVIEWS = Subprocess('fetch_video_preview_data.py')
 FETCH_CHANNEL_PLAYLIST_ID = Subprocess('get_playlist_id.py')
 
 __all__ = [
     "FETCH_CHANNEL_VIDEOS",
     "FETCH_SEARCH_RESULTS",
     "FETCH_VIDEO_COMMENTS",
+    "FETCH_VIDEO_PREVIEWS",
     "FETCH_CHANNEL_PLAYLIST_ID"
 ]

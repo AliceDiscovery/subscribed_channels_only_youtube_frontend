@@ -2,7 +2,7 @@
 from typing import List
 
 from json import loads
-from ..subprocesses import FETCH_SEARCH_RESULTS
+from ..subprocesses import FETCH_SEARCH_RESULTS, FETCH_VIDEO_PREVIEWS
 
 from ..api_client import YoutubeDataV3API
 
@@ -49,12 +49,6 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
             if video.get('id', {}).get('videoId')
         ]
 
-    def fetch_video_response(video_ids: List[str]) -> dict:
-        return api.client.videos().list(
-            part='snippet,contentDetails,statistics',
-            id=','.join(video_ids)
-        ).execute()
-
     def fetch_profile_pics(api: YoutubeDataV3API, video_response) -> List[str]:
         channel_ids = [
             video['snippet']['channelId']
@@ -97,7 +91,7 @@ def fetch_search_results(api: YoutubeDataV3API, page_token: ApiPageToken) -> Pag
     if not video_ids:
         return PageType(page=None, page_token=new_page_token)
 
-    video_response = fetch_video_response(video_ids)
+    video_response = loads(FETCH_VIDEO_PREVIEWS.invoke('--', *video_ids))
     profile_pics_list = fetch_profile_pics(api, video_response)
     video_previews_list = build_video_previews(video_response, profile_pics_list)
     return PageType(page=video_previews_list, page_token=new_page_token)
