@@ -4,13 +4,12 @@ from typing import List
 from json import loads
 from ..subprocesses import FETCH_CHANNEL_VIDEOS, FETCH_CHANNEL_PLAYLIST_ID, FETCH_VIDEO_PREVIEWS
 
-from ..api_client import YoutubeDataV3API
 from .request_datatypes import PageType, ApiPageToken
 from .request_datatypes.elements import JsonVideoPreviewElement
 from ..youtube_data_convertions import human_readable_large_numbers, convert_iso_duration
 
 
-def fetch_channel_videos(api: YoutubeDataV3API, page_token: ApiPageToken) -> PageType:
+def fetch_channel_videos(page_token: ApiPageToken) -> PageType:
     """ fetches the next page of videos uploaded to a specific channel """
     max_results = 50
 
