@@ -4,23 +4,17 @@ from json import loads
 from app.datatypes import VideoType
 from app.validators import validate_video_id, ValidationError
 
-from ..api_client import YoutubeDataV3API
+from app.youtube_api.subprocesses import FETCH_VIDEO_PREVIEWS, FETCH_PROFILE_PICTURE
 
-from ..subprocesses import FETCH_PROFILE_PICTURE
-
-from ..youtube_data_convertions import convert_date
+from app.youtube_api.youtube_data_convertions import convert_date
 
 
-def fetch_video_info(api: YoutubeDataV3API, video_id: str) -> VideoType:
+def fetch_video_info(video_id: str) -> VideoType:
     """ returns the basic information about a video """
     if not validate_video_id(video_id):
         raise ValidationError("Invalid video ID")
 
-    request = api.client.videos().list(
-        part="snippet,statistics",
-        id=video_id
-    )
-    response = request.execute()
+    response = loads(FETCH_VIDEO_PREVIEWS.invoke('--', video_id))
 
     video_data = response.get('items', [{}])[0]
 
