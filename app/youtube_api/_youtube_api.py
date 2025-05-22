@@ -11,8 +11,7 @@ from .api_client import YoutubeDataV3API
 from .subprocesses import FETCH_PROFILE_PICTURE
 
 from .get_requests import GetRequestsHandler
-from .info_requests import fetch_video_info as _fetch_video_info
-from . import misc_fetch_functions as _misc_fetch_functions
+from .info_requests import fetch_channel_info as _fetch_channel_info, fetch_video_info as _fetch_video_info
 
 
 class YouTubeAPI:
@@ -31,9 +30,10 @@ class YouTubeAPI:
         """ returns info about a video """
         return _fetch_video_info(video_id)
 
-    def fetch_channel_info(self, channel_id: str) -> ChannelType:
+    @staticmethod
+    def fetch_channel_info(channel_id: str) -> ChannelType:
         """ returns info about a channel """
-        return _misc_fetch_functions.fetch_channel_info(self._api, channel_id)
+        return _fetch_channel_info(channel_id)
 
     @staticmethod
     def fetch_profile_pictures(*channel_ids: [str]) -> List[str]:
