@@ -1,20 +1,18 @@
 """ implements a function that returns the basic information about a channel """
+from json import loads
+
 from app.datatypes import ChannelType
 from app.validators import validate_channel_id, ValidationError
 
-from ..api_client import YoutubeDataV3API
+from app.youtube_api.subprocesses import FETCH_CHANNEL_INFO
 
 
-
-def fetch_channel_info(api: YoutubeDataV3API, channel_id: str) -> ChannelType:
+def fetch_channel_info(channel_id: str) -> ChannelType:
     """ returns the basic information about a channel """
     if not validate_channel_id(channel_id):
         raise ValidationError('Invalid channel ID')
 
-    channel_response = api.client.channels().list(
-        part='snippet,statistics,contentDetails,brandingSettings',
-        id=channel_id
-    ).execute()
+    channel_response = loads(FETCH_CHANNEL_INFO.invoke('--', channel_id))
 
     if not channel_response.get('items', []):
         raise ValidationError('Channel not found')
