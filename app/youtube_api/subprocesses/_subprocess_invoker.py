@@ -21,6 +21,7 @@ class Subprocess:
             return None
 
 
+FETCH_CHANNEL_INFO = Subprocess('fetch_channel_info_cli.py')
 FETCH_CHANNEL_VIDEOS = Subprocess('fetch_channel_videos_cli.py')
 FETCH_PROFILE_PICTURE = Subprocess('fetch_profile_pictures_cli.py')
 FETCH_SEARCH_RESULTS = Subprocess('fetch_search_results_cli.py')
@@ -30,6 +31,7 @@ FETCH_CHANNEL_PLAYLIST_ID = Subprocess('get_playlist_id.py')
 FETCH_UPLOADER_ID = Subprocess('get_uploader_id.py')
 
 __all__ = [
+    "FETCH_CHANNEL_INFO",
     "FETCH_CHANNEL_VIDEOS",
     "FETCH_PROFILE_PICTURE",
     "FETCH_SEARCH_RESULTS",
