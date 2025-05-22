@@ -18,10 +18,11 @@ class GetRequestsHandler:
         token = _fetch_channel_videos.create_channel_token(channel_id=channel_id)
         return _fetch_channel_videos.fetch_channel_videos(token)
 
-    def fetch_search_results(self, search_query: str) -> PageType:
+    @staticmethod
+    def fetch_search_results(search_query: str) -> PageType:
         """ fetches the first page of search results """
         token = _fetch_search_results.create_search_token(search_query=search_query)
-        return _fetch_search_results.fetch_search_results(self._api, token)
+        return _fetch_search_results.fetch_search_results(token)
 
     @staticmethod
     def fetch_video_comments(video_id: str) -> PageType:
@@ -34,9 +35,10 @@ class GetRequestsHandler:
         """ fetches subsequent pages of videos uploaded to a channel """
         return _fetch_channel_videos.fetch_channel_videos(token)
 
-    def fetch_more_search_results(self, token: ApiPageToken) -> PageType:
+    @staticmethod
+    def fetch_more_search_results(token: ApiPageToken) -> PageType:
         """ fetches subsequent pages of search results """
-        return _fetch_search_results.fetch_search_results(self._api, token)
+        return _fetch_search_results.fetch_search_results(token)
 
     @staticmethod
     def fetch_more_video_comments(token: ApiPageToken) -> PageType:

@@ -1,3 +1,2 @@
-from ._fetch_profile_pictures import fetch_profile_pictures, fetch_profile_picture
 from ._fetch_video_info import fetch_video_info
 from ._fetch_channel_info import fetch_channel_info
