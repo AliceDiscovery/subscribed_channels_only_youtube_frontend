@@ -1,8 +1,10 @@
 """ a CLI that fetches search results using the youtube api """
 import argparse
 import json
-from subprocess_api_key import APIKey
-from subprocess_api_client import YoutubeDataV3API
+
+from subprocess_passthrough.subprocess_api_key import APIKey
+from subprocess_passthrough.subprocess_api_client import YoutubeDataV3API
+from subprocess_helper_functions.subprocess_output import print
 
 
 class SearchQueryCLI:

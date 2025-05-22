@@ -1,12 +1,17 @@
 """ implements a class for handling high level api requests """
 from typing import List
+
+from json import loads
+
 from app.datatypes import VideoType, ChannelType
 
 from .api_key import APIKey
 from .api_client import YoutubeDataV3API
 
+from .subprocesses import FETCH_PROFILE_PICTURE
+
 from .get_requests import GetRequestsHandler
-from . import misc_fetch_functions as _misc_fetch_functions
+from .info_requests import fetch_channel_info as _fetch_channel_info, fetch_video_info as _fetch_video_info
 
 
 class YouTubeAPI:
@@ -20,18 +25,23 @@ class YouTubeAPI:
         """ returns handler for handling GET requested api queries """
         return self._get_requests_handler
 
-    def fetch_video_info(self, video_id: str) -> VideoType:
+    @staticmethod
+    def fetch_video_info(video_id: str) -> VideoType:
         """ returns info about a video """
-        return _misc_fetch_functions.fetch_video_info(self._api, video_id)
+        return _fetch_video_info(video_id)
 
-    def fetch_channel_info(self, channel_id: str) -> ChannelType:
+    @staticmethod
+    def fetch_channel_info(channel_id: str) -> ChannelType:
         """ returns info about a channel """
-        return _misc_fetch_functions.fetch_channel_info(self._api, channel_id)
+        return _fetch_channel_info(channel_id)
 
-    def fetch_profile_pictures(self, *channel_ids: [str]) -> List[str]:
+    @staticmethod
+    def fetch_profile_pictures(*channel_ids: [str]) -> List[str]:
         """ retrieves the urls of the profile pictures for multiple channel in parallel """
-        return _misc_fetch_functions.fetch_profile_pictures(self._api, *channel_ids)
+        profile_picture_dict = loads(FETCH_PROFILE_PICTURE.invoke('--', *channel_ids))
+        return [profile_picture_dict.get(channel_id, '') for channel_id in channel_ids]
 
-    def fetch_profile_picture(self, channel_id: str) -> str:
+    @staticmethod
+    def fetch_profile_picture(channel_id: str) -> str:
         """ retrieves the url of the profile picture for an individual channel  """
-        return _misc_fetch_functions.fetch_profile_picture(self._api, channel_id)
+        return loads(FETCH_PROFILE_PICTURE.invoke('--', channel_id)).get(channel_id, '')
