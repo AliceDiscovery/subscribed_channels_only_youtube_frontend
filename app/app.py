@@ -1,10 +1,15 @@
 """ server implementation """
 from flask import Flask
-from .routes import bp
+
+from .routes import BLUEPRINTS
+from ._server_keys import ServerKey
 
 
 app = Flask(__name__)
-app.register_blueprint(bp)
+app.config['SECRET_KEY'] = ServerKey.value
+
+for blueprint in BLUEPRINTS:
+    app.register_blueprint(blueprint)
 
 
 def start_server():

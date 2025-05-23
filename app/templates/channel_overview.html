@@ -4,8 +4,19 @@
 <title>yt - channel</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/channel_overview.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
-<script defer src="{{ url_for('static', filename='scripts/videos_or_shorts.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
+
+
+<script src="{{ url_for('static', filename='scripts/content_loader.js') }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const channelVideosFirstPage = JSON.parse({{ channel_videos_first_page|tojson|safe }});
+        const channelVideosHandler = new ChannelVideosHandler();
+
+        channelVideosHandler.processPage(channelVideosFirstPage);
+    });
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -32,40 +43,12 @@
             {% endif %}
         </div>
     </div>
-    <div class="feed-selector">
-        <span>
-            <a id="videos" class="active">Videos</a> | <a id="shorts">Shorts</a>
-        </span>
-    </div>
-    <div class="feed-container videos">
-        <div class="video-feed">
-        {% for video in videos %}
-            
-                <div class="video-container">
-                    <a href="{{ url_for('main.video_page', video_id=video.video_id) }}" class="thumbnail-container">
-                        <img src="{{ video.thumbnail }}" loading="lazy">
-                        <span>{{ video.duration }}</span>
-                    </a>
-                    <p>{{ video.views }}</p>
-                    <a href="{{ url_for('main.video_page', video_id=video.video_id) }}">
-                        <h2>{{ video.title }}</h2>
-                    </a>
-                </div>
-            
-        {% endfor %}
-        </div>
-        <div class="short-feed">
-        {% for short in shorts %}
-            <a href="{{ url_for('main.video_page', video_id=short.video_id) }}">
-                <div class="short-container">
-                    <img src="{{ short.thumbnail }}" loading="lazy">
-                    <div>
-                        <h2>{{ short.title }}</h2>
-                        <span>{{ short.views }}</span>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-        </div>
+
+    <div id="video-feed"></div>
+
+    <div class="page-nav">
+        <a id="previousPageButton" href="#" class="no-show">&lt</a>
+        <a id="currentPageNum">1</a>
+        <a id="nextPageButton" href="#">&gt</a>
     </div>
 {% endblock %}
