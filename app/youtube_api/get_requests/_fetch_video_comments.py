@@ -50,12 +50,12 @@ def fetch_video_comments(page_token: ApiPageToken) -> PageType:
 
     def fetch_video_comments_in_subprocess() -> dict:
         """ fetch channel videos in a separate subprocess """
-        args = [
-                page_token.video_id,
-                '--max-results', str(max_results)]
+        args = ['--max-results', str(max_results)]
 
         if page_token.token is not None:
             args += ['--token', page_token.token]
+
+        args += ['--', page_token.video_id]
 
         if result := FETCH_VIDEO_COMMENTS.invoke(*args):
             return loads(result)
