@@ -15,12 +15,12 @@ def fetch_channel_videos(page_token: ApiPageToken) -> PageType:
 
     def run_fetch_channel_videos() -> dict:
         """ fetch channel videos in a separate subprocess """
-        args = [
-                playlist_id,
-                '--max-results', str(max_results)]
+        args = ['--max-results', str(max_results)]
 
         if page_token.token is not None:
             args += ['--token', page_token.token]
+
+        args += ['--', playlist_id]
 
         if result := FETCH_CHANNEL_VIDEOS.invoke(*args):
             return loads(result)
@@ -55,7 +55,7 @@ def fetch_channel_videos(page_token: ApiPageToken) -> PageType:
     if playlist_id is None:
         if page_token.channel_id is None:
             raise ValueError('token must contain a channel_id for this function')
-        playlist_id = FETCH_CHANNEL_PLAYLIST_ID.invoke(page_token.channel_id)
+        playlist_id = FETCH_CHANNEL_PLAYLIST_ID.invoke('--', page_token.channel_id)
 
     channel_videos_response = run_fetch_channel_videos()
     new_token = channel_videos_response.get('nextPageToken')
