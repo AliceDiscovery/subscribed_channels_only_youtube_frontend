@@ -13,3 +13,18 @@ def signup():
 @accounts_bp.route('/login')
 def login():
     return render_template('login.html')
+
+
+@accounts_bp.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+
+@accounts_bp.route('/change-password')
+def change_password():
+    return render_template('change_password.html')
+
+
+@accounts_bp.route('/change-email')
+def change_email():
+    return render_template('change_email.html')
