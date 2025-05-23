@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>yt - login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
+<script defer src="{{ url_for('static', filename='scripts/auth.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+<form id="loginForm">
+    <div class="form-item">
+        <label for="email">Email</label>
+        <input type="text" placeholder="Enter email..." name="email">
+    </div>
+    <span id="emailErrorMessage" class="hidden"></span>
+    <div class="form-item">
+        <label for="password">Password</label>
+        <input type="password" placeholder="Enter password..." name="password">
+    </div>
+    <span id="passwordErrorMessage" class="hidden"></span>
+    <button type="submit">Login</button>
+</form>
+<span>
+    Don't have an account?
+    <br/>
+    <a href="{{ url_for('accounts.signup') }}">Sign up here!</a>
+</span>
+{% endblock %}
