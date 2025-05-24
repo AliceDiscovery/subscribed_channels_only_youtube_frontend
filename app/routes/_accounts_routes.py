@@ -1,9 +1,10 @@
 """ define all webpage routes relating to user accounts """
 from flask import Blueprint, request, render_template, jsonify
-from flask_login import login_user, login_required
+from flask_login import login_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from ..database import db, User
+from ..info_convertions import redact_email
 
 accounts_bp = Blueprint('accounts', __name__)
 
@@ -51,7 +52,8 @@ def login():
 @accounts_bp.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html')
+    redacted_email = redact_email(current_user.email)
+    return render_template('profile.html', redacted_email=redacted_email)
 
 
 @accounts_bp.route('/change-password')
