@@ -14,12 +14,55 @@ function setPassword2Error(message) {
     password2ErrorMessage.className = '';
 }
 
-function signup() {
-    alert('To be implemented...');
+
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hash = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hash))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
 }
-function login() {
-    alert('To be implemented...');
+
+
+async function signup(email, password) {
+    const hashedPassword = await hashPassword(password);
+
+    fetch("/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: hashedPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            setEmailError(data.error);
+        } else {
+            window.location.href = "/";
+        }
+    })
+    .catch(error => console.error("Error:", error));
 }
+
+async function login(email, password) {
+    const hashedPassword = await hashPassword(password);
+
+    fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, password: hashedPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            setEmailError(data.error);
+        } else {
+            window.location.href = "/";
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
 
 function validateForm(email, password, password2) {
     function isEmail(str) {
