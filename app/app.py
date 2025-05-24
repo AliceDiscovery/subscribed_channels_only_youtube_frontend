@@ -10,13 +10,13 @@ from .database import init_db, User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = ServerKey.value
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
 init_db(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = 'accounts.login'
 
 
 @login_manager.user_loader
