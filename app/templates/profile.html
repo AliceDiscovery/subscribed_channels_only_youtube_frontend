@@ -9,7 +9,10 @@
 <h1>My Account</h1>
 <section>
     <h2>Account Details</h2>
-    <p>Email: <span>{{ redacted_email }}</span><a href="{{ url_for('accounts.change_email') }}" class="button">Change Email</a></p>
-    <p><a href="{{ url_for('accounts.change_password') }}" class="button">Change Password</a></p>
+    <p>Email: <span>{{ redacted_email }}</span></p>
+    <p>
+        <a href="{{ url_for('accounts.change_email') }}" class="button">Change Email</a>
+        <a href="{{ url_for('accounts.change_password') }}" class="button">Change Password</a>
+    </p>
 </section>
 {% endblock %}
