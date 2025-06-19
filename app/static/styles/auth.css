@@ -40,7 +40,7 @@ form {
     border: 2px solid black;
     border-radius: 10px;
     outline: solid 2px transparent;
-    margin: 5px 0 15px;
+    margin: 5px auto 15px;
     transition: 0.25s;
 }
 
