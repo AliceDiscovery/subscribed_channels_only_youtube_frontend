@@ -2,8 +2,27 @@
 
 {% block head %}
 <title>yt - change email</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
 {% endblock %}
 
 {% block content %}
-<h1>Hello World!</h1>
+<h1>Change your password</h1>
+<form id="changeEmailForm">
+    <div class="form-item">
+        <label for="current-email">Current email</label>
+        <input type="text" placeholder="Enter current email..." name="current-email">
+    </div>
+    <span id="currentEmailErrorMessage" class="hidden"></span>
+    <div class="form-item">
+        <label for="new-email">New email</label>
+        <input type="text" placeholder="Enter new email..." name="new-email">
+    </div>
+    <span id="newEmailErrorMessage" class="hidden"></span>
+    <div class="form-item">
+        <label for="password">Re-enter your password</label>
+        <input type="password" placeholder="Enter password..." name="password">
+    </div>
+    <span id="passwordErrorMessage" class="hidden"></span>
+    <button type="submit">Change email</button>
+</form> 
 {% endblock %}
