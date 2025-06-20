@@ -56,9 +56,22 @@ def profile():
     return render_template('profile.html', redacted_email=redacted_email)
 
 
-@accounts_bp.route('/change-password')
+@accounts_bp.route('/change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():
+    if request.method == 'POST':
+        data = request.json
+        cur_password = data.get("curPassword")
+
+        user = User.query.filter_by(email=current_user.email).first()
+        if user and check_password_hash(user.password_hash, cur_password):
+            new_password = data.get('newPassword')
+            hashed_new_password = generate_password_hash(new_password, method="pbkdf2:sha256")
+            user.password_hash = hashed_new_password
+            db.session.commit()
+            return jsonify({"success": "Change successful"}), 200
+        return jsonify({"error": "Wrong password"}), 401
+
     return render_template('change_password.html')
 
 
