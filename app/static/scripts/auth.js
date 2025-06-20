@@ -98,7 +98,12 @@ function confirmMatchingPasswords(password1, password2) {
     return true;
 }
 
-function validateForm(email, password, password2) {
+function validateLoginForm(email, password) {
+    return validateEmail(email) &&
+           validatePassword(password);
+}
+
+function validateSignupForm(email, password, password2) {
     return validateEmail(email) &&
            validatePassword(password) &&
            confirmMatchingPasswords(password, password2);
@@ -117,7 +122,7 @@ if (loginForm) loginForm.addEventListener('submit', e => {
     submitHandler(e);
     const email = e.target[0].value;
     const password = e.target[1].value;
-    if (validateForm(email, password)) login(email, password);
+    if (validateLoginForm(email, password)) login(email, password);
 });
 
 const signupForm = document.getElementById('signupForm');
@@ -127,5 +132,5 @@ if (signupForm) signupForm.addEventListener('submit', e => {
     const email = e.target[0].value;
     const password = e.target[1].value;
     const password2 = e.target[2].value;
-    if (validateForm(email, password, password2)) signup(email, password);
+    if (validateSignupForm(email, password, password2)) signup(email, password);
 });
