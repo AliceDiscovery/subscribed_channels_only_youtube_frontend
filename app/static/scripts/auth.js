@@ -64,34 +64,46 @@ async function login(email, password) {
 }
 
 
-function validateForm(email, password, password2) {
-    function isEmail(str) {
-        return /^[\w\-\.]+(\+[\w\-\.]+)?@([\w-]+\.)+[\w-]{2,}$/.test(str);
-    }
+function validateEmail(email) {
+    const emailPattern = /^[\w\-\.]+(\+[\w\-\.]+)?@([\w-]+\.)+[\w-]{2,}$/;
     if (!email) {
         setEmailError('Please enter your email');
         return false;
     }
-    if (!isEmail(email)) {
+    if (!emailPattern.test(email)) {
         setEmailError('Invalid email address');
         return false;
     }
+    return true;
+}
+
+function validatePassword(password) {
     if (!password) {
         setPasswordError('Please enter your password');
         return false;
     }
-    if (password2 !== undefined) {
-        if (!password2) {
-            setPassword2Error('Please re-enter your password');
-            return false;
-        }
-        if (password !== password2) {
-            setPassword2Error('Passwords must be identical');
-            return false;
-        }
+    return true;
+}
+
+function confirmMatchingPasswords(password1, password2) {
+    if (password2 === undefined) return true;
+    if (!password2) {
+        setPassword2Error('Please enter your password again');
+        return false;
+    }
+    if (password1 !== password2) {
+        setPassword2Error('Passwords must be identical');
+        return false;
     }
     return true;
 }
+
+function validateForm(email, password, password2) {
+    return validateEmail(email) &&
+           validatePassword(password) &&
+           confirmMatchingPasswords(password, password2);
+}
+
 
 function submitHandler(e) {
     e.stopPropagation();
