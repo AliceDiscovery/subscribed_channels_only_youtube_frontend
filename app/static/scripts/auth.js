@@ -78,7 +78,7 @@ async function changePassword(curPassword, newPassword) {
         if (data.error) {
             setPasswordError(data.error);
         } else {
-            window.location.href = "/";
+            redirectAfterLogin();
         }
     })
     .catch(error => console.error("Error:", error));
