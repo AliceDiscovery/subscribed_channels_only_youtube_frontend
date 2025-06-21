@@ -3,6 +3,11 @@
     <a href="{{ url_for('main.index') }}" class="home-button">Home</a>
     {% block menu %}
     {% endblock %}
+    <div class="button-group">
+        <a id="accountButton" href="{{ url_for('accounts.profile') }}">
+            <img src="{{ url_for('static', filename='resources/assets/user-account-icon.svg') }}"></img>
+        </a>
+    </div>
 </div>
 
 <!-- add padding above content to prevent the top bar from covering it -->
