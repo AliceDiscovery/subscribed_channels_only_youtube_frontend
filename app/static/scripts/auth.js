@@ -31,6 +31,15 @@ async function hashPassword(password) {
 }
 
 
+function redirectAfterLogin(defaultUrl='/profile') {
+    const params = new URLSearchParams(window.location.search);
+    const next = params.get('next');
+
+    const destination = next || defaultUrl;
+    window.location.href = destination;
+}
+
+
 async function signup(email, password) {
     const hashedPassword = await hashPassword(password);
 
@@ -83,7 +92,7 @@ async function login(email, password) {
         if (data.error) {
             setEmailError(data.error);
         } else {
-            window.location.href = "/";
+            redirectAfterLogin();
         }
     })
     .catch(error => console.error("Error:", error));
