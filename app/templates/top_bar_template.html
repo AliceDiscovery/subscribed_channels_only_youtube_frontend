@@ -4,7 +4,7 @@
     {% block menu %}
     {% endblock %}
     <div class="button-group">
-        <a id="accountButton" href="https://www.example.com">
+        <a id="accountButton" href="{{ url_for('accounts.profile') }}">
             <img src="{{ url_for('static', filename='resources/assets/user-account-icon.svg') }}"></img>
         </a>
     </div>
