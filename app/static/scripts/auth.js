@@ -58,7 +58,7 @@ async function signup(email, password) {
         if (data.error) {
             setEmailError(data.error);
         } else {
-            window.location.href = "/";
+            redirectAfterLogin();
         }
     })
     .catch(error => console.error("Error:", error));
