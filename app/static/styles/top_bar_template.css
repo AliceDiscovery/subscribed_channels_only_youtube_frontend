@@ -52,6 +52,28 @@
     border-bottom-left-radius: 0;
 }
 
+.top-bar > *:first-child,
+.top-bar > *:last-child {
+   flex-grow: 1;
+   flex-basis: 0;
+}
+
+.top-bar > .button-group {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.top-bar > .button-group > a {
+    margin-right: 20px;
+}
+
+.top-bar > .button-group > a > img {
+    filter: invert(0%) sepia(9%) saturate(7114%) hue-rotate(14deg) brightness(93%) contrast(60%);
+    width: 30px;
+    height: 30px;
+}
+
 .top-bar-padding {
     margin-bottom: 83px;
 }
