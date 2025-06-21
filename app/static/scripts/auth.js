@@ -39,6 +39,11 @@ function redirectAfterLogin(defaultUrl='/profile') {
     window.location.href = destination;
 }
 
+function redirectPreservingParams(destinationUrl) {
+    const currentParams = window.location.search;
+    window.location.href = `${destinationUrl}${currentParams}`;
+}
+
 
 async function signup(email, password) {
     const hashedPassword = await hashPassword(password);
