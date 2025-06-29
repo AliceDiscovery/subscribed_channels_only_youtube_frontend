@@ -1,9 +1,12 @@
 <!-- a floating top bar with a search box -->
 <div class="top-bar">
     <a href="{{ url_for('main.index') }}" class="home-button">Home</a>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search...">
-        <button id="searchButton">Search</button>
+    {% block menu %}
+    {% endblock %}
+    <div class="button-group">
+        <a id="accountButton" href="{{ url_for('accounts.profile') }}">
+            <img src="{{ url_for('static', filename='resources/assets/user-account-icon.svg') }}"></img>
+        </a>
     </div>
 </div>
 
@@ -11,4 +14,5 @@
 <div class="top-bar-padding"></div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/top_bar_template.css') }}">
-<script src="{{ url_for('static', filename='scripts/search_box.js') }}"></script>
+{% block imports %}
+{% endblock %}

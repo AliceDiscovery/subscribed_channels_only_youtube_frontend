@@ -29,6 +29,6 @@
 <span>
     Already have an account?
     <br/>
-    <a href="{{ url_for('accounts.login') }}">Log in here!</a>
+    <a href="#" onclick="redirectPreservingParams('{{ url_for('accounts.login') }}'); return false;">Log in here!</a>
 </span>
 {% endblock %}
