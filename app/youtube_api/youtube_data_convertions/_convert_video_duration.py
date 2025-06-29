@@ -1,5 +1,5 @@
 """ converts an ISO 8601 duration into a formated duration string """
-from isodate import parse_duration
+from isodate import parse_duration, isoerror
 
 
 def convert_iso_duration(iso_duration: str) -> str:
@@ -9,7 +9,10 @@ def convert_iso_duration(iso_duration: str) -> str:
     if iso_duration == 'P0D':
         return 'LIVE'
 
-    total_seconds = int(parse_duration(iso_duration).total_seconds())
+    try:
+        total_seconds = int(parse_duration(iso_duration).total_seconds())
+    except isoerror.ISO8601Error:
+        return 'Error'
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
 
