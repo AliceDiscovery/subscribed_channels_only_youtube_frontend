@@ -63,7 +63,7 @@ h1 {
     transition: background-color 0.1s;
 }
 
-.channel-info #subscribe-button.subscribe {
+.channel-info #subscribe-button.notSubscribed {
     background-color: #202020;
     color: white;
 }
