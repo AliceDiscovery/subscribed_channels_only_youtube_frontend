@@ -5,7 +5,7 @@ from isodate import parse_duration, isoerror
 def convert_iso_duration(iso_duration: str) -> str:
     """ converts a ISO 8601 duration into a formated duration string """
 
-    # live streems
+    # live streams
     if iso_duration == 'P0D':
         return 'LIVE'
 
