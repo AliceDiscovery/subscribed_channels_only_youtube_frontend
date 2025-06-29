@@ -55,8 +55,7 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
         title: str,
         view_count: str,
         duration: str,
-        description: str,
-        is_subscribed: bool = False):
+        description: str):
 
         self.validate_setter_type(uploader_info, {VideoPreviewUploaderInfo, None}, 'uploader_info')
         self.validate_setter_type(thumbnail, {str}, 'thumbnail')
@@ -64,7 +63,6 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
         self.validate_setter_type(view_count, {str}, 'view_count')
         self.validate_setter_type(duration, {str}, 'duration')
         self.validate_setter_type(description, {str}, 'description')
-        self.validate_setter_type(is_subscribed, {bool}, 'is_subscribed')
 
         self._uploader_info = uploader_info
         self._video_id = video_id
@@ -73,7 +71,6 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
         self._view_count = view_count
         self._duration = duration
         self._description = description
-        self._is_subscribed = is_subscribed
 
     @property
     @json_include
@@ -138,10 +135,3 @@ class JsonVideoPreviewElement(JsonDatatypeABC):
     def description(self) -> str:
         """ the video's description """
         return self._description
-
-    @property
-    @json_include
-    @constructor_include
-    def is_subscribed(self) -> bool:
-        """ a boolean value of whether the user has subscribed to the video's uploader """
-        return self._is_subscribed
