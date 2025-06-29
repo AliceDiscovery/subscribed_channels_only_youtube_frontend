@@ -1,7 +1,9 @@
 """ define all webpage routes """
 from flask import Blueprint, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.youtube_api import YouTubeAPI
+
+from ..database import is_subscribed
 
 
 page_bp = Blueprint('main', __name__)
@@ -33,10 +35,12 @@ def search_results(search_terms):
 def channel_overview(channel_id):
     channel_info = youtube.fetch_channel_info(channel_id)
     channel_videos_first_page = youtube.get_requests.fetch_channel_videos(channel_id)
+
     return render_template(
         'channel_overview.html',
         channel_info=channel_info,
-        channel_videos_first_page=channel_videos_first_page.json_serialize()
+        channel_videos_first_page=channel_videos_first_page.json_serialize(),
+        is_subscribed=is_subscribed(current_user.id, channel_id)
     )
 
 
@@ -45,8 +49,12 @@ def channel_overview(channel_id):
 def video_page(video_id):
     video_data = youtube.fetch_video_info(video_id)
     video_comments_first_page = youtube.get_requests.fetch_video_comments(video_id)
+
+    channel_id = video_data.channel_id
+
     return render_template(
         'video_page.html',
         video=video_data,
-        video_comments_first_page=video_comments_first_page.json_serialize()
+        video_comments_first_page=video_comments_first_page.json_serialize(),
+        is_subscribed=is_subscribed(current_user.id, channel_id)
     )

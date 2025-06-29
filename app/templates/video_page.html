@@ -3,6 +3,7 @@
 {% block head %}
 <title>{{ video.title }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
+<script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/collapse_comment_replies.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/format_links.js') }}"></script>
@@ -26,11 +27,10 @@
     <div class="channel-info">
         <img class=="channel-pic" src="{{ video.channel_pic }}">
         <a href="{{ url_for('main.channel_overview', channel_id=video.channel_id) }}">{{ video.channel_name }}</a>
-        <!-- Back end does not allow access to subscription status -->
-        {% if false %}
-            <button id="subscribe-button" class="subscribed">Subscribed</button>
+        {% if is_subscribed %}
+            <button id="subscribe-button" value="{{ video.channel_id }}" class="subscribed">Subscribed</button>
         {% else %}
-            <button id="subscribe-button" class="subscribe">Subscribe</button>
+            <button id="subscribe-button" value="{{ video.channel_id }}" class="notSubscribed">Subscribe</button>
         {% endif %}
     </div>
     <div class="video-info">
