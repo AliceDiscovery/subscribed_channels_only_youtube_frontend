@@ -12,7 +12,7 @@
     <h2>Account Details</h2>
     <p>
         Email: <span>{{ redacted_email }}</span>
-        <a href="{{ url_for('accounts.logout') }}" class="button">Logout</a>
+        <a id="logout-button" href="{{ url_for('accounts.logout') }}" class="button">Logout</a>
     </p>
     <p>
         <a href="{{ url_for('accounts.change_email') }}" class="button">Change Email</a>
