@@ -103,7 +103,7 @@
     transition: background-color 0.1s;
 }
 
-.channel-banner #subscribe-button.subscribe {
+.channel-banner #subscribe-button.notSubscribed {
     background-color: #202020;
     color: white;
 }

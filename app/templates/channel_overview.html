@@ -36,10 +36,10 @@
                     <p class="channel-description read-more">{{ channel_info.description }}</p>
                 </div>
             </div>
-            {% if channel_info.is_subscribed %}
-                <button id="subscribe-button" class="subscribed">Subscribed</button>
+            {% if is_subscribed %}
+                <button id="subscribe-button" value="{{ channel_info.channel_id }}" class="subscribed">Subscribed</button>
             {% else %}
-                <button id="subscribe-button" class="subscribe">Subscribe</button>
+                <button id="subscribe-button" value="{{ channel_info.channel_id }}" class="notSubscribed">Subscribe</button>
             {% endif %}
         </div>
     </div>
