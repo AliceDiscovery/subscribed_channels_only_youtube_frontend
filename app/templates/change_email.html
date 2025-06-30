@@ -23,6 +23,9 @@
         <input type="password" placeholder="Enter password..." name="password">
     </div>
     <span id="passwordErrorMessage" class="hidden"></span>
-    <button type="submit">Change email</button>
-</form> 
+    <div class="flex">
+        <a class="button" href="{{ url_for('accounts.profile') }}">Cancel</a>
+        <button type="submit">Change email</button>
+    </div>
+</form>
 {% endblock %}
