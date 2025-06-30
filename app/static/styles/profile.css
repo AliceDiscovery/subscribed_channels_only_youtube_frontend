@@ -46,3 +46,11 @@ section p a.button {
 section p a.button:last-child {
     margin-right: 0;
 }
+
+#logout-button {
+    background-color: #e33;
+    border-color: #c11;
+    color: white;
+    border-radius: 0;
+    margin-left: 4px;
+}
