@@ -75,8 +75,7 @@ def fetch_search_results(page_token: ApiPageToken) -> PageType:
                     title=snippet.get('title', ''),
                     view_count=human_readable_large_numbers(int(stats.get('viewCount', 0))),
                     duration=convert_iso_duration(details.get('duration', '')),
-                    description=snippet.get('description', ''),
-                    is_subscribed=False  # subscription tracking not implemented yet
+                    description=snippet.get('description', '')
                 )
                 previews.append(preview)
         return previews
