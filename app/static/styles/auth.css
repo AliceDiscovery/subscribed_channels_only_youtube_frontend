@@ -13,7 +13,7 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
 }
 
 .form-item {
@@ -34,13 +34,13 @@ form {
     margin-bottom: 10px;
     font-weight: bolder;
     color: black;
-    width: fit-content;
     background-color: white;
+    width: calc(100% - 10px*2 - 2px*2);
     padding: 10px;
     border: 2px solid black;
     border-radius: 10px;
     outline: solid 2px transparent;
-    margin: 5px 0 15px;
+    margin: 5px auto 15px;
     transition: 0.25s;
 }
 
@@ -48,7 +48,13 @@ form {
     outline-color: black;
 }
 
-form > button {
+form a.button {
+    font-size: 13.3333px;
+    text-decoration: none;
+}
+
+form .button,
+form button {
     font-weight: bolder;
     color: black;
     width: fit-content;
@@ -61,19 +67,27 @@ form > button {
     transition: 0.25s;
 }
 
-form > button:hover {
+form .button:hover,
+form button:hover {
     background-color: black;
     color: white;
     cursor: pointer;
 }
 
-form > button:active {
+form .button:active,
+form button:active {
     border-color: white;
     outline-color: black;
 }
 
-form > button:focus {
+form .button:focus,
+form button:focus {
     outline-color: black;
+}
+
+.flex {
+    display: flex;
+    column-gap: 10px;
 }
 
 span {
