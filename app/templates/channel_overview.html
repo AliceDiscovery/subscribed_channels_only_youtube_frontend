@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include "top_bar_template.html" %}
+    {% include "top_bar_search_template.html" %}
     <div class="channel-banner">
         <img src="{{ channel_info.banner }}">
         <div id="profile-info">
@@ -36,10 +36,10 @@
                     <p class="channel-description read-more">{{ channel_info.description }}</p>
                 </div>
             </div>
-            {% if channel_info.is_subscribed %}
-                <button id="subscribe-button" class="subscribed">Subscribed</button>
+            {% if is_subscribed %}
+                <button id="subscribe-button" value="{{ channel_info.channel_id }}" class="subscribed">Subscribed</button>
             {% else %}
-                <button id="subscribe-button" class="subscribe">Subscribe</button>
+                <button id="subscribe-button" value="{{ channel_info.channel_id }}" class="notSubscribed">Subscribe</button>
             {% endif %}
         </div>
     </div>
