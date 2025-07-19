@@ -1,0 +1,12 @@
+{% extends "top_bar_template.html" %}
+
+{% block menu %}
+<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button id="searchButton">Search</button>
+</div>
+{% endblock %}
+
+{% block imports %}
+<script src="{{ url_for('static', filename='scripts/search_box.js') }}"></script>
+{% endblock %}

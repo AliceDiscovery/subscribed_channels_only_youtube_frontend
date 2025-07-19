@@ -3,6 +3,10 @@
     font-family: Arial, sans-serif;
 }
 
+:root * {
+    font-family: Arial, sans-serif !important;
+}
+
 body {
     margin: 0;
 }
