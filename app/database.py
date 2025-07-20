@@ -20,6 +20,13 @@ class User(db.Model, UserMixin):
         cascade='all, delete-orphan'
     )
 
+    content_pack_links = db.relationship(
+        'UserContentPack',
+        back_populates='user',
+        lazy='dynamic',
+        cascade='all, delete-orphan'
+    )
+
 
 class Subscription(db.Model):
     __tablename__ = 'subscriptions'
@@ -58,6 +65,24 @@ class ContentPack(db.Model):
     is_public = db.Column(db.Boolean, default=False)
 
     author = db.relationship('User', backref='content_packs', lazy='joined')
+
+    user_links = db.relationship(
+        'UserContentPack',
+        back_populates='content_pack',
+        lazy='dynamic',
+        cascade='all, delete-orphan'
+    )
+
+
+class UserContentPack(db.Model):
+    __tablename__ = 'user_content_packs'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    content_pack_id = db.Column(db.Integer, db.ForeignKey('content_packs.id'), primary_key=True)
+    is_enabled = db.Column(db.Boolean, default=True, nullable=False)
+
+    user = db.relationship('User', back_populates='content_pack_links')
+    content_pack = db.relationship('ContentPack', back_populates='user_links')
 
 
 def init_db(app):

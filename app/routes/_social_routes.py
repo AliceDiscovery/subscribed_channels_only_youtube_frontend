@@ -2,8 +2,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
-from ..database import ContentPack
-
 
 social_bp = Blueprint('social', __name__)
 
@@ -11,15 +9,15 @@ social_bp = Blueprint('social', __name__)
 @social_bp.route('/content-filters')
 @login_required
 def list_content_packs():
-    content_packs_raw = ContentPack.query.all()
-
     content_packs = [
         {
-            'name': pack.name,
-            'is_public': pack.is_public,
-            'is_author': current_user.is_authenticated and pack.author_id == current_user.id
+            'content_pack_id': link.content_pack.id,
+            'name': link.content_pack.name,
+            'is_public': link.content_pack.is_public,
+            'is_author': link.content_pack.author_id == current_user.id,
+            'is_enabled': link.is_enabled
         }
-        for pack in content_packs_raw
+        for link in current_user.content_pack_links.all()
     ]
 
     return render_template('content_filters.html', content_packs=content_packs)
