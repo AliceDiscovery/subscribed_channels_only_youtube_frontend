@@ -49,6 +49,17 @@ def is_subscribed(user_id: str, channel_id: str):
     return bool(sub)
 
 
+class ContentPack(db.Model):
+    __tablename__ = 'content_packs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    is_public = db.Column(db.Boolean, default=False)
+
+    author = db.relationship('User', backref='content_packs', lazy='joined')
+
+
 def init_db(app):
     db.init_app(app)
     with app.app_context():
