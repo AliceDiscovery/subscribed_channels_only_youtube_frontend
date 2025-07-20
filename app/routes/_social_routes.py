@@ -8,7 +8,7 @@ social_bp = Blueprint('social', __name__)
 
 @social_bp.route('/content-filters')
 @login_required
-def list_content_packs():
+def user_content_packs():
     content_packs = [
         {
             'content_pack_id': link.content_pack.id,
