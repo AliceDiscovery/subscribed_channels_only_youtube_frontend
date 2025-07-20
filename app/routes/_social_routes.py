@@ -1,5 +1,25 @@
 """ define all page routes relating to social aspects of the website """
-from flask import Blueprint
+from flask import Blueprint, render_template
+from flask_login import login_required, current_user
+
+from ..database import ContentPack
 
 
 social_bp = Blueprint('social', __name__)
+
+
+@social_bp.route('/content-filters')
+@login_required
+def list_content_packs():
+    content_packs_raw = ContentPack.query.all()
+
+    content_packs = [
+        {
+            'name': pack.name,
+            'is_public': pack.is_public,
+            'is_author': current_user.is_authenticated and pack.author_id == current_user.id
+        }
+        for pack in content_packs_raw
+    ]
+
+    return render_template('content_filters.html', content_packs=content_packs)

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>yt - Content Filters</title>
+{% endblock %}
+
+{% block content %}
+<h1>Content Packs:</h1>
+<ul>
+    {% for pack in content_packs %}
+        <li>
+            <strong>{{ pack.name }}</strong><br>
+            Author ID: {{ pack.author_id }}<br>
+            Public: {{ 'Yes' if pack.is_public else 'No' }}<br>
+            {% if pack.is_author %}
+                Created by you.
+            {% endif %}
+        </li>
+    {% else %}
+        <li>No content packs found.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
