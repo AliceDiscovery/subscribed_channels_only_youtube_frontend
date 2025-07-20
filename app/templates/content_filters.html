@@ -5,7 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<h1>Content Packs:</h1>
+<h2>Content Packs:</h2>
+<form action="{{ url_for('social.user_content_packs') }}" method="POST">
+    <button type="submit">+</button>
+</form>
 <ul>
     {% for pack in content_packs %}
         <li>
