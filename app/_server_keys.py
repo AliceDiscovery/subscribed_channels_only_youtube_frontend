@@ -16,7 +16,6 @@ class ServerKey:
     """ A class that contains the server key """
     _VALUE = os.getenv("SECRET_KEY", generate_key())
 
-    @classmethod
     @property
-    def value(cls) -> str:
-        return cls._VALUE
+    def value(self) -> str:
+        return self._VALUE
