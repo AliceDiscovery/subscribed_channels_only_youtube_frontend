@@ -12,7 +12,7 @@
 </form>
 <ul>
     {% for pack in content_packs %}
-        <li class="{% if pack.is_enabled %}enabled{% else %}disabled{% endif %}">
+        <li id="pack-{{ pack.content_pack_id }}" onclick="toggleContentPackState({{ pack.content_pack_id }});" class="{% if pack.is_enabled %}enabled{% else %}disabled{% endif %}">
             <strong>{{ pack.name }}</strong><br>
             Public: {{ 'Yes' if pack.is_public else 'No' }}<br>
             {% if pack.is_author %}
@@ -25,4 +25,29 @@
     {% endfor %}
 </ul>
 
+<script>
+function toggleContentPackState(packId) {
+    fetch(`/toggle-content-pack/${packId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify("pack-"+packId)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const pack = document.getElementById('pack-'+packId);
+            if (pack.classList.contains('enabled')) {
+                pack.classList.remove('enabled');
+                pack.classList.add('disabled');
+            } else {
+                pack.classList.remove('disabled');
+                pack.classList.add('enabled');
+            }
+        }
+    })
+    .catch(error => console.error('Error toggling content pack state:', error));
+}
+</script>
 {% endblock %}

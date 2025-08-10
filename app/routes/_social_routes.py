@@ -1,5 +1,5 @@
 """ define all page routes relating to social aspects of the website """
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
 
 from ..database import db, User, ContentPack, UserContentPack
@@ -8,7 +8,7 @@ from ..database import db, User, ContentPack, UserContentPack
 social_bp = Blueprint('social', __name__)
 
 
-@social_bp.route('/content-filters', methods=['GET', 'POST'])
+@social_bp.route('/content-filters')
 @login_required
 def user_content_packs():
     def create_content_pack(user_id: int, pack_name: str, is_public: bool = False, is_enabled: bool = True):
@@ -47,3 +47,18 @@ def user_content_packs():
     ]
 
     return render_template('content_filters.html', content_packs=content_packs)
+
+
+@social_bp.route('/toggle-content-pack/<int:packId>', methods=['POST'])
+@login_required
+def toggle_content_pack(packId):
+    user_content_pack = UserContentPack.query.filter_by(
+        content_pack_id=packId, user_id=current_user.id
+    ).first()
+
+    if not user_content_pack:
+        return jsonify(success=False, error="Content pack not found for this user"), 404
+
+    user_content_pack.is_enabled = not user_content_pack.is_enabled
+    db.session.commit()
+    return jsonify(success=True), 200
