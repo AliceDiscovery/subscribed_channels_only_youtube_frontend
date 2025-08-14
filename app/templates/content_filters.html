@@ -8,6 +8,7 @@
 {% block content %}
 <h2>Content Packs:</h2>
 <form action="{{ url_for('social.user_content_packs') }}" method="POST">
+    <input type="text" id="filterNameInput" name="filterNameInput" placeholder="Choose a name..." required>
     <button type="submit">+</button>
 </form>
 <ul>

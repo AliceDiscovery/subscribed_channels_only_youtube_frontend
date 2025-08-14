@@ -8,7 +8,7 @@ from ..database import db, User, ContentPack, UserContentPack
 social_bp = Blueprint('social', __name__)
 
 
-@social_bp.route('/content-filters')
+@social_bp.route('/content-filters', methods=['GET', 'POST'])
 @login_required
 def user_content_packs():
     def create_content_pack(user_id: int, pack_name: str, is_public: bool = False, is_enabled: bool = True):
@@ -34,7 +34,8 @@ def user_content_packs():
         db.session.commit()
 
     if request.method == 'POST':
-        create_content_pack(current_user.id, pack_name='demo pack')
+        pack_name = request.form['filterNameInput']
+        create_content_pack(current_user.id, pack_name=pack_name)
     content_packs = [
         {
             'content_pack_id': link.content_pack.id,
