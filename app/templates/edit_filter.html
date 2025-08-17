@@ -5,5 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<h1>Filter Id: {{ pack_id }}</h1>
+
+<form action="/edit_filter/{{ pack_id }}" method="post">
+  <label for="id">Enter id:</label>
+  <input type="text" id="id" name="id" required><br><br>
+  
+  <label><input type="checkbox" name="is_channel_id" value="true"> is_channel_id</label><br>
+  <label><input type="checkbox" name="is_blacklist_filter" value="true"> is_blacklist_filter</label><br><br>
+  
+  <input type="submit" value="Submit">
+</form>
+
 {% endblock %}

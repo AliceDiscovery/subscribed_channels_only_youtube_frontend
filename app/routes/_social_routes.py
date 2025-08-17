@@ -1,5 +1,5 @@
 """ define all page routes relating to social aspects of the website """
-from flask import Blueprint, render_template, redirect, url_for, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify, abort
 from flask_login import login_required, current_user
 
 from ..database import db, User, ContentPack, UserContentPack
@@ -56,9 +56,14 @@ def edit_filter_blank():
     return redirect(url_for('user_content_packs'))
 
 
-@social_bp.route('/edit_filter/<int:packId>')
+@social_bp.route('/edit_filter/<int:packId>', methods=['GET', 'POST'])
 @login_required
 def edit_filter(packId):
+    if request.method == 'POST':
+        youtube_id = request.form.get('id', )
+        is_channel_id = request.form.get('is_channel_id')
+        is_blacklist_filter = request.form.get('is_blacklist_filter')
+
     return render_template('edit_filter.html', pack_id=packId)
 
 
