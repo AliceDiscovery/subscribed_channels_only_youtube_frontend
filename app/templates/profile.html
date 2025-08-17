@@ -2,11 +2,11 @@
 
 {% block head %}
 <title>yt - Profile</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
 {% endblock %}
 
 {% block content %}
 {% include "top_bar_template.html" %}
+<div class="profile-container">
 <h1>My Account</h1>
 <section>
     <h2>Account Details</h2>
@@ -19,4 +19,5 @@
         <a href="{{ url_for('accounts.change_password') }}" class="button">Change Password</a>
     </p>
 </section>
+</div>
 {% endblock %}
