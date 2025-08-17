@@ -2,7 +2,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify, abort
 from flask_login import login_required, current_user
 
-from ..database import db, User, ContentPack, UserContentPack
+from ..database import db, User, ContentPack, UserContentPack, UserFilter
+from sqlalchemy.exc import IntegrityError
 
 
 social_bp = Blueprint('social', __name__)
@@ -60,11 +61,27 @@ def edit_filter_blank():
 @login_required
 def edit_filter(packId):
     if request.method == 'POST':
-        youtube_id = request.form.get('id', )
-        is_channel_id = request.form.get('is_channel_id')
-        is_blacklist_filter = request.form.get('is_blacklist_filter')
+        youtube_id = request.form.get('id', '')
+        is_channel_id = request.form.get('is_channel_id') == 'true'
+        is_blacklist_filter = request.form.get('is_blacklist_filter') == 'true'
 
-    return render_template('edit_filter.html', pack_id=packId)
+        is_duplicate_id_error = False
+        new_filter = UserFilter(
+            user_id=current_user.id,
+            content_pack_id=packId,
+            is_blacklist_filter=is_blacklist_filter,
+            is_channel_id=is_channel_id,
+            youtube_id=youtube_id
+        )
+        try:
+            db.session.add(new_filter)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            is_duplicate_id_error = True
+
+    user_filters = UserFilter.query.filter_by(user_id=current_user.id).all()
+    return render_template('edit_filter.html', pack_id=packId, user_filters=user_filters, is_duplicate_id_error=is_duplicate_id_error)
 
 
 @social_bp.route('/toggle-content-pack/<int:packId>', methods=['POST'])
