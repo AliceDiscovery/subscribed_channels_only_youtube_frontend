@@ -10,6 +10,11 @@
   {% if is_duplicate_id_error %} 
     <p style="color: red;">Error: Duplicate ID detected.</p> 
   {% endif %}
+
+  {% if is_invalid_id_error %} 
+    <p style="color: red;">Error: Invalid ID detected.</p> 
+  {% endif %}
+
   <label for="id">Enter id:</label>
   <input type="text" id="id" name="id" required>
   <br><br>
@@ -20,6 +25,6 @@
   <input type="submit" value="Submit">
 </form>
 {% for filter in user_filters %}
-  <li>{{ filter.user_id }} - {{ filter.content_pack_id }} - {{ filter.is_blacklist_filter }} - {{ filter.is_channel_id }} - {{ filter.youtube_id }}</li>
+  <li>{{ filter.user_id }} - {{ filter.content_pack_id }} - {{ filter.name }} - {{ filter.is_blacklist_filter }} - {{ filter.is_channel_id }} - {{ filter.youtube_id }}</li>
 {% endfor %}
 {% endblock %}

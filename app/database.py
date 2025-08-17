@@ -91,6 +91,7 @@ class UserFilter(db.Model):
     filter_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     content_pack_id = db.Column(db.Integer, db.ForeignKey('content_packs.id'), nullable=False)
+    name = db.Column(db.String(120), nullable=True)
     is_blacklist_filter = db.Column(db.Boolean, nullable=False)
     is_channel_id = db.Column(db.Boolean, nullable=False)
     youtube_id = db.Column(db.String(24), unique=True, nullable=False)
