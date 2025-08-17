@@ -19,7 +19,7 @@
             {% if pack.is_author %}
                 Created by you.<br>
             {% endif %}
-            Enabled: {{ 'Yes' if pack.is_enabled else 'No' }}
+            <button onclick="event.stopPropagation(); window.location.href='{{ url_for('social.edit_filter', packId=pack.content_pack_id) }}';">+</button>
         </li>
     {% else %}
         <li>No content packs found.</li>

@@ -1,5 +1,5 @@
 """ define all page routes relating to social aspects of the website """
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
 
 from ..database import db, User, ContentPack, UserContentPack
@@ -48,6 +48,18 @@ def user_content_packs():
     ]
 
     return render_template('content_filters.html', content_packs=content_packs)
+
+
+@social_bp.route('/edit_filter')
+@login_required
+def edit_filter_blank():
+    return redirect(url_for('user_content_packs'))
+
+
+@social_bp.route('/edit_filter/<int:packId>')
+@login_required
+def edit_filter(packId):
+    return render_template('edit_filter.html', pack_id=packId)
 
 
 @social_bp.route('/toggle-content-pack/<int:packId>', methods=['POST'])
