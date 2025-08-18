@@ -120,3 +120,17 @@ def toggle_content_pack(packId):
     user_content_pack.is_enabled = not user_content_pack.is_enabled
     db.session.commit()
     return jsonify(success=True), 200
+
+
+@social_bp.route('/delete-list-element/<int:packId>/<int:filter_id>', methods=['POST'])
+@login_required
+def delete_list_element(packId, filter_id):
+    filter_list_element = UserFilter.query.filter_by(
+        filter_id=filter_id
+    ).first()
+
+    if filter_list_element:
+        db.session.delete(filter_list_element)
+        db.session.commit()
+    
+    return redirect(url_for('social.edit_filter', packId=packId))

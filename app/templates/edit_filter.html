@@ -25,6 +25,14 @@
   <input type="submit" value="Submit">
 </form>
 {% for filter in user_filters %}
-  <li>{{ filter.user_id }} - {{ filter.content_pack_id }} - {{ filter.name }} - {{ filter.is_blacklist_filter }} - {{ filter.is_channel_id }} - {{ filter.youtube_id }}</li>
+
+<li>
+  {{ filter.user_id }} - {{ filter.content_pack_id }} - {{ filter.filter_id }} - {{ filter.name }} - {{ filter.is_blacklist_filter }} - {{ filter.is_channel_id }} - {{ filter.youtube_id }}
+  <form method="POST" action="{{ url_for('social.delete_list_element', packId=filter.content_pack_id, filter_id=filter.filter_id) }}" style="display:inline;">
+    <input type="hidden" name="filter_id" value="{{ filter.filter_id }}">
+    <button type="submit">Delete</button>
+  </form>
+</li>
+
 {% endfor %}
 {% endblock %}
