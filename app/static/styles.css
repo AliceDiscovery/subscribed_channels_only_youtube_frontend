@@ -823,3 +823,287 @@ body {
     color: #fff;
     font-weight: bolder;
 }
+
+
+
+/* Video page */
+
+.video-page-container {
+    width: calc(100% -2rem);
+    height: fit-content;
+    padding: 1rem 1rem 0;
+}
+
+.video-page-container iframe {
+    width: 80vw;
+    height: 45vw;
+    margin: 0 1rem 1rem 0;
+    border-radius: 5px;
+}
+
+.video-page-container h1 {
+    font-size: 1.5rem;
+}
+
+.video-page-container .channel-info,
+.video-page-container .video-info {
+    margin-left: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.video-page-container .channel-info {
+    column-gap: 1rem;
+}
+
+.video-info {
+    margin-top: 1rem;
+}
+
+.video-info > * {
+    margin: 0;
+    font-weight: bolder;
+}
+
+.video-info > *::before {
+    display: inline;
+    content: '•';
+    margin: 0 0.5rem;
+}
+
+.video-info > :first-child::before {
+    display: none;
+    content: unset;
+}
+
+.video-page-container .channel-info a {
+    font-weight: bolder;
+    font-size: 1.25rem;
+}
+
+.video-page-container .channel-info #subscribe-button {
+    width: 10rem;
+    height: fit-content;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background-color 0.1s;
+}
+
+.video-page-container .channel-info #subscribe-button.notSubscribed {
+    background-color: #202020;
+    color: white;
+}
+
+.video-page-container .channel-info #subscribe-button.subscribed {
+    background-color: #909090;
+    color: black;
+}
+
+.video-page-container .channel-info img {
+    max-width: fit-content;
+    max-height: fit-content;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+}
+
+.description {
+    width: 60vw;
+    height: fit-content;
+    background-color: #fff;
+    margin: 0 0.5rem 2rem;
+    border-radius: 1rem;
+    padding-bottom: 2rem;
+    margin-top: 0;
+    padding-top: 0;
+    white-space: pre-line;
+}
+
+.description * {
+    display: inline;
+    line-height: 1.25rem;
+}
+
+.video-page-container  a {
+    color: #000;
+    text-decoration: none;
+}
+
+.video-page-container  a:hover {
+    text-decoration: underline;
+}
+
+/* Load more comments button */
+
+.more-comments-container {
+    width: fit-content;
+    padding: 2.5rem 0;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.more-comments-container > * {
+    display: block;
+    width: fit-content;
+    padding: 1rem 2rem;
+    border-radius: 5rem;
+    border: #0003 solid 2px;
+    font-weight: bolder;
+}
+
+/* Comment section */
+
+.comment-box {
+    margin-bottom: 2rem;
+    border-bottom: #0001 solid 1px;
+}
+
+.comment, .reply {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: repeat(3, max-content);
+    grid-template-areas:
+        "pin pin "
+        "pfp name" 
+        "pfp body" 
+        "pfp info";
+    margin-bottom: 1rem;
+}
+
+.reply {
+    margin-left: 5rem;
+}
+
+#comments-section {
+    padding-bottom: 2rem;
+}
+
+#comments-section h2 {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: #0001 solid 1px;
+}
+
+.comment-box img {
+    max-width: fit-content;
+    max-height: fit-content;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+    grid-area: pfp;
+    margin-right: 1rem;
+}
+
+.comment-box .comment-author {
+    grid-area: name;
+}
+
+.comment-box .comment-author a {
+    font-weight: bolder;
+}
+
+.comment-box .comment-author.by-uploader a {
+    background-color: #0002;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+}
+
+.comment-box .comment-author .author-verified {
+    display: inline-block;
+    background-color: #0002;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 2rem;
+    text-align: center;
+}
+
+.comment-box p {
+    grid-area: body;
+    max-width: 60vw;
+}
+
+.comment-box .comment-info {
+    grid-area: info;
+}
+
+.comment-info > * {
+    display: inline;
+    margin: 0;
+    font-weight: bolder;
+}
+
+.comment-info > *::before {
+    display: inline;
+    content: '•';
+    margin: 0 0.25rem;
+}
+
+.comment-info > :first-child::before {
+    display: none;
+    content: unset;
+}
+
+.comment-info .toggle-replies {
+    background-color: #0002;
+    margin: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.pinned-by-uploader {
+    background-color: #0002;
+    margin: 0 0 1rem 0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    grid-area: pin;
+    width: fit-content;
+}
+
+.liked-by-uploader > span {
+    background-color: #0002;
+    margin: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    font-weight: lighter;
+}
+
+/* Responsive stuff */
+
+@media screen and (max-width: 1000px) {
+    .video-page-container h1 {
+        width: 80vw;
+    }
+    .description {
+        width: calc(80vw - 1rem);
+    }
+    .comment-box p {
+        max-width: 80vw;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .video-page-container h1 {
+        width: 100%;
+    }
+    .description {
+        width: calc(100% - 1rem);
+    }
+    iframe {
+        width: 100vw;
+        margin-left: -1rem;
+        height: 56.25vw;
+        border-radius: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .comment-box p {
+        width: 100%;
+        max-width: 70vw;
+    }
+}

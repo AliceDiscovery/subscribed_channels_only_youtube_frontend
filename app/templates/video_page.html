@@ -2,7 +2,6 @@
 
 {% block head %}
 <title>{{ video.title }}</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/video_page.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/collapse_comment_replies.js') }}"></script>
@@ -21,7 +20,7 @@
 
 {% block content %}
 {% include "top_bar_search_template.html" %}
-<div class="container">
+<div class="video-page-container">
     <iframe src="https://www.youtube-nocookie.com/embed/{{ video.video_id }}?si=0WWbkz0vjzds1ffl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <h1>{{ video.title }}</h1>
     <div class="channel-info">
