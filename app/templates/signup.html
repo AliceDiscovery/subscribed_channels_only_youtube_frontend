@@ -2,11 +2,11 @@
 
 {% block head %}
 <title>yt - signup</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/auth.js') }}"></script>
 {% endblock %}
 
 {% block content %}
+<div class="auth-container">
 <h1>Sign Up</h1>
 <form id="signupForm">
     <div class="form-item">
@@ -31,4 +31,5 @@
     <br/>
     <a href="#" onclick="redirectPreservingParams('{{ url_for('accounts.login') }}'); return false;">Log in here!</a>
 </span>
+</div>
 {% endblock %}

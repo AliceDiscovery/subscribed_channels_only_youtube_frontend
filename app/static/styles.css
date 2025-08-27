@@ -1,0 +1,258 @@
+/* Base Styles */
+
+:root {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+:root * {
+    font-family: Arial, sans-serif !important;
+}
+
+body {
+    margin: 0;
+}
+
+.root-container {
+    margin: 0;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-color: '#AFAFAF';
+}
+
+.hidden {
+    display: none!important;
+}
+
+.no-show {
+    visibility: hidden;
+}
+
+.read-more {
+    height: fit-content;
+    z-index: inherit;
+}
+
+.read-more * {
+    display: inline;
+    z-index: inherit;
+}
+
+.read-more button {
+    font-weight: bolder;
+    /* Reset styling */
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+
+.read-more button:hover {
+    text-decoration: underline 1px;
+}
+
+
+
+
+
+
+
+/* styles a floating top bar with a search box */
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    color: #333333;
+    padding: 10px 0 10px 0;
+    box-shadow: 0 2px 4px #00000020;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.top-bar .home-button {
+    text-decoration: none;
+    color: #333;
+    margin-left: 20px;
+    font-size: 1.25rem;
+    font-weight: bolder;
+}
+
+.top-bar .search-bar {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.top-bar .search-bar input {
+    font-size: 1rem;
+    padding: 0.5rem;
+    padding-left: 0.75rem;
+    border: none;
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: inset 0 0 0.25rem 0.125rem #0002;
+    outline: 0;
+}
+
+.top-bar .search-bar button {
+    padding: 0.5rem;
+    padding-right: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.top-bar > *:first-child,
+.top-bar > *:last-child {
+   flex-grow: 1;
+   flex-basis: 0;
+}
+
+.top-bar > .button-group {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.top-bar > .button-group > a {
+    margin-right: 20px;
+}
+
+.top-bar > .button-group > a > img {
+    filter: invert(0%) sepia(9%) saturate(7114%) hue-rotate(14deg) brightness(93%) contrast(60%);
+    width: 30px;
+    height: 30px;
+}
+
+.top-bar-padding {
+    margin-bottom: 83px;
+}
+
+
+
+/* Auth Pages */
+
+.auth-container {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-container h1 {
+    color: black;
+    margin-bottom: 40px;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.auth-container .form-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-container .form-item > * {
+    margin: none;
+}
+
+.auth-container .form-item > label {
+    font-weight: bolder;
+    margin-top: 10px;
+}
+
+.auth-container .form-item > input {
+    margin-bottom: 10px;
+    font-weight: bolder;
+    color: black;
+    background-color: white;
+    width: calc(100% - 10px*2 - 2px*2);
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    outline: solid 2px transparent;
+    margin: 5px auto 15px;
+    transition: 0.25s;
+}
+
+.auth-container .form-item > input:hover, input:focus {
+    outline-color: black;
+}
+
+.auth-container form a.button {
+    font-size: 13.3333px;
+    text-decoration: none;
+}
+
+.auth-container form .button,
+.auth-container form button {
+    font-weight: bolder;
+    color: black;
+    width: fit-content;
+    background-color: white;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    outline: solid 2px transparent;
+    margin: 15px auto;
+    transition: 0.25s;
+}
+
+.auth-container form .button:hover,
+.auth-container form button:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.auth-container form .button:active,
+.auth-container form button:active {
+    border-color: white;
+    outline-color: black;
+}
+
+.auth-container form .button:focus,
+.auth-container form button:focus {
+    outline-color: black;
+}
+
+.auth-container .flex {
+    display: flex;
+    column-gap: 10px;
+}
+
+.auth-container span {
+    margin-top: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.auth-container #emailErrorMessage,
+.auth-container #passwordErrorMessage,
+.auth-container #password2ErrorMessage {
+    color: red;
+    font-weight: bold;
+    display: inline-block;
+    width: fit-content;
+    height: 18px;
+    margin: -5px auto 15px;
+}
