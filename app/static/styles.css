@@ -737,22 +737,22 @@ body {
     column-gap: 1rem;
 }
 
-.video-info {
+.video-page-container .video-info {
     margin-top: 1rem;
 }
 
-.video-info > * {
+.video-page-container .video-info > * {
     margin: 0;
     font-weight: bolder;
 }
 
-.video-info > *::before {
+.video-page-container .video-info > *::before {
     display: inline;
     content: '•';
     margin: 0 0.5rem;
 }
 
-.video-info > :first-child::before {
+.video-page-container .video-info > :first-child::before {
     display: none;
     content: unset;
 }
