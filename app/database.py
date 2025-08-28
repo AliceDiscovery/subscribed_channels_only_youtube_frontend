@@ -28,6 +28,7 @@ class Theme(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     background_color = db.Column(db.String(20), nullable=False)
     foreground_color = db.Column(db.String(20), nullable=False)
+    warning_color = db.Column(db.String(20), nullable=False)
 
 
 class UserTheme(db.Model):
