@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    active_theme_id = db.Column(db.Integer, db.ForeignKey('themes.id'), nullable=True)
 
     subscriptions = db.relationship(
         'Subscription',
@@ -19,6 +20,34 @@ class User(db.Model, UserMixin):
         lazy='dynamic',
         cascade='all, delete-orphan'
     )
+
+
+class Theme(db.Model):
+    __tablename__ = 'themes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    background_color = db.Column(db.String(20), nullable=False)
+    foreground_color = db.Column(db.String(20), nullable=False)
+
+
+class UserTheme(db.Model):
+    __tablename__ = 'user_themes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    theme_id = db.Column(db.Integer, db.ForeignKey('themes.id'), nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'theme_id', name='uix_user_theme'),
+    )
+
+User.themes = db.relationship(
+    'Theme',
+    secondary='user_themes',
+    backref=db.backref('users', lazy='dynamic'),
+    lazy='dynamic'
+)
+
 
 
 class Subscription(db.Model):
