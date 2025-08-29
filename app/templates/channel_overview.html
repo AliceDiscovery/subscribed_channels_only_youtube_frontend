@@ -2,7 +2,6 @@
 
 {% block head %}
 <title>yt - channel</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/channel_overview.css') }}">
 <script defer src="{{ url_for('static', filename='scripts/read_more.js') }}"></script>
 <script defer src="{{ url_for('static', filename='scripts/subscribe_button.js') }}"></script>
 
@@ -20,6 +19,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="channel-container">
     {% include "top_bar_search_template.html" %}
     <div class="channel-banner">
         <img src="{{ channel_info.banner }}">
@@ -51,4 +51,5 @@
         <a id="currentPageNum">1</a>
         <a id="nextPageButton" href="#">&gt</a>
     </div>
+</div>
 {% endblock %}
