@@ -1,3 +1,13 @@
+/* Theme colors */
+
+:root {
+    --color-light: #eee;
+    --color-dark: #111;
+    --color-error: #e33;
+}
+
+
+
 /* Base Styles */
 
 :root {
@@ -11,14 +21,15 @@
 
 body {
     margin: 0;
+    height: fit-content;
+    background-color: var(--color-light);
 }
 
 .root-container {
     margin: 0;
     display: block;
     width: 100vw;
-    height: 100vh;
-    background-color: '#AFAFAF';
+    height: fit-content;
 }
 
 .hidden {
@@ -55,6 +66,14 @@ body {
     text-decoration: underline 1px;
 }
 
+a {
+    color: var(--color-links);
+}
+
+p, span, h1, h2, h3, h4, h5, h6 {
+    color: var(--color-dark);
+}
+
 /* styles a floating top bar with a search box */
 
 .top-bar {
@@ -62,8 +81,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #FFFFFF;
-    color: #333333;
+    background-color: var(--color-light);
+    color: var(--color-dark);
     padding: 10px 0 10px 0;
     box-shadow: 0 2px 4px #00000020;
     display: flex;
@@ -74,7 +93,7 @@ body {
 
 .top-bar .home-button {
     text-decoration: none;
-    color: #333;
+    color: var(--color-dark);
     margin-left: 20px;
     font-size: 1.25rem;
     font-weight: bolder;
@@ -96,6 +115,7 @@ body {
     border-bottom-right-radius: 0;
     box-shadow: inset 0 0 0.25rem 0.125rem #0002;
     outline: 0;
+    background-color: var(--color-light);
 }
 
 .top-bar .search-bar button {
@@ -107,6 +127,7 @@ body {
     border-radius: 20px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    background-color: color-mix(in srgb, var(--color-light) 90%, var(--color-dark) 10%);
 }
 
 .top-bar > *:first-child,
@@ -150,7 +171,7 @@ body {
 }
 
 .auth-container h1 {
-    color: black;
+    color: var(--color-dark);
     margin-bottom: 40px;
 }
 
@@ -177,11 +198,11 @@ body {
 .auth-container .form-item > input {
     margin-bottom: 10px;
     font-weight: bolder;
-    color: black;
-    background-color: white;
+    color: var(--color-dark);
+    background-color: var(--color-light);
     width: calc(100% - 10px*2 - 2px*2);
     padding: 10px;
-    border: 2px solid black;
+    border: 2px solid var(--color-dark);
     border-radius: 10px;
     outline: solid 2px transparent;
     margin: 5px auto 15px;
@@ -189,7 +210,7 @@ body {
 }
 
 .auth-container .form-item > input:hover, input:focus {
-    outline-color: black;
+    outline-color: var(--color-dark);
 }
 
 .auth-container form a.button {
@@ -200,11 +221,11 @@ body {
 .auth-container form .button,
 .auth-container form button {
     font-weight: bolder;
-    color: black;
+    color: var(--color-dark);
     width: fit-content;
-    background-color: white;
+    background-color: var(--color-light);
     padding: 10px 20px;
-    border: 2px solid black;
+    border: 2px solid var(--color-dark);
     border-radius: 10px;
     outline: solid 2px transparent;
     margin: 15px auto;
@@ -213,20 +234,20 @@ body {
 
 .auth-container form .button:hover,
 .auth-container form button:hover {
-    background-color: black;
-    color: white;
+    background-color: var(--color-dark);
+    color: var(--color-light);
     cursor: pointer;
 }
 
 .auth-container form .button:active,
 .auth-container form button:active {
-    border-color: white;
-    outline-color: black;
+    border-color: var(--color-light);
+    outline-color: var(--color-dark);
 }
 
 .auth-container form .button:focus,
 .auth-container form button:focus {
-    outline-color: black;
+    outline-color: var(--color-dark);
 }
 
 .auth-container .flex {
@@ -237,13 +258,13 @@ body {
 .auth-container span {
     margin-top: 10px;
     text-align: center;
-    color: #333;
+    color: var(--color-dark);
 }
 
 .auth-container #emailErrorMessage,
 .auth-container #passwordErrorMessage,
 .auth-container #password2ErrorMessage {
-    color: red;
+    color: var(--color-error);
     font-weight: bold;
     display: inline-block;
     width: fit-content;
@@ -396,30 +417,48 @@ body {
     margin: 30px 0;
 }
 
+.profile-container h3 {
+    text-align: center;
+    font-size: 20px;
+    margin: 30px 0;
+}
+
 .profile-container section {
     width: fit-content;
     margin: 0 auto 60px;
 }
 
-.profile-container section p {
+.profile-container section > form > *,
+.profile-container section > :not(h2) {
     width: fit-content;
     margin: 0 auto 40px;
 }
 
+.profile-container section input[type="text"],
+.profile-container section input[type="password"],
 .profile-container section span {
     padding: 5px 10px;
-    border: 1px solid #ddd;
-    background-color: #eee;
+    border: 1px solid color-mix(in srgb, var(--color-light) 80%, var(--color-dark) 20%);
+    background-color: var(--color-light);
 }
 
+.profile-container section input[type="submit"],
 .profile-container section p a.button {
-    color: black;
+    color: var(--color-dark);
     text-decoration: none;
     margin-right: 15px;
     padding: 5px 10px;
-    border: 1px solid #ddd;
-    background-color: #eee;
+    border: 1px solid color-mix(in srgb, var(--color-light) 80%, var(--color-dark) 20%);
+    background-color: var(--color-light);
     border-radius: 25px;
+}
+
+.profile-container section input[type="submit"] {
+    margin-right: 0;
+}
+
+.profile-container section input[type="submit"]:hover {
+    cursor: pointer;
 }
 
 .profile-container section p a.button:last-child {
@@ -427,9 +466,9 @@ body {
 }
 
 .profile-container #logout-button {
-    background-color: #e33;
-    border-color: #c11;
-    color: white;
+    background-color: var(--color-error);
+    border-color: color-mix(in srgb, var(--color-error) 80%, var(--color-dark) 20%);
+    color: var(--color-light);
     border-radius: 0;
     margin-left: 4px;
 }
@@ -485,13 +524,13 @@ body {
     border-radius: 100%;
     width: 2rem;
     height: 2rem;
-    background-color: #000000;
+    background-color: var(--color-dark);
     object-fit: cover;
     object-position: center;
 }
 
 #videos .video-container .channel-info span {
-    color: #000000;
+    color: var(--color-dark);
     font-size: 1.25rem;
     cursor: pointer;
 }
@@ -566,7 +605,7 @@ body {
 }
 
 #shorts-carousel .short-info * {
-    color: #ffffff;
+    color: var(--color-light);
     margin: 0;
     font-size: 0.75rem;
     font-weight: bolder;
@@ -586,7 +625,6 @@ body {
     width: 100vw;
     height: 100vh;
     margin: 0;
-    background-color: '#AFAFAF';
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -599,7 +637,7 @@ body {
 
 .channel-container .page-nav * {
     text-decoration: none;
-    color: #000000;
+    color: var(--color-dark);
     font-weight: bolder;
     margin: 0 0.25rem;
 }
@@ -652,11 +690,11 @@ body {
     width: calc(100% - 16rem);
     height: fit-content;
     margin: 1rem auto 1rem;
-    color: #111;
+    color: var(--color-dark);
 }
 
 .channel-banner > img {
-    background-color: #000;
+    background-color: var(--color-dark);
     width: 100%;
     height: 20rem;
     object-fit: cover;
@@ -681,7 +719,7 @@ body {
     display: block;
     width: 10rem;
     height: 10rem;
-    background-color: #000;
+    background-color: var(--color-dark);
     border-radius: 100%;
     margin-right: 1rem;
     margin-bottom: 2rem;
@@ -725,7 +763,7 @@ body {
 
 .channel-banner .channel-description {
     max-width: 100%;
-    background-color: #fff;
+    background-color: var(--color-light);
     padding: 0.5rem;
     border-radius: 1rem;
 }
@@ -742,13 +780,13 @@ body {
 }
 
 .channel-banner #subscribe-button.notSubscribed {
-    background-color: #202020;
-    color: white;
+    background-color: var(--color-dark);
+    color: var(--color-light);
 }
 
 .channel-banner #subscribe-button.subscribed {
-    background-color: #909090;
-    color: black;
+    background-color: color-mix(in srgb, var(--color-light) 50%, var(--color-dark) 50%);
+    color: var(--color-dark);
 }
 
 @media screen and (max-width: 1200px) {
@@ -795,7 +833,7 @@ body {
 }
 
 .video-container h2 {
-    color: #000;
+    color: var(--color-dark);
     text-decoration: none;
 }
 
@@ -820,7 +858,7 @@ body {
     padding: 0.25rem;
     border-radius: 0.25rem;
     background-color: #0007;
-    color: #fff;
+    color: #eee;
     font-weight: bolder;
 }
 
@@ -857,22 +895,22 @@ body {
     column-gap: 1rem;
 }
 
-.video-info {
+.video-page-container .video-info {
     margin-top: 1rem;
 }
 
-.video-info > * {
+.video-page-container .video-info > * {
     margin: 0;
     font-weight: bolder;
 }
 
-.video-info > *::before {
+.video-page-container .video-info > *::before {
     display: inline;
     content: '•';
     margin: 0 0.5rem;
 }
 
-.video-info > :first-child::before {
+.video-page-container .video-info > :first-child::before {
     display: none;
     content: unset;
 }
@@ -894,13 +932,13 @@ body {
 }
 
 .video-page-container .channel-info #subscribe-button.notSubscribed {
-    background-color: #202020;
-    color: white;
+    background-color: var(--color-dark);
+    color: var(--color-light);
 }
 
 .video-page-container .channel-info #subscribe-button.subscribed {
-    background-color: #909090;
-    color: black;
+    background-color: color-mix(in srgb, var(--color-light) 50%, var(--color-dark) 50%);
+    color: var(--color-dark);
 }
 
 .video-page-container .channel-info img {
@@ -914,7 +952,7 @@ body {
 .description {
     width: 60vw;
     height: fit-content;
-    background-color: #fff;
+    background-color: var(--color-light);
     margin: 0 0.5rem 2rem;
     border-radius: 1rem;
     padding-bottom: 2rem;
@@ -929,7 +967,7 @@ body {
 }
 
 .video-page-container  a {
-    color: #000;
+    color: var(--color-dark);
     text-decoration: none;
 }
 
