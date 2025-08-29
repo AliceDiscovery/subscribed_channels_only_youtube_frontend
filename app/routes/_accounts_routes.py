@@ -56,11 +56,24 @@ def logout():
     return redirect(url_for('accounts.login'))
 
 
-@accounts_bp.route('/profile')
+@accounts_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    user_themes = {'light': 0, 'dark': 1}  # hard-coded value; this should be fetched from the database.
+    active_theme = -0  # This should be derived once themes are implemented in the database.
+
+    active_theme = max(0, min(len(user_themes) - 1, active_theme))
+
+    if request.method == 'POST':
+        pass  # Implement saving to database.
+
     redacted_email = redact_email(current_user.email)
-    return render_template('profile.html', redacted_email=redacted_email)
+    return render_template(
+        'profile.html',
+        redacted_email=redacted_email,
+        user_themes=user_themes,
+        active_theme=active_theme
+    )
 
 
 @accounts_bp.route('/change-password', methods=['GET', 'POST'])

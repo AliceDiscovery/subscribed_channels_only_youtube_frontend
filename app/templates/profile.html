@@ -10,14 +10,14 @@
 <h1>My Account</h1>
 <section>
     <h2>Preferences</h2>
-    <form action="#">
+    <form action="#" method="post">
         <p></p>
         <p>
             Theme:
-            <input type="radio" id="light-theme" name="theme" value="light">
-            <label for="light-theme">Light</label>
-            <input type="radio" id="dark-theme" name="theme" value="dark">
-            <label for="dark-theme">Dark</label>
+            {% for theme, id in user_themes.items() %}
+                <input type="radio" name="theme" value="{{ id }}" {% if loop.index0 == active_theme %}checked{% endif %}>
+                <label>{{ theme }}</label>
+            {% endfor %}
         </p>
         <p>
             <input type="submit" value="Confirm Selection">
