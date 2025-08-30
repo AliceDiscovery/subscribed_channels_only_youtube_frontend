@@ -6,6 +6,7 @@ from .routes import BLUEPRINTS
 from ._server_keys import ServerKey
 
 from .database import init_db, User
+from .load_default_themes import init_themes
 
 
 app = Flask(__name__)
@@ -17,6 +18,8 @@ init_db(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'accounts.login'
+
+init_themes()
 
 
 @login_manager.user_loader

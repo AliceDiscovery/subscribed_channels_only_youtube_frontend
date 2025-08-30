@@ -4,6 +4,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from ..database import db, User, Theme
+from ..load_default_themes import get_themes as get_default_themes
 from ..info_convertions import redact_email
 
 accounts_bp = Blueprint('accounts', __name__)
@@ -59,8 +60,8 @@ def logout():
 @accounts_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    default_themes_array = Theme.query.filter_by(is_default=True).all()
-    default_themes = {theme.name: theme.id for theme in default_themes_array}
+    default_themes_array = get_default_themes()
+    default_themes = {theme.get('name', 'NameNotFound'): theme.get('id', 'IDNotFound') for theme in default_themes_array}
 
     user_themes_array = themes = Theme.query.filter_by(user_id=current_user.id).all()
     themes = default_themes | {theme.name: theme.id for theme in user_themes_array if not theme.is_default}
@@ -106,4 +107,5 @@ def change_password():
 @accounts_bp.route('/change-email')
 @login_required
 def change_email():
+    raise NotImplementedYet()
     return render_template('change_email.html')
