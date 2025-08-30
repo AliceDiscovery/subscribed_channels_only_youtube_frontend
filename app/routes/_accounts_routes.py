@@ -1,7 +1,9 @@
 """ define all webpage routes relating to user accounts """
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify
+from flask import Blueprint, request, redirect, url_for, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from ._render_template_with_theme import render_template_with_theme as render_template
 
 from ..database import db, User, Theme
 from ..load_default_themes import get_themes as get_default_themes
