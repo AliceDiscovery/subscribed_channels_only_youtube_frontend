@@ -63,15 +63,18 @@ def profile():
     default_themes_array = get_default_themes()
     default_themes = {theme.get('name', 'NameNotFound'): theme.get('id', 'IDNotFound') for theme in default_themes_array}
 
-    user_themes_array = themes = Theme.query.filter_by(user_id=current_user.id).all()
-    themes = default_themes | {theme.name: theme.id for theme in user_themes_array if not theme.is_default}
+    # Disable custom user themes for now.
+    #user_themes_array = Theme.query.filter_by(user_id=current_user.id).all()
+    themes = default_themes# | {theme.name: theme.id for theme in user_themes_array}
 
-    active_user_theme_id = current_user.active_theme.id
-    for i, theme_id in enumerate(themes.values()):
-        if theme_id == active_user_theme_id:
-            active_theme = i
-    else:
-        active_theme = 0
+    active_theme = 0
+    if current_user.active_default_theme is not None:
+        active_user_theme_id = current_user.active_default_theme.id
+        for i, theme_id in enumerate(themes.values()):
+            if theme_id == active_user_theme_id:
+                active_theme = i
+                break
+
 
     if request.method == 'POST':
         pass  # Implement saving to database.

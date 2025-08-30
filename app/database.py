@@ -2,6 +2,8 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
+from .load_default_themes import get_themes
+
 
 db = SQLAlchemy()
 
@@ -13,6 +15,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     active_theme_id = db.Column(db.Integer, db.ForeignKey('themes.id'), nullable=True)
+    active_default_theme = db.Column(db.String('16'), nullable=True)
 
     active_theme = db.relationship(
         'Theme',
@@ -27,15 +30,6 @@ class User(db.Model, UserMixin):
         lazy='dynamic'
     )
 
-    def __init__(self, *args, **kwargs):
-        """ Assign a default theme to each new User."""
-        super().__init__(*args, **kwargs)
-
-        if self.active_theme_id is None:
-            default = Theme.query.filter_by(is_default=True).first()
-            if default:
-                self.active_theme = default
-
 
 class Theme(db.Model):
     __tablename__ = 'themes'
@@ -43,7 +37,6 @@ class Theme(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     name = db.Column(db.String(32), nullable=False)
-    is_default = db.Column(db.Boolean, default=False)
 
     background_color = db.Column(db.String(20), nullable=False)
     foreground_color = db.Column(db.String(20), nullable=False)
@@ -85,16 +78,6 @@ def is_subscribed(user_id: str, channel_id: str):
 
 
 def init_db(app):
-    def add_default_themes():
-        if Theme.query.count() == 0:
-            default_themes = [
-                Theme(name='light', background_color="#ffffff", foreground_color="#000000", warning_color="#ff0000", is_default=True),
-                Theme(name='dark', background_color="#000000", foreground_color="#ffffff", warning_color="#ffff00", is_default=True)
-            ]
-            db.session.bulk_save_objects(default_themes)
-            db.session.commit()
-
     db.init_app(app)
     with app.app_context():
         db.create_all()
-        add_default_themes()
