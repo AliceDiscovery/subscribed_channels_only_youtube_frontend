@@ -35,7 +35,11 @@ def validate_theme(theme: dict) -> None:
         except ValueError:
             pass
         else:
-            raise ValueError(f"The theme id must NOT be a number.")
+            raise ValueError(f'The theme id must NOT be a number.')
+    
+    def validate_id_length() -> None:
+        if len(theme['id']) > 16:
+            raise ValueError(f"The theme id is too long; maximum size is 16 characters. Current length: {theme['id']}")
     
     check_for_missing_keys()
     check_for_additional_keys()

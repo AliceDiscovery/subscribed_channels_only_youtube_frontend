@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     active_theme_id = db.Column(db.Integer, db.ForeignKey('themes.id'), nullable=True)
-    active_default_theme = db.Column(db.String('16'), nullable=True)
+    active_default_theme = db.Column(db.String(16), nullable=True)
 
     active_theme = db.relationship(
         'Theme',
