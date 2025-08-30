@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, jsonif
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from ..database import db, User
+from ..database import db, User, Theme
 from ..info_convertions import redact_email
 
 accounts_bp = Blueprint('accounts', __name__)
@@ -59,10 +59,18 @@ def logout():
 @accounts_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    user_themes = {'light': 0, 'dark': 1}  # hard-coded value; this should be fetched from the database.
-    active_theme = -0  # This should be derived once themes are implemented in the database.
+    default_themes_array = Theme.query.filter_by(is_default=True).all()
+    default_themes = {theme.name: theme.id for theme in default_themes_array}
 
-    active_theme = max(0, min(len(user_themes) - 1, active_theme))
+    user_themes_array = themes = Theme.query.filter_by(user_id=current_user.id).all()
+    themes = default_themes | {theme.name: theme.id for theme in user_themes_array if not theme.is_default}
+
+    active_user_theme_id = current_user.active_theme.id
+    for i, theme_id in enumerate(themes.values()):
+        if theme_id == active_user_theme_id:
+            active_theme = i
+    else:
+        active_theme = 0
 
     if request.method == 'POST':
         pass  # Implement saving to database.
@@ -71,7 +79,7 @@ def profile():
     return render_template(
         'profile.html',
         redacted_email=redacted_email,
-        user_themes=user_themes,
+        themes=themes,
         active_theme=active_theme
     )
 

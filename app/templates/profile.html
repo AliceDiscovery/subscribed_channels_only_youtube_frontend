@@ -14,7 +14,7 @@
         <p></p>
         <p>
             Theme:
-            {% for theme, id in user_themes.items() %}
+            {% for theme, id in themes.items() %}
                 <input type="radio" name="theme" value="{{ id }}" {% if loop.index0 == active_theme %}checked{% endif %}>
                 <label>{{ theme }}</label>
             {% endfor %}

@@ -14,41 +14,46 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(256), nullable=False)
     active_theme_id = db.Column(db.Integer, db.ForeignKey('themes.id'), nullable=True)
 
-    subscriptions = db.relationship(
-        'Subscription',
-        backref='user',
-        lazy='dynamic',
-        cascade='all, delete-orphan'
+    active_theme = db.relationship(
+        'Theme',
+        foreign_keys=[active_theme_id],
+        lazy='joined'
     )
+
+    themes = db.relationship(
+        'Theme',
+        foreign_keys='Theme.user_id',
+        back_populates='owner',
+        lazy='dynamic'
+    )
+
+    def __init__(self, *args, **kwargs):
+        """ Assign a default theme to each new User."""
+        super().__init__(*args, **kwargs)
+
+        if self.active_theme_id is None:
+            default = Theme.query.filter_by(is_default=True).first()
+            if default:
+                self.active_theme = default
 
 
 class Theme(db.Model):
     __tablename__ = 'themes'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    name = db.Column(db.String(32), nullable=False)
+    is_default = db.Column(db.Boolean, default=False)
+
     background_color = db.Column(db.String(20), nullable=False)
     foreground_color = db.Column(db.String(20), nullable=False)
     warning_color = db.Column(db.String(20), nullable=False)
 
-
-class UserTheme(db.Model):
-    __tablename__ = 'user_themes'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    theme_id = db.Column(db.Integer, db.ForeignKey('themes.id'), nullable=False)
-
-    __table_args__ = (
-        db.UniqueConstraint('user_id', 'theme_id', name='uix_user_theme'),
+    owner = db.relationship(
+        'User',
+        foreign_keys=[user_id],
+        back_populates='themes'
     )
-
-User.themes = db.relationship(
-    'Theme',
-    secondary='user_themes',
-    backref=db.backref('users', lazy='dynamic'),
-    lazy='dynamic'
-)
-
 
 
 class Subscription(db.Model):
@@ -80,6 +85,16 @@ def is_subscribed(user_id: str, channel_id: str):
 
 
 def init_db(app):
+    def add_default_themes():
+        if Theme.query.count() == 0:
+            default_themes = [
+                Theme(name='light', background_color="#ffffff", foreground_color="#000000", warning_color="#ff0000", is_default=True),
+                Theme(name='dark', background_color="#000000", foreground_color="#ffffff", warning_color="#ffff00", is_default=True)
+            ]
+            db.session.bulk_save_objects(default_themes)
+            db.session.commit()
+
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        add_default_themes()
