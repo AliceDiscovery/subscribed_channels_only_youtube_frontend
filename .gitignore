@@ -3,3 +3,6 @@
 
 # exclude the sql database
 /instance/db.sqlite
+
+# exclude personal themes
+/default_themes/*.json
