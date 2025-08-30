@@ -4,6 +4,7 @@
     --color-light: #eee;
     --color-dark: #111;
     --color-error: #e33;
+    --search-icon-filter: invert(0%);
 }
 
 
@@ -280,12 +281,12 @@ p, span, h1, h2, h3, h4, h5, h6 {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #070000;
+    background-color: var(--color-light);
 }
   
 .decorative-search-page .search-container {
     position: relative;
-    color: #E0E0E0;
+    color: var(--color-light);
     padding-top: 5vh;
     text-align: center;
 }
@@ -294,12 +295,12 @@ p, span, h1, h2, h3, h4, h5, h6 {
     height: 30px;
     width: 80%;
     margin: auto;
-    border: 1px solid #E0E0E0;
+    border: 1px solid var(--color-dark);
     border-radius: 10px;
     display: flex;
     align-items: center;
     padding: 0 10px;
-    background-color: black;
+    background-color: var(--color-light);
 }
   
 .decorative-search-page .search-container .search-box #searchInput {
@@ -308,7 +309,7 @@ p, span, h1, h2, h3, h4, h5, h6 {
     border: none;
     padding: 10px 0;
     background-color: transparent !important;
-    color: #E0E0E0;
+    color: var(--color-dark);
     font-size: 24px;
     flex-grow: 1;
     font-family: Arial, sans-serif;
@@ -319,7 +320,7 @@ p, span, h1, h2, h3, h4, h5, h6 {
     height: 30px;
     background: none;
     border: none;
-    border-left: 2px solid #E0E0E0;
+    border-left: 2px solid var(--color-dark);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -328,11 +329,11 @@ p, span, h1, h2, h3, h4, h5, h6 {
 .decorative-search-page .search-container .search-box #searchButton img {
     height: calc(100% - 10px);
     margin: 5px 0;
-    filter: invert(100%);
+    filter: var(--search-icon-filter);
 }
   
 .decorative-search-page .search-container .buttons a {
-    color: #E0E0E0;
+    color: var(--color-dark);
     text-decoration: none;
     margin: 1%;
     padding: 5px;
@@ -342,12 +343,12 @@ p, span, h1, h2, h3, h4, h5, h6 {
 .decorative-search-page .search-box #searchInput::placeholder {
     font-size: 18px;
     opacity: 1; /* Firefox */
-    color: #E0E0E0;
+    color: var(--color-dark);
 }
   
 .decorative-search-page .search-box #searchInput::-ms-input-placeholder { /* Edge 12 - 18 */
     font-size: 18px;
-    color: #E0E0E0;
+    color: var(--color-dark);
 }
   
   
