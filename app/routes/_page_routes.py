@@ -1,7 +1,9 @@
 """ define all webpage routes """
-from flask import Blueprint, render_template
+from flask import Blueprint
 from flask_login import login_required, current_user
 from app.youtube_api import YouTubeAPI
+
+from ._render_template_with_theme import render_template_with_theme as render_template
 
 from ..database import is_subscribed
 

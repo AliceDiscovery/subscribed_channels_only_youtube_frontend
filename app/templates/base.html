@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+
+    {% if theme_variables %}
+        <style>
+            :root {
+                --color-light: {{ theme_variables['background-color'] }};
+                --color-dark: {{ theme_variables['foreground-color'] }};
+                --color-error: {{ theme_variables['warning-color'] }};
+            }
+        </style>
+    {% endif %}
+
     {% block head %}
     {% endblock %}
 </head>

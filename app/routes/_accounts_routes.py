@@ -1,9 +1,12 @@
 """ define all webpage routes relating to user accounts """
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify
+from flask import Blueprint, request, redirect, url_for, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from ..database import db, User
+from ._render_template_with_theme import render_template_with_theme as render_template
+
+from ..database import db, User, Theme
+from ..load_default_themes import get_themes as get_default_themes
 from ..info_convertions import redact_email
 
 accounts_bp = Blueprint('accounts', __name__)
@@ -56,11 +59,38 @@ def logout():
     return redirect(url_for('accounts.login'))
 
 
-@accounts_bp.route('/profile')
+@accounts_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    default_themes_array = get_default_themes()
+    default_themes = {theme.get('name', 'NameNotFound'): theme.get('id', 'IDNotFound') for theme in default_themes_array}
+
+    # Disable custom user themes for now.
+    #user_themes_array = Theme.query.filter_by(user_id=current_user.id).all()
+    themes = default_themes# | {theme.name: theme.id for theme in user_themes_array}
+
+    if request.method == 'POST':
+        selected_theme_id = request.form.get('theme')
+        for theme_id in default_themes.values():
+            if selected_theme_id == theme_id:
+                current_user.active_default_theme = selected_theme_id
+                db.session.commit()
+
+    active_theme = 0
+    if current_user.active_default_theme is not None:
+        active_user_theme_id = current_user.active_default_theme
+        for i, theme_id in enumerate(themes.values()):
+            if theme_id == active_user_theme_id:
+                active_theme = i
+                break
+
     redacted_email = redact_email(current_user.email)
-    return render_template('profile.html', redacted_email=redacted_email)
+    return render_template(
+        'profile.html',
+        redacted_email=redacted_email,
+        themes=themes,
+        active_theme=active_theme
+    )
 
 
 @accounts_bp.route('/change-password', methods=['GET', 'POST'])
@@ -85,4 +115,5 @@ def change_password():
 @accounts_bp.route('/change-email')
 @login_required
 def change_email():
+    raise NotImplementedYet()
     return render_template('change_email.html')

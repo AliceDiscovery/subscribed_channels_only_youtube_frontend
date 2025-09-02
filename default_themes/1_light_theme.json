@@ -1,0 +1,7 @@
+{
+  "name": "light",
+  "id": "default-1",
+  "background-color": "#ffffff",
+  "foreground-color": "#000000",
+  "warning-color": "#ff0000"
+}
