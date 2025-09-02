@@ -13,12 +13,11 @@
 
 :root {
     font-size: 16px;
-    font-family: Arial, sans-serif;
-    color: var(--color-dark);
 }
 
 :root * {
     font-family: Arial, sans-serif !important;
+    color: var(--color-dark);
 }
 
 body {
