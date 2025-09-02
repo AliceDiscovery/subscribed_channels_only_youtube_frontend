@@ -93,6 +93,12 @@ def profile():
     )
 
 
+@accounts_bp.route('/profile/custom-theme')
+@login_required
+def custom_theme():
+    return render_template('custom_theme.html')
+
+
 @accounts_bp.route('/change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():

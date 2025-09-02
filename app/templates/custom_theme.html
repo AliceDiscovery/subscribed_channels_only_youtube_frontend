@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>yt - Customise Theme</title>
+<script defer src="{{url_for('static', filename='scripts/custom_theme.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+{% include "top_bar_template.html" %}
+<div class="profile-container">
+<h1>Customise Theme</h1>
+<section>
+    <form id="custom-theme" action="#">
+        <div class="submitter">
+            <h2>Finish Theme</h2>
+            <label for="theme-name">Theme Name</label>
+            <input type="text" id="theme-name" name="theme-name">
+            <input type="submit" value="Create Theme">
+        </div>
+        <div class="color-group">
+            <h2>Foreground Color</h2>
+            <div class="color-input">
+                <label for="foreground-red">Red</label>
+                <input type="range" min="0" max="255" value="255" id="foreground-red" name="foreground-red">
+                <span>255</span>
+            </div>
+            <div class="color-input">
+                <label for="foreground-green">Green</label>
+                <input type="range" min="0" max="255" value="255" id="foreground-green" name="foreground-green">
+                <span>255</span>
+            </div>
+            <div class="color-input">
+                <label for="foreground-blue">Blue</label>
+                <input type="range" min="0" max="255" value="255" id="foreground-blue" name="foreground-blue">
+                <span>255</span>
+            </div>
+        </div>
+        <div class="color-group">
+            <h2>Background Color</h2>
+            <div class="color-input">
+                <label for="background-red">Red</label>
+                <input type="range" min="0" max="255" value="0" id="background-red" name="background-red">
+                <span>0</span>
+            </div>
+            <div class="color-input">
+                <label for="background-green">Green</label>
+                <input type="range" min="0" max="255" value="0" id="background-green" name="background-green">
+                <span>0</span>
+            </div>
+            <div class="color-input">
+                <label for="background-blue">Blue</label>
+                <input type="range" min="0" max="255" value="0" id="background-blue" name="background-blue">
+                <span>0</span>
+            </div>
+        </div>
+        <div class="color-group">
+            <h2>Warning Color</h2>
+            <div class="color-input">
+                <label for="warning-red">Red</label>
+                <input type="range" min="0" max="255" value="255" id="warning-red" name="warning-red">
+                <span>255</span>
+            </div>
+            <div class="color-input">
+                <label for="warning-green">Green</label>
+                <input type="range" min="0" max="255" value="0" id="warning-green" name="warning-green">
+                <span>0</span>
+            </div>
+            <div class="color-input">
+                <label for="warning-blue">Blue</label>
+                <input type="range" min="0" max="255" value="0" id="warning-blue" name="warning-blue">
+                <span>0</span>
+            </div>
+        </div>
+    </form>
+</section>
+</div>
+{% endblock %}

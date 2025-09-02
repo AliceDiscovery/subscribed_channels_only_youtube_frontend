@@ -11,9 +11,8 @@
 <section>
     <h2>Preferences</h2>
     <form action="#" method="post">
-        <p></p>
+        <h3>Select a theme...</h3>
         <p>
-            Theme:
             {% for theme, id in themes.items() %}
                 <input type="radio" name="theme" value="{{ id }}" {% if loop.index0 == active_theme %}checked{% endif %}>
                 <label>{{ theme }}</label>
@@ -22,6 +21,7 @@
         <p>
             <input type="submit" value="Confirm Selection">
         </p>
+        <p>...or <a href="{{ url_for('accounts.custom_theme') }}">create a custom theme</a>.</p>
     </form>
     <h2>Account Details</h2>
     <p>

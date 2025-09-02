@@ -13,11 +13,11 @@
 
 :root {
     font-size: 16px;
-    font-family: Arial, sans-serif;
 }
 
 :root * {
     font-family: Arial, sans-serif !important;
+    color: var(--color-dark);
 }
 
 body {
@@ -472,6 +472,38 @@ p, span, h1, h2, h3, h4, h5, h6 {
     color: var(--color-light);
     border-radius: 0;
     margin-left: 4px;
+}
+
+/* Custom theme editor */
+
+form#custom-theme .color-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+form#custom-theme h2 {
+    width: 100%;
+}
+
+form#custom-theme label {
+    display: block;
+    width: fit-content;
+}
+
+form#custom-theme span {
+    display: block;
+    width: fit-content;
+}
+
+form#custom-theme input {
+    display: block;
+}
+
+#custom-theme .submitter * {
+    margin-bottom: 1rem;
 }
 
 
