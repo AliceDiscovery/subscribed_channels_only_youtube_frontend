@@ -45,7 +45,7 @@ USER appuser
 COPY . .
 
 # Expose the port that the application listens on.
-EXPOSE ${PORT}
+EXPOSE 8000
 
 # Run the application.
-CMD ["gunicorn", "wsgi:app", "--bind=127.0.0.1:${PORT}"]
+CMD ["gunicorn", "wsgi:app", "--bind=127.0.0.1:8000"]
